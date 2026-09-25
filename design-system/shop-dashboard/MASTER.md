@@ -267,7 +267,7 @@ Và luôn kiểm chứng bằng **so sánh với bản sao lưu**: liệt kê m�
 
 ### Kiểm chứng bằng trình duyệt thật
 
-Không phán đoán từ đọc mã. Bốn bài đo trong `test/` chạy Chrome thật qua DevTools Protocol:
+Không phán đoán từ đọc mã. Các bài đo trong `test/` chạy Chrome thật qua DevTools Protocol:
 
 | Lệnh | Đo gì |
 |---|---|
@@ -276,7 +276,11 @@ Không phán đoán từ đọc mã. Bốn bài đo trong `test/` chạy Chrome 
 | `npm run ui:a11y` | 10 phép kiểm khả năng tiếp cận + giảm chuyển động. |
 | `npm run ui:states` | Trạng thái đang tải / rỗng / lỗi / khoá + hộp thoại xác nhận. |
 | `npm run ui:chart` | Biểu đồ: màu theo token, tooltip vẽ thật trên canvas, đọc được bằng bàn phím + `aria-live`. |
+| `npm run ui:motion` | Lớp chuyển động: thẻ nâng khi rê (đo bằng chuột thật), ripple, đếm số, màu nhấn, dải cột, nhịp dọc, giảm chuyển động. |
 | `npm run assets:check` | Mọi tài nguyên `login.html` tham chiếu đều nằm trong `PUBLIC_ASSET_PATHS` (chống lỗi 302 làm vỡ trang đăng nhập). |
+| `npm run live:prod` | Chức năng còn nguyên **trên production**: đăng nhập, cookie, đọc dữ liệu, kiểm tra UID, từ chối tệp giả, bảo vệ tài nguyên, đăng xuất. |
+
+`ui:motion` tồn tại vì lớp chuyển động rất dễ hỏng mà không ai nhận ra: rule vẫn còn trong file CSS nhưng **không bao giờ chạy**. Cả ba lỗi đã gặp đều thuộc loại này. Chỉ đọc mã sẽ không phát hiện — phải đo hành vi.
 
 Bốn lưu ý kỹ thuật đã trả giá khi viết các bài đo này:
 
@@ -284,6 +288,9 @@ Bốn lưu ý kỹ thuật đã trả giá khi viết các bài đo này:
 2. `getBoundingClientRect()` **không** cho biết phần tử có nhìn thấy được không; phải dùng hit-test `document.elementFromPoint()`.
 3. Nội dung của `<details>` khi đóng không được trình duyệt vẽ ra — vì vậy điều hướng dùng `<button>` + `.is-open`, không dùng `<details>` (xem mục 10).
 4. Đo `:hover` phải cuộn phần tử vào khung nhìn và **đợi toạ độ ổn định**; nếu không, `scrollIntoView()` làm bố cục co giãn thêm một nhịp và chuột tới sai chỗ. Và với canvas, phải so sánh **ảnh canvas** trước/sau chứ không tin vào biến trạng thái — bằng không sẽ bỏ sót lỗi tooltip không được vẽ.
+5. Quét `cssRules` phải **đệ quy vào `@media`**. Nếu không, script sẽ báo "không có rule" trong khi rule có — một phép kiểm sai báo đỏ oan làm mất niềm tin vào cả bộ test.
+6. **Đừng đoán cấu trúc phản hồi API.** `POST /api/fbcheck` trả ba mảng `live`/`die`/`unknown`, không có mảng `results`. Đoán sai thì báo "không đạt" oan. Hãy đọc phản hồi thật trước rồi viết phép kiểm.
+7. Trong chuỗi template gửi qua `session.evaluate`, **escape bị nuốt một lần**: `\\s` trong file `.mjs` thành `\s` trong template, rồi thành `s` khi trình duyệt nhận — regex `/180,\s*83/` biến thành `/180,s*83/` và không khớp `"180, 83, 9"`. An toàn hơn: bỏ khoảng trắng rồi so chuỗi, không dùng regex có `\s` hay `\d` trong chuỗi gửi đi.
 
 Bố cục responsive theo hướng mobile-first và phải được kiểm tra tại các mốc:
 

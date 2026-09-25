@@ -19,7 +19,10 @@
     "ui:states": "node test/ui-states.mjs --base http://127.0.0.1:8899",
     "ui:a11y": "node test/ui-a11y.mjs --base http://127.0.0.1:8899",
     "ui:shots": "node test/ui-shot-cdp.mjs --out .ui-shots",
-    "assets:check": "node test/asset-whitelist.mjs"
+    "ui:motion": "node test/ui-motion.mjs --base http://127.0.0.1:8899",
+    "assets:check": "node test/asset-whitelist.mjs",
+    "live:prod": "node test/live-prod.mjs",
+    "cache:bust": "node tools/cache-bust.mjs"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240909.0",
