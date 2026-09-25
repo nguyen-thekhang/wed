@@ -16,8 +16,7 @@
   display: grid;
   place-items: center;
   box-sizing: border-box;
-  min-width: 0;
-  padding: 16px;
+  min-width: 0;padding: 16px;
   overflow: hidden;
   background: var(--preloader-bg);
   color: var(--preloader-text);
@@ -50,9 +49,7 @@
   width: 100%;
   max-width: 320px;
   flex-direction: column;
-  align-items: center;
-  gap: 14px;
-  padding: 18px;
+  align-items: center;gap: 14px;padding: 18px;
   border: 1px solid var(--preloader-border);
   border-radius: 16px;
   background:
@@ -99,7 +96,7 @@
   justify-content: center;
   color: var(--preloader-text);
   font-family: var(--preloader-mono);
-  font-size: 44px;
+  font-size: 34px;
   font-variant-numeric: tabular-nums;
   font-weight: 600;
   letter-spacing: -0.055em;
@@ -107,13 +104,13 @@
   text-shadow: 0 4px 18px rgba(15, 23, 42, 0.08);
 }
 
-.preloader-pct {
-  margin-left: 5px;
+.preloader-pct {margin-left: 4px;
   color: var(--preloader-accent-light);
   font-family: var(--preloader-font);
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0;
+  line-height: 1.15;
 }
 
 /* Giữ nguyên HTML đã cung cấp nhưng hiển thị nhãn tiếng Việt có dấu. */
@@ -199,13 +196,11 @@
 }
 
 @media (min-width: 768px) {
-  .preloader {
-    padding: 24px;
+  .preloader {padding: 24px;
   }
 
   .preloader-inner {
-    max-width: 336px;
-    padding: 20px;
+    max-width: 336px;padding: 20px;
   }
 }
 

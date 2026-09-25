@@ -227,10 +227,10 @@
 
     // Doanh thu CHỈ tính đơn delivered — đây là con số quan trọng nhất.
     setText("kpi-revenue", formatVND(t.revenue_delivered || 0));
-    setText(
-      "kpi-revenue-sub",
-      formatInt(t.orders_delivered || 0) + " đơn đã giao (status = delivered)"
-    );
+    // Chỉ hiện tiếng Việt. Trước đây dòng này lộ nguyên enum API
+    // "… (status = delivered)" ra giao diện — người dùng không nên thấy
+    // tên trường kỹ thuật. Tham chiếu kỹ thuật giữ trong chú thích nguồn.
+    setText("kpi-revenue-sub", formatInt(t.orders_delivered || 0) + " đơn đã giao thành công");
 
     setText("kpi-orders", formatInt(t.orders_delivered || 0));
     setText("kpi-orders-all", formatInt(t.orders_all || 0));
@@ -241,7 +241,17 @@
 
     var other = Math.max(0, (t.orders_all || 0) - (t.orders_delivered || 0));
     setText("kpi-orders-all-sub", formatInt(other) + " đơn không tính doanh thu");
-    setText("kpi-users-sub", formatInt(t.deposits_confirmed || 0) + " lệnh nạp đã xác nhận");
+
+    // Hai dòng chi tiết mới: cho cả ba thẻ cùng một cấu trúc, không thẻ nào
+    // trông trống hơn thẻ bên cạnh.
+    var delivered = Number(t.orders_delivered) || 0;
+    var revenue = Number(t.revenue_delivered) || 0;
+    setText(
+      "kpi-revenue-avg",
+      delivered > 0 ? formatVND(Math.round(revenue / delivered)) : "—"
+    );
+    setText("kpi-users-deposits", formatInt(t.deposits_confirmed || 0));
+    setText("kpi-users-sub", "Tổng người dùng trong hệ thống");
   }
 
   /* ---------------------------------------------------------------------- */
@@ -401,17 +411,26 @@
         return acc + (Number(r.orders) || 0);
       }, 0) || 1;
 
-    var label = { bank: "Ngân hàng", wallet: "Ví", "khác": "Khác" };
+    var label = {
+      bank: "Ngân hàng",
+      wallet: "Ví",
+      cod: "Thanh toán khi nhận hàng",
+      momo: "Ví MoMo",
+      "khác": "Khác"
+    };
 
     var html = "";
     rows.forEach(function (r) {
       var pct = Math.max(2, Math.round(((Number(r.orders) || 0) / totalOrders) * 100));
+      // Một nhãn tiếng Việt là đủ. Trước đây in thêm mã API trong pill
+      // ("Ngân hàng bank", "Ví wallet") — người dùng không cần thấy mã.
+      // Mã gốc chỉ còn trong title để tra khi cần.
       html +=
         "<tr>" +
-        "<td>" +
+        '<td><span class="pill" title="' +
+        escapeHtml(r.method || "") +
+        '">' +
         escapeHtml(label[r.method] || "Khác") +
-        ' <span class="pill">' +
-        escapeHtml(r.method) +
         "</span></td>" +
         '<td class="num">' +
         formatInt(r.orders) +
@@ -464,15 +483,20 @@
     var html = "";
     rows.forEach(function (r) {
       var pct = Math.max(2, Math.round(((Number(r.count) || 0) / total) * 100));
+      // Pill hiện NHÃN TIẾNG VIỆT, không phải mã API.
+      // Trước đây in thẳng r.status ("delivered", "cancelled") ra giao diện,
+      // thành ra chuỗi "delivered Đã giao" cho một giao diện tiếng Việt.
+      // Mã gốc vẫn tra được qua title="…".
+      var label = LABEL[r.status] || r.status || "Khác";
       html +=
         "<tr>" +
         '<td><span class="pill ' +
         (PILL[r.status] || "") +
+        '" title="' +
+        escapeHtml(r.status || "") +
         '">' +
-        escapeHtml(r.status) +
-        "</span> " +
-        escapeHtml(LABEL[r.status] || "") +
-        "</td>" +
+        escapeHtml(label) +
+        "</span></td>" +
         '<td class="num">' +
         formatInt(r.count) +
         '<span class="bar" style="margin-top:6px"><span style="width:' +

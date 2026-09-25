@@ -245,13 +245,19 @@
       </section>
 
       <section class="section reveal" data-reveal="fade" aria-label="Hướng dẫn đọc kết quả">
+        <!--
+          Hai khối dưới đây là GHI CHÚ GIẢI THÍCH, không phải mục nội dung, nên
+          dùng <p class="uid-insight-title"> chứ không dùng <h3>. Trước đây là <h3>
+          khiến trình đọc màn hình đọc chúng như tiêu đề mục ngang hàng với các
+          bảng kết quả, và chúng không có <h2> cha nào trong cây đề mục.
+        -->
         <div class="uid-insights">
           <article class="uid-insight is-live">
-            <h3>LIVE không đồng nghĩa đăng nhập được</h3>
+            <p class="uid-insight-title">LIVE không đồng nghĩa đăng nhập được</p>
             <p>Nhóm này chỉ cho biết UID còn tồn tại; trạng thái khoá, checkpoint hoặc vô hiệu hoá cần kiểm tra riêng.</p>
           </article>
           <article class="uid-insight is-unknown">
-            <h3>Chưa xác định không phải DIE</h3>
+            <p class="uid-insight-title">Chưa xác định không phải DIE</p>
             <p>Khi mạng lỗi, hết thời gian chờ hoặc bị giới hạn, UID được giữ lại để tránh kết luận sai.</p>
           </article>
         </div>
