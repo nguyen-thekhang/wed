@@ -7,7 +7,7 @@
  *
  * Bài này nạp dữ liệu thật vào `window.ShopChart.drawLineChart` rồi kiểm tra:
  *   1. Biểu đồ vẽ được và công bố vai trò cho trình đọc màn hình (`role`, `tabindex`).
- *   2. Bảng màu lấy từ token của design system (emerald), KHÔNG còn xanh dương/tím.
+ *   2. Bảng màu lấy từ token của design system (xanh thương hiệu), KHÔNG còn xanh dương/tím.
  *   3. Rê chuột vào biểu đồ → hộp thông tin thực sự được VẼ THÊM lên canvas
  *      (so sánh ảnh canvas trước/sau, không chỉ tin vào biến trạng thái).
  *   4. Vùng `aria-live` đọc đúng nhãn + giá trị của mốc đang chọn.
@@ -124,18 +124,25 @@ async function run(label, reducedMotion) {
   ok("biểu đồ Tab vào được", meta.tabindex === "0", `tabindex=${meta.tabindex}`);
   ok("có vùng aria-live đọc giá trị", meta.hasReadout === true);
 
-  /* ---- 2. Bảng màu theo design system (emerald), không phải xanh dương/tím ---- */
+  /* ---- 2. Bảng màu theo design system, không phải màu hardcode cũ ---- */
   const colors = await session.evaluate(`
     var c = window.ShopChart.COLORS || {};
     return { accent: c.accent, accent2: c.accent2, bar: c.bar, surface: c.surface };
   `);
   const accentLower = String(colors.accent).toLowerCase();
-  const isEmerald = /#10b981|#34d399|16,\s*185,\s*129|52,\s*211,\s*153/.test(accentLower);
-  ok("màu accent là emerald của design system", isEmerald, `accent=${colors.accent}`);
-  ok("accent2 là emerald nhạt", /#34d399|52,\s*211,\s*153/.test(String(colors.accent2).toLowerCase()), `accent2=${colors.accent2}`);
+  // Thương hiệu hiện tại là xanh sky (#0a6fb4 / #0668a6 — xem :root trong app.css).
+  const isBrand = /#0a6fb4|#0668a6|10,\s*111,\s*180|6,\s*104,\s*166/.test(accentLower);
+  ok("màu accent là xanh thương hiệu của design system", isBrand, `accent=${colors.accent}`);
   ok(
-    "không còn màu xanh dương/tím cũ",
-    !/5b8cff|7c5cff/.test(`${colors.accent}${colors.accent2}${colors.bar}`.toLowerCase()),
+    "accent2 là sắc xanh đậm hơn",
+    /#0668a6|6,\s*104,\s*166/.test(String(colors.accent2).toLowerCase()),
+    `accent2=${colors.accent2}`,
+  );
+  ok(
+    "không còn màu emerald cũ lẫn xanh dương/tím cũ",
+    !/10b981|34d399|16,\s*185,\s*129|52,\s*211,\s*153|5b8cff|7c5cff/.test(
+      `${colors.accent}${colors.accent2}${colors.bar}`.toLowerCase(),
+    ),
     `bar=${colors.bar}`,
   );
 

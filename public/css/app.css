@@ -6,45 +6,70 @@
    ========================================================================== */
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
+
+  /*
+    Bảng màu LẤY THEO TRANG THAM CHIẾU memory-paper.com:
+    nền sáng #f8fafc, chữ navy #0f172a, thương hiệu xanh sky #1ca0f2.
+
+    TÊN TOKEN GIỮ NGUYÊN so với bản dark trước đây, chỉ đổi GIÁ TRỊ. Nhờ vậy mọi
+    quy tắc CSS đang dùng var(--surface), var(--border)… tự chuyển sang nền sáng
+    mà không phải sửa từng dòng — ít rủi ro hơn nhiều so với đổi tay.
+
+    Vài tên mang nghĩa "tối" nhưng nay là màu sáng (--bg-deep, --control-bg…):
+    đổi tên sẽ phải sửa hàng trăm chỗ và dễ sót, nên giữ tên và ghi chú tại đây.
+  */
 
   /* Màu nền và bề mặt */
-  --bg: #0b0f19;
-  --bg-mid: #0b0f19;
-  --bg-deep: #09090b;
-  --bg-top: #0b0f19;
-  --bg-bottom: #09090b;
-  --bg-glow: rgba(16, 185, 129, 0.1);
-  --surface: rgba(255, 255, 255, 0.03);
-  --surface-raised: rgba(255, 255, 255, 0.045);
-  --surface-hover: rgba(255, 255, 255, 0.065);
-  --surface-solid: #10141f;
-  --border: rgba(255, 255, 255, 0.1);
-  --border-soft: rgba(255, 255, 255, 0.075);
-  --border-strong: rgba(255, 255, 255, 0.17);
-  --divider: rgba(255, 255, 255, 0.065);
-  --control-bg: rgba(13, 17, 29, 0.76);
+  --bg: #f8fafc;
+  --bg-mid: #f8fafc;
+  --bg-deep: #ffffff;
+  --bg-top: #ffffff;
+  --bg-bottom: #eef4fb;
+  --bg-glow: rgba(28, 160, 242, 0.14);
+  --surface: #ffffff;
+  --surface-raised: #f4f8fd;
+  --surface-hover: #eaf2fb;
+  --surface-solid: #ffffff;
+  --border: #e2e8f0;
+  --border-soft: #edf2f7;
+  --border-strong: #cbd5e1;
+  --divider: #e8eef5;
+  --control-bg: #f8fafc;
 
   /* Màu chữ và trạng thái */
-  --text: #f8fafc;
-  --text-dim: #94a3b8;
-  --text-faint: #738399;
-  --button-text: #052e24;
-  --accent: #10b981;
-  --accent-light: #34d399;
-  --accent-dark: #059669;
-  --accent-soft: rgba(16, 185, 129, 0.1);
-  --accent-soft-strong: rgba(16, 185, 129, 0.17);
-  --accent-border: rgba(16, 185, 129, 0.34);
-  --accent-ring: rgba(52, 211, 153, 0.32);
-  --ok: #34d399;
-  --ok-soft: rgba(16, 185, 129, 0.1);
-  --warn: #f59e0b;
-  --warn-soft: rgba(245, 158, 11, 0.1);
-  --warn-border: rgba(245, 158, 11, 0.34);
-  --danger: #fb7185;
-  --danger-soft: rgba(251, 113, 133, 0.1);
-  --danger-border: rgba(251, 113, 133, 0.36);
+  --text: #0f172a;
+  --text-dim: #475569;
+  --text-faint: #5b6b7e;
+  /* Chữ trên nền nút đặc phải là trắng. */
+  --button-text: #ffffff;
+
+  /*
+    Xanh thương hiệu — TÁCH HAI MỨC.
+
+    #1ca0f2 (màu trên trang tham chiếu) quá sáng: chữ trắng trên nền đó chỉ đạt
+    2.85:1, dưới ngưỡng 4.5:1. Nên dùng nó cho vùng TRANG TRÍ (quầng sáng, hào
+    quang, mảng nhấn) và một sắc đậm hơn cho phần mang CHỮ và NÚT.
+    - --brand: xanh sky gốc, trang trí, không dùng làm nền chữ.
+    - --accent / --accent-light: bản đậm, mọi nơi có chữ hoặc chữ trên nền đặc.
+  */
+  --brand: #1ca0f2;
+  --brand-soft: rgba(28, 160, 242, 0.12);
+  --accent: #0a6fb4;         /* nền nút chứa chữ trắng — 4.9:1 */
+  --accent-light: #0668a6;   /* chữ xanh trên nền sáng — 5.2:1 trên nền xanh nhạt */
+  --accent-dark: #055985;    /* trạng thái hover */
+  --accent-soft: rgba(10, 111, 180, 0.09);
+  --accent-soft-strong: rgba(10, 111, 180, 0.16);
+  --accent-border: rgba(28, 160, 242, 0.4);
+  --accent-ring: rgba(10, 111, 180, 0.28);
+  --ok: #047857;             /* emerald-700: đủ tương phản trên nền sáng */
+  --ok-soft: rgba(4, 120, 87, 0.1);
+  --warn: #92400e;
+  --warn-soft: rgba(146, 64, 14, 0.1);
+  --warn-border: rgba(146, 64, 14, 0.3);
+  --danger: #b91c1c;
+  --danger-soft: rgba(185, 28, 28, 0.09);
+  --danger-border: rgba(185, 28, 28, 0.3);
   /* Màu Meta đã xác nhận: CHỈ dùng cho trạng thái tài khoản Meta, không dùng
      làm màu giao diện chung (xem design-system/shop-dashboard/MASTER.md). */
   --meta-verified: #1877f2;
@@ -67,18 +92,18 @@
   --content-gap: 10px;
   --gutter: 16px;
 
-  /* Bo góc */
-  --radius-card: 16px;
-  --radius-button: 10px;
-  --radius-small: 7px;
+  /* Bo góc: theo trang tham chiếu — thẻ bo lớn, nút bo tròn hoàn toàn */
+  --radius-card: 18px;
+  --radius-button: 999px;
+  --radius-small: 9px;
   --radius-pill: 999px;
 
-  /* Đổ bóng: 2–3 lớp, luôn có ánh sáng mảnh trên đỉnh */
-  --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 0, 0, 0.14);
-  --shadow-card: 0 18px 46px rgba(0, 0, 0, 0.23), 0 4px 14px rgba(0, 0, 0, 0.15);
-  --shadow-float: 0 28px 72px rgba(0, 0, 0, 0.32), 0 8px 24px rgba(0, 0, 0, 0.18);
-  --inner-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.09);
-  --focus-ring: 0 0 0 3px rgba(52, 211, 153, 0.28);
+  /* Đổ bóng: nền sáng nên bóng phải nhẹ và xanh, không được đen gắt */
+  --shadow-soft: 0 6px 18px rgba(15, 23, 42, 0.07), 0 1px 3px rgba(15, 23, 42, 0.05);
+  --shadow-card: 0 14px 38px rgba(15, 23, 42, 0.1), 0 3px 10px rgba(15, 23, 42, 0.06);
+  --shadow-float: 0 24px 60px rgba(15, 23, 42, 0.16), 0 8px 20px rgba(15, 23, 42, 0.08);
+  --inner-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  --focus-ring: 0 0 0 3px rgba(28, 160, 242, 0.28);
 
   /* Chuyển động ngắn, dễ đọc */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -115,8 +140,13 @@ body {
   margin: 0;
   overflow-x: hidden;
   background-color: var(--bg-deep);
+  /*
+    Nền sáng kiểu trang tham chiếu: một quầng xanh sky mờ ở góc trên phải cộng một
+    vệt xanh nhạt ở góc trên trái, trên nền trắng chuyển dần xuống xanh rất nhạt.
+  */
   background-image:
     radial-gradient(920px 480px at 86% -8%, var(--bg-glow), transparent 68%),
+    radial-gradient(760px 420px at 4% -4%, rgba(28, 160, 242, 0.07), transparent 70%),
     linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 48%, var(--bg-bottom) 100%);
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -251,8 +281,9 @@ select,
   top: 0;
   z-index: 50;
   border-bottom: 1px solid var(--border);
-  background: rgba(9, 9, 11, 0.82);
-  box-shadow: var(--inner-highlight);
+  /* Nền sáng mờ: theo bảng màu mới (trước đây là đen rgba(9, 9, 11, 0.82)). */
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: var(--shadow-soft);
   -webkit-backdrop-filter: blur(18px) saturate(125%);
   backdrop-filter: blur(18px) saturate(125%);
 }
@@ -455,7 +486,7 @@ select,
   overscroll-behavior: contain;
   border: 1px solid var(--border);
   border-radius: var(--radius-card);
-  background: rgba(9, 9, 11, 0.96);
+  background: rgba(255, 255, 255, 0.97);
   box-shadow: var(--inner-highlight), var(--shadow-float);
   -webkit-backdrop-filter: blur(18px) saturate(125%);
   backdrop-filter: blur(18px) saturate(125%);
@@ -706,7 +737,7 @@ main .section-head + .hint {
   right: var(--space-8);
   left: var(--space-8);
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+  background: linear-gradient(90deg, transparent, rgba(15, 23, 42, 0.09), transparent);
   content: "";
   pointer-events: none;
 }
@@ -973,7 +1004,7 @@ thead th {
   z-index: 3;
   padding: 10px 12px;
   border-bottom: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.035);
+  background: var(--surface-raised);
   color: var(--text-dim);
   font-size: 12px;
   font-weight: 760;
@@ -1024,7 +1055,7 @@ tbody tr:hover td {
   height: 6px;
   overflow: hidden;
   border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--surface-hover);
   box-shadow: var(--inner-highlight);
 }
 
@@ -1055,6 +1086,16 @@ tbody tr:hover td {
   position: relative;
   width: 100%;
   height: 230px;
+}
+
+/*
+  Khi biểu đồ chưa có dữ liệu, JS ẩn canvas nhưng .chart-box vẫn cao 230px nên
+  để lại một khoảng trắng lớn phía trên khối "Chưa có dữ liệu" (đã thấy trong
+  ảnh chụp full-page). Ẩn luôn khung khi canvas bên trong bị ẩn.
+*/
+.chart-box:has(> canvas.hidden),
+.chart-box:has(> canvas[hidden]) {
+  display: none;
 }
 
 .chart-box canvas {
@@ -1283,7 +1324,7 @@ select {
   width: 100%;
   height: 170px;
   border-bottom: 1px solid var(--divider);
-  background: rgba(255, 255, 255, 0.025);
+  background: var(--surface-raised);
   object-fit: cover;
 }
 
@@ -1485,7 +1526,7 @@ select {
   gap: 10px;
   padding: 12px 14px;
   border-bottom: 1px solid var(--border-soft);
-  background: rgba(9, 9, 11, 0.42);
+  background: var(--surface-raised);
 }
 
 .uid-panel > header h3 {
@@ -1525,7 +1566,7 @@ select {
   padding: 7px 9px;
   border: 1px solid transparent;
   border-radius: var(--radius-small);
-  background: rgba(255, 255, 255, 0.025);
+  background: var(--surface-raised);
   font-family: var(--mono);
   font-size: 13px;
   line-height: 1.5;
@@ -1759,6 +1800,38 @@ select {
   height: 22px;
 }
 
+/*
+  CHỐT AN TOÀN cho mọi <svg> nhúng trong .empty-state.
+
+  Sự cố đã xảy ra thật: <svg viewBox="0 0 24 24"> không có class và không có
+  width/height sẽ giãn theo tỉ lệ khung chứa, đo được 1156×1156px — một hình
+  ngôi sao xám khổng lồ chiếm trọn ô biểu đồ trên trang Tổng quan. Quy tắc
+  `.empty-state-mark svg` không bắt được nó vì SVG đó không nằm trong hộp bọc.
+  Vì vậy chặn ở cấp .empty-state: SVG không có kích thước riêng thì mặc định
+  22px, và không bao giờ vượt quá 46px.
+*/
+.empty-state > svg:not([width]):not([height]) {
+  display: block;
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  margin: 0 auto;
+  color: var(--accent-light);
+}
+
+.empty-state > svg {
+  max-width: 46px;
+  max-height: 46px;
+}
+
+/* Mọi danh sách rỗng xếp dọc, không bao giờ xếp ngang rồi bóp chữ. */
+.empty-state,
+.uid-empty {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .empty-state h3,
 .uid-empty > strong {
   margin: 0;
@@ -1811,7 +1884,7 @@ select {
 .skeleton::after {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.07), transparent);
+  background: linear-gradient(90deg, transparent, rgba(15, 23, 42, 0.055), transparent);
   content: "";
   transform: translateX(-100%);
   animation: skeleton-sweep 1.5s var(--ease) infinite;
@@ -1911,7 +1984,7 @@ select {
 }
 
 .confirm-dialog::backdrop {
-  background: rgba(9, 9, 11, 0.72);
+  background: rgba(15, 23, 42, 0.5);
   -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
 }
@@ -1992,7 +2065,7 @@ select {
   gap: var(--space-6);
   padding: var(--space-7) var(--space-8);
   border-bottom: 1px solid var(--divider);
-  background: rgba(255, 255, 255, 0.018);
+  background: var(--surface-raised);
 }
 
 .card-heading {
@@ -2556,8 +2629,8 @@ select {
 
 body {background-color: var(--bg-deep); background-image: radial-gradient(760px 520px at 50% -12%, rgba(16, 185, 129, 0.12), transparent 68%), linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 50%, var(--bg-bottom) 100%)}
 .login-shell {position: relative; display: grid; min-height: 100vh; min-height: 100svh; place-items: center; overflow: auto; padding: 24px 16px calc(24px + env(safe-area-inset-bottom))}
-.login-shell::before {position: absolute; inset: 0; background: linear-gradient(rgba(255, 255, 255, 0.026) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.026) 1px, transparent 1px), radial-gradient(620px 420px at 50% 0%, rgba(16, 185, 129, 0.08), transparent 70%); background-size: 64px 64px, 64px 64px, auto; content: ""; opacity: 0.5; pointer-events: none}
-.login-shell::after {position: absolute; inset: 14%; border: 1px solid rgba(255, 255, 255, 0.055); border-radius: 50%; content: ""; opacity: 0.42; pointer-events: none; transform: translateY(-4%)}
+.login-shell::before {position: absolute; inset: 0; background: linear-gradient(rgba(15, 23, 42, 0.028) 1px, transparent 1px), linear-gradient(90deg, rgba(15, 23, 42, 0.028) 1px, transparent 1px), radial-gradient(620px 420px at 50% 0%, rgba(28, 160, 242, 0.1), transparent 70%); background-size: 64px 64px, 64px 64px, auto; content: ""; opacity: 0.5; pointer-events: none}
+.login-shell::after {position: absolute; inset: 14%; border: 1px solid rgba(15, 23, 42, 0.06); border-radius: 50%; content: ""; opacity: 0.42; pointer-events: none; transform: translateY(-4%)}
 .login-frame {position: relative; z-index: 1; width: 100%; max-width: 472px; margin: 0 auto}
 .login-card {width: 100%; max-width: none; padding: 24px 20px 20px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); box-shadow: var(--inner-highlight), var(--shadow-float); -webkit-backdrop-filter: blur(18px) saturate(125%); backdrop-filter: blur(18px) saturate(125%)}
 .login-card-head {display: flex; align-items: center; gap: 11px; margin-bottom: 22px}

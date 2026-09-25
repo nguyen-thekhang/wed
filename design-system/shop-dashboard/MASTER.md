@@ -9,12 +9,12 @@
 | Loại sản phẩm | Dashboard công cụ làm việc, ưu tiên đọc dữ liệu nhanh, thao tác rõ ràng và theo dõi trạng thái liên tục. |
 | Người dùng | Một người dùng vận hành hệ thống; không thiết kế theo nhu cầu thuyết phục nhiều tầng như trang marketing. |
 | Ngôn ngữ | Toàn bộ nội dung hiển thị và chú thích bằng tiếng Việt có dấu. |
-| Giao diện | Dark mode là trải nghiệm chuẩn của sản phẩm. |
+| Giao diện | Nền sáng, thương hiệu xanh sky — lấy cảm hứng từ trang tham chiếu memory-paper.com. |
 | Công nghệ giao diện | HTML, CSS và JavaScript thuần; không framework. |
 | Backend | Cloudflare Worker viết bằng TypeScript. |
 | Phạm vi | Không phải landing page; không dùng cấu trúc Hero, dải logo khách hàng, luồng Contact Sales hay CTA thuyết phục. |
 
-**Style: Glassmorphism + Data-Dense Dashboard**  
+**Style: Soft Light SaaS + Data-Dense Dashboard** — nền sáng, thẻ trắng, viền mảnh, thương hiệu xanh sky, nút bo tròn.  
 **Density 8/10** — Mật độ cao, thông tin dày nhưng vẫn dễ quét.  
 **Motion 4/10** — Chuyển động tinh tế, phục vụ phản hồi trạng thái chứ không gây chú ý.
 
@@ -29,36 +29,46 @@ Nguyên tắc sản phẩm:
 
 ## 2. Bảng màu
 
-| Vai trò | Mã màu | Biến CSS đề xuất | Cách dùng |
+> **Đã đổi sang nền sáng (2026-09-25).** Bảng dưới đây là hệ màu hiện hành, lấy theo
+> trang tham chiếu `memory-paper.com`. Giá trị thực tế nằm trong `:root` của
+> `public/css/app.css`; bảng này chỉ giải thích ý nghĩa từng token.
+
+| Vai trò | Mã màu | Biến CSS | Cách dùng |
 |---|---|---|---|
-| Nền chính | `#0b0f19` | `--color-bg` | Nền toàn trang. |
-| Nền độ sâu | `#09090b` | `--color-bg-deep` | Vùng chìm, lớp nền sâu hơn. |
-| Thẻ kính mờ | `rgba(255,255,255,0.03)` | `--color-surface` | Bề mặt thẻ và vùng nội dung. |
-| Bề mặt nhấn mạnh | `rgba(255,255,255,0.045)` | `--color-surface-raised` | Thẻ nổi bật, hàng chọn, lớp hoạt động. |
-| Viền | `rgba(255,255,255,0.10)` | `--color-border` | Viền chung, ngăn cách mảnh. |
-| Accent chính | `#10b981` | `--color-accent` | Hành động chính, trạng thái tích cực, focus. |
-| Accent sáng | `#34d399` | `--color-accent-hover` | Hover và trạng thái nhấn mạnh của accent. |
-| Tiêu đề | `#f8fafc` | `--color-text` | Tiêu đề và nội dung chính. |
-| Nội dung phụ | `#94a3b8` | `--color-text-secondary` | Mô tả, nhãn phụ, dữ liệu hỗ trợ. |
-| Chú thích | `#738399` | `--color-text-muted` | Chú thích thấp trọng nhưng vẫn đạt chuẩn. |
-| Nguy hiểm | `#fb7185` | `--color-danger` | Lỗi, xóa, thất bại nghiêm trọng. |
-| Cảnh báo | `#f59e0b` | `--color-warning` | Cảnh báo và trạng thái cần chú ý. |
-| Meta đã xác nhận | `#1877F2` | `--color-meta-verified` | Chỉ dùng cho biểu tượng trạng thái tài khoản Meta đã xác nhận; không dùng làm màu giao diện. |
+| Nền chính | `#f8fafc` | `--bg` | Nền toàn trang. |
+| Nền độ sâu | `#ffffff` | `--bg-deep` | Nền thẻ trắng. Tên token cũ, giá trị nay là sáng. |
+| Bề mặt thẻ | `#ffffff` | `--surface` | Nền thẻ, khung. |
+| Bề mặt nhấn | `#f4f8fd` | `--surface-raised` | Hàng chọn, đầu bảng, vùng phụ. |
+| Viền | `#e2e8f0` | `--border` | Viền chung, luôn mảnh `1px`. |
+| Thương hiệu (trang trí) | `#1ca0f2` | `--brand` | Quầng sáng, hào quang, mảng nhấn. **Không dùng làm nền chữ.** |
+| Accent chính | `#0a6fb4` | `--accent` | Nền nút chứa chữ trắng — 4.9:1. |
+| Accent sáng | `#0668a6` | `--accent-light` | Chữ xanh trên nền sáng — 5.2:1. |
+| Tiêu đề | `#0f172a` | `--text` | Tiêu đề và nội dung chính. |
+| Nội dung phụ | `#475569` | `--text-dim` | Mô tả, nhãn phụ. |
+| Chú thích | `#5b6b7e` | `--text-faint` | Chú thích thấp trọng nhưng vẫn đạt `4.5:1` trên nền sáng. |
+| Thành công | `#047857` | `--ok` | Trạng thái tích cực. |
+| Cảnh báo | `#92400e` | `--warn` | Cảnh báo, trạng thái cần chú ý. |
+| Nguy hiểm | `#b91c1c` | `--danger` | Lỗi, xóa, thất bại. |
+| Meta đã xác nhận | `#1877F2` | `--meta-verified` | **Chỉ** dùng cho biểu tượng trạng thái tài khoản Meta; không dùng làm màu giao diện. |
 
 Quy tắc sử dụng:
 
-- Màu accent làm nổi bật hành động và trạng thái tích cực, không dùng đeo trên mọi vùng.
-- Bề mặt dùng hai cấp độ kính mờ đã quy định; viền luôn mảnh `1px`.
+- **Hai sắc xanh phải phân biệt rõ.** `--brand` (`#1ca0f2`) chỉ để trang trí; mọi
+  chữ xanh và mọi nút có chữ trắng bắt buộc dùng `--accent` / `--accent-light`.
+  Lý do: chữ trắng trên `#1ca0f2` chỉ đạt `2.85:1`, dưới ngưỡng WCAG AA `4.5:1`.
 - Không dùng `#1877F2` cho nút, liên kết, biểu đồ hoặc trạng thái chung.
-- Không dùng các màu cơ bản phổ biến của bộ sinh giao diện tự động như `blue-500`, `blue-600`, `gray-100` hoặc `gray-500` làm bảng màu chính.
-- Không thay đổi độ tương phản đã kiểm chứng để đổi sang một sắc xanh hoặc xanh lá khác.
+- Trạng thái tương phản phải luôn kèm nhãn hoặc biểu tượng, không chỉ dựa vào màu.
+- Bóng đổ trên nền sáng phải nhạt và có tông xanh, không dùng bóng đen gắt.
 
-### Lưu ý tương phản chữ chú thích
+### Chuyển từ dark sang light: sai lầm đã gặp
 
-Màu chú thích phải giữ nguyên `#738399`, không thay bằng `#64748b`:
+Khi đổi nền sáng, mọi giá trị dạng `rgba(255,255,255,…)` trở nên **vô hình** trên nền
+trắng, còn nền đen cứng lại lộ ra. Đã thay bằng `--surface-raised` / `--control-bg`
+hay đổi thành tông navy `rgba(15,23,42,…)`. Khi thêm màu mới, phải quét lại:
 
-- `#64748b` chỉ đạt khoảng `4.02:1` trên nền tối nhất và **không đạt WCAG AA** cho chữ thông thường.
-- `#738399` đạt khoảng `4.51:1` trên nền tối nhất, đáp ứng mức tối thiểu `4.5:1`.
+```powershell
+Select-String -Path public/css/*.css -Pattern 'rgba\(255, 255, 255|rgba\(9, 9, 11'
+```
 - Mọi cặp chữ và nền thực tế vẫn phải được kiểm tra lại khi kết hợp trong giao diện.
 
 ## 3. Chữ
@@ -105,8 +115,9 @@ Bộ skill có thể gợi ý Fira Code và Fira Sans, nhưng dự án **không 
 Nguyên tắc bố cục:
 
 - Dùng nền, viền và khoảng trắng để phân cấp thông tin; không tạo cảm giác thoáng bằng cách tăng padding vô hạn.
-- Glassmorphism phải tinh tế: bề mặt kính mờ, viền mảnh và tối đa `2–3` lớp chiều sâu.
-- Các lớp nền sâu dùng `#09090b`; nền chính dùng `#0b0f19`; tuyệt đối không thay bằng đen tuyệt đối.
+- Bề mặt phải tinh tế: thẻ trắng, viền mảnh `1px`, bóng đổ nhạt tông xanh, tối đa `2–3` lớp chiều sâu.
+- Nền chính dùng `#f8fafc`; thẻ dùng `#ffffff`; tuyệt đối không dùng đen tuyệt đối.
+- Quầng sáng `--brand` chỉ dùng ở góc trên hoặc vùng trang trí, không đặt dưới chữ.
 - Bảng, danh sách và thẻ số liệu phải cô đọng, nhưng vẫn có khoảng đệm đủ để dễ quét và nhấn.
 - Không dùng bóng đổ nặng, hiệu ứng lấp lánh hoặc gradient trang trí làm tranh chấp sự chú ý với dữ liệu.
 
@@ -251,9 +262,10 @@ Bố cục responsive theo hướng mobile-first và phải được kiểm tra 
 | Bỏ bộ lọc khỏi dashboard. | Cung cấp bộ lọc cần thiết vì người dùng phải thu hẹp và đối chiếu khối lượng dữ liệu. |
 | Thêm chuyển động thừa hoặc chuyển động thuộc tính bố cục. | Chỉ dùng `opacity` và `transform` trong `150–300ms`. |
 | Dùng chữ có tương phản dưới `4.5:1`. | Dùng bảng màu đã kiểm chứng và kiểm tra lại từng cặp chữ–nền. |
-| Lấy `blue-500`, `blue-600`, `gray-100` hoặc `gray-500` làm màu cơ bản. | Dùng emerald accent và các màu nền, bề mặt, chữ đã quy định trong tài liệu này. |
-| Dùng gradient tím–xanh phong thếp. | Dùng nền tối có chiều sâu qua hai nền và hai cấp bề mặt kính mờ. |
-| Dùng đen tuyệt đối làm nền. | Dùng `#0b0f19` hoặc `#09090b`, không dùng `#000000`. |
+| Lấy `blue-500`, `blue-600`, `gray-100` hoặc `gray-500` làm màu cơ bản. | Dùng `--accent`/`--accent-light` và các màu nền, bề mặt, chữ đã quy định trong tài liệu này. |
+| Dùng gradient tím–xanh phong thếp. | Dùng nền sáng có chiều sâu qua một nền trắng và hai quầng xanh `--brand` rất mờ. |
+| Dùng đen tuyệt đối làm nền. | Dùng `#f8fafc` hoặc `#ffffff`, không dùng `#000000`. |
+| Dùng `#1ca0f2` làm nền nút có chữ trắng. | Chữ trắng trên màu này chỉ đạt `2.85:1`. Dùng `--accent` `#0a6fb4` (4.9:1). |
 | Tải Tailwind, Lucide, Google Fonts, jsDelivr hoặc tài nguyên bên ngoài. | Phục vụ mọi tài nguyên từ dự án và tuân thủ CSP của Worker. |
 | Đặt JavaScript trong thẻ `<script>` nội tuyến. | Đặt mọi JavaScript trong `public/js/*.js`. |
 | Dùng `innerHTML` để chèn dữ liệu từ máy chủ. | Tạo phần tử bằng `createElement` và gán nội dung bằng `textContent`. |

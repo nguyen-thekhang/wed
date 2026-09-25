@@ -45,20 +45,20 @@
     để biểu đồ vẫn vẽ được nếu biến CSS chưa kịp nạp.
   */
   function palette() {
-    var accent = cssVar("--accent", "#10b981");
-    var accentLight = cssVar("--accent-light", "#34d399");
+    var accent = cssVar("--accent", "#1ca0f2");
+    var accentLight = cssVar("--accent-light", "#0b8ad9");
     return {
-      text: cssVar("--text", "#f8fafc"),
-      dim: cssVar("--text-dim", "#94a3b8"),
-      faint: cssVar("--text-faint", "#738399"),
-      grid: "rgba(255, 255, 255, 0.075)",
-      axis: "rgba(255, 255, 255, 0.17)",
+      text: cssVar("--text", "#0f172a"),
+      dim: cssVar("--text-dim", "#475569"),
+      faint: cssVar("--text-faint", "#64748b"),
+      grid: "rgba(15, 23, 42, 0.08)",
+      axis: "rgba(15, 23, 42, 0.16)",
       accent: accent,
       accent2: accentLight,
-      accentSoft: "rgba(16, 185, 129, 0.18)",
-      accentFill: "rgba(16, 185, 129, 0.13)",
+      accentSoft: "rgba(28, 160, 242, 0.18)",
+      accentFill: "rgba(28, 160, 242, 0.13)",
       bar: accentLight,
-      surface: cssVar("--bg-deep", "#09090b"),
+      surface: cssVar("--bg-deep", "#ffffff"),
     };
   }
 
@@ -229,7 +229,7 @@
     var grad = ctx.createLinearGradient(0, padTop, 0, padTop + plotH);
     grad.addColorStop(0, COLORS.accentSoft);
     grad.addColorStop(0.45, COLORS.accentFill);
-    grad.addColorStop(1, "rgba(16, 185, 129, 0)");
+    grad.addColorStop(1, "rgba(28, 160, 242, 0)");
 
     ctx.beginPath();
     ctx.moveTo(xAt(0), yAt(values[0]));
@@ -633,8 +633,8 @@
     ctx.fill();
 
     // Hộp nền.
-    ctx.fillStyle = "rgba(9, 9, 11, 0.94)";
-    ctx.strokeStyle = "rgba(52, 211, 153, 0.42)";
+    ctx.fillStyle = "rgba(15, 23, 42, 0.94)";
+    ctx.strokeStyle = "rgba(28, 160, 242, 0.42)";
     ctx.lineWidth = 1;
     roundedRect(ctx, bx, by, boxW, boxH, 8);
     ctx.fill();

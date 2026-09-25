@@ -16,7 +16,7 @@
 
 /* ---------- Trang: index.html ---------- */
 
-.hero-mark {display: grid; width: 76px; height: 76px; flex: 0 0 76px; place-items: center; border: 1px solid var(--accent-border); border-radius: var(--radius-card); background: radial-gradient(circle at 50% 35%, rgba(52, 211, 153, 0.13), transparent 68%), var(--surface); box-shadow: var(--inner-highlight), 0 18px 42px rgba(9, 9, 11, 0.24); color: var(--accent-light)}
+.hero-mark {display: grid; width: 76px; height: 76px; flex: 0 0 76px; place-items: center; border: 1px solid var(--accent-border); border-radius: var(--radius-card); background: radial-gradient(circle at 50% 35%, rgba(28, 160, 242, 0.14), transparent 68%), var(--surface); box-shadow: var(--inner-highlight), 0 14px 34px rgba(15, 23, 42, 0.1); color: var(--accent-light)}
 .hero-mark svg {width: 34px; height: 34px}
 .dashboard-hero-note {display: inline-flex; align-items: center; gap: 7px; margin-top: 14px; color: var(--text-faint); font-size: 12px}
 .dashboard-hero-note svg {width: 15px; height: 15px; color: var(--accent-light)}
@@ -91,7 +91,7 @@
 /* ---------- Trang: images.html ---------- */
 
 body {position: relative; isolation: isolate}
-body::before {position: fixed; z-index: -1; inset: 0; background-image: linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px); background-size: 40px 40px; content: ""; pointer-events: none; mask-image: linear-gradient(to bottom, rgba(9, 9, 11, 0.7), transparent 74%)}
+body::before {position: fixed; z-index: -1; inset: 0; background-image: linear-gradient(rgba(15, 23, 42, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(15, 23, 42, 0.035) 1px, transparent 1px); background-size: 40px 40px; content: ""; pointer-events: none; mask-image: linear-gradient(to bottom, rgba(226, 232, 240, 0.9), transparent 74%)}
 .page-head {align-items: center; padding-top: 30px}
 .page-heading {display: flex; min-width: 0; align-items: center; gap: var(--space-6)}
 .page-mark {display: grid; flex: 0 0 auto; place-items: center; border: 1px solid var(--accent-border); background: var(--accent-soft); box-shadow: var(--inner-highlight); color: var(--accent-light)}
@@ -123,7 +123,7 @@ body::before {position: fixed; z-index: -1; inset: 0; background-image: linear-g
 .drop .hint {max-width: 52ch; margin: var(--space-4) auto 0; text-align: center}
 .file-name {width: 100%; min-height: 20px; margin: var(--space-3) 0 0; color: var(--text-dim)}
 .drop-help {max-width: 52ch; margin-bottom: 0}
-.code-chip {padding: 1px 5px; border: 1px solid var(--border); border-radius: var(--radius-small); background: rgba(255, 255, 255, 0.045); color: var(--text-dim); font-family: var(--mono); font-size: 11.5px}
+.code-chip {padding: 1px 5px; border: 1px solid var(--border); border-radius: var(--radius-small); background: var(--surface-raised); color: var(--text-dim); font-family: var(--mono); font-size: 11.5px}
 .upload-card {display: flex; min-height: 318px; flex-direction: column}
 .field-label {display: block; margin-bottom: var(--space-2); color: var(--text-dim); font-size: 12.5px; font-weight: 700; line-height: 1.5}
 #note-input {min-height: 48px}
@@ -197,7 +197,7 @@ body::before {position: fixed; z-index: -1; inset: 0; background-image: linear-g
 .uid-form-top {display: flex; min-width: 0; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 12px; margin-bottom: 9px}
 .uid-form-top .field-label {margin: 0; color: var(--text); font-size: 13px; font-weight: 720}
 .uid-limit-chip {display: inline-flex; min-height: 28px; align-items: center; padding: 4px 9px; border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--surface-raised); color: var(--text-dim); font-size: 12px; font-weight: 680; white-space: nowrap}
-.uid-input {min-height: 208px; padding: 14px 15px; background: rgba(255, 255, 255, 0.025); font-family: var(--mono); font-size: 14px; line-height: 1.75; tab-size: 2}
+.uid-input {min-height: 208px; padding: 14px 15px; background: var(--control-bg); font-family: var(--mono); font-size: 14px; line-height: 1.75; tab-size: 2}
 .uid-input[readonly] {cursor: wait}
 .uid-input::placeholder {color: var(--text-faint)}
 .uid-form-meta {display: flex; min-width: 0; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px 12px; margin-top: 9px}
@@ -213,7 +213,7 @@ body::before {position: fixed; z-index: -1; inset: 0; background-image: linear-g
 #uid-check-btn {--uid-button-icon: url("/img/sprite.svg#icon-search")}
 #uid-clear-btn {--uid-button-icon: url("/img/sprite.svg#icon-trash")}
 .uid-copy-button {--uid-button-icon: url("/img/sprite.svg#icon-copy")}
-#uid-progress {margin-top: 15px; padding: 12px; border: 1px solid var(--border-soft); border-radius: var(--radius-small); background: rgba(255, 255, 255, 0.02)}
+#uid-progress {margin-top: 15px; padding: 12px; border: 1px solid var(--border-soft); border-radius: var(--radius-small); background: var(--surface-raised)}
 #uid-progress .bar > span {width: 100%; transform-origin: left center; animation: uid-progress-pulse 1.4s cubic-bezier(0.22, 1, 0.36, 1) infinite}
 #uid-status {margin: 8px 0 0; color: var(--text-dim); font-size: 12.5px; line-height: 1.5}
 @keyframes uid-progress-pulse {
@@ -225,10 +225,10 @@ body::before {position: fixed; z-index: -1; inset: 0; background-image: linear-g
 .uid-results-head {align-items: center}
 #uid-summary {display: inline-flex; min-height: 30px; align-items: center; padding: 5px 10px; border: 1px solid var(--border-soft); border-radius: var(--radius-small); background: var(--surface); color: var(--text-dim); font-family: var(--mono); font-size: 12px; font-variant-numeric: tabular-nums; line-height: 1.45}
 .uid-results {display: grid; min-width: 0; grid-template-columns: 1fr; gap: 14px}
-.uid-panel {--uid-state-color: var(--text-dim); --uid-state-soft: var(--surface-raised); --uid-empty-icon: url("/img/sprite.svg#icon-search"); display: flex; min-width: 0; flex-direction: column; overflow: hidden; border-top-width: 2px; border-top-color: var(--uid-state-color); background: linear-gradient(180deg, rgba(255, 255, 255, 0.038), rgba(255, 255, 255, 0.02)); box-shadow: var(--inner-highlight), var(--shadow-soft)}
-.uid-panel.is-live {--uid-state-color: #34d399; --uid-state-soft: rgba(52, 211, 153, 0.1); --uid-empty-icon: url("/img/sprite.svg#icon-check")}
-.uid-panel.is-die {--uid-state-color: #fb7185; --uid-state-soft: rgba(251, 113, 133, 0.1); --uid-empty-icon: url("/img/sprite.svg#icon-x")}
-.uid-panel.is-unknown {--uid-state-color: #f59e0b; --uid-state-soft: rgba(245, 158, 11, 0.1); --uid-empty-icon: url("/img/sprite.svg#icon-alert")}
+.uid-panel {--uid-state-color: var(--text-dim); --uid-state-soft: var(--surface-raised); --uid-empty-icon: url("/img/sprite.svg#icon-search"); display: flex; min-width: 0; flex-direction: column; overflow: hidden; border-top-width: 2px; border-top-color: var(--uid-state-color); background: linear-gradient(180deg, #ffffff, var(--surface-raised)); box-shadow: var(--inner-highlight), var(--shadow-soft)}
+.uid-panel.is-live {--uid-state-color: #047857; --uid-state-soft: rgba(52, 211, 153, 0.1); --uid-empty-icon: url("/img/sprite.svg#icon-check")}
+.uid-panel.is-die {--uid-state-color: #b91c1c; --uid-state-soft: rgba(251, 113, 133, 0.1); --uid-empty-icon: url("/img/sprite.svg#icon-x")}
+.uid-panel.is-unknown {--uid-state-color: #92400e; --uid-state-soft: rgba(245, 158, 11, 0.1); --uid-empty-icon: url("/img/sprite.svg#icon-alert")}
 .uid-panel > header {display: flex; min-width: 0; align-items: center; flex-wrap: wrap; gap: 9px 10px; padding: 13px 14px; border-bottom: 1px solid var(--border-soft); background: var(--uid-state-soft)}
 .uid-panel-title {display: flex; min-width: 0; align-items: center; gap: 9px}
 .uid-state-mark {width: 9px; height: 9px; flex: 0 0 9px; border-radius: 50%; background: var(--uid-state-color); box-shadow: 0 0 0 4px var(--uid-state-soft)}
@@ -237,19 +237,42 @@ body::before {position: fixed; z-index: -1; inset: 0; background-image: linear-g
 .uid-panel-actions {display: flex; min-width: 0; align-items: center; gap: 8px; margin-left: auto}
 .uid-panel .pill {min-width: 32px; min-height: 28px; border-color: var(--uid-state-color); background: var(--uid-state-soft); color: var(--uid-state-color); font-family: var(--mono); font-size: 12px; font-variant-numeric: tabular-nums}
 .uid-list {display: flex; min-height: 176px; max-height: 380px; margin: 0; padding: 9px; flex: 1 1 auto; flex-direction: column; gap: 6px; overflow-y: auto; overscroll-behavior: contain; list-style: none; scrollbar-gutter: stable}
-.uid-list li:not(.empty) {display: grid; min-width: 0; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px 10px; padding: 8px 9px; border: 1px solid transparent; border-radius: var(--radius-small); background: rgba(255, 255, 255, 0.025); font-family: var(--mono); font-size: 12.5px; line-height: 1.5; user-select: text}
+.uid-list li:not(.empty) {display: grid; min-width: 0; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px 10px; padding: 8px 9px; border: 1px solid transparent; border-radius: var(--radius-small); background: var(--surface-raised); font-family: var(--mono); font-size: 12.5px; line-height: 1.5; user-select: text}
 .uid-list li:not(.empty) > .mono {min-width: 0; color: var(--text); overflow-wrap: anywhere}
 .uid-list li:hover {border-color: var(--border-strong); background: var(--surface-raised)}
 .uid-list .uid-note {max-width: 48%; margin-left: 0; color: var(--text-faint); font-family: var(--font); font-size: 12px; line-height: 1.4; text-align: right}
-.uid-list .empty {min-height: 158px; padding: 26px 14px; color: var(--text-dim); font-size: 12.5px; line-height: 1.55; text-align: center}
+/*
+  Khối rỗng trong danh sách UID.
+
+  BẮT BUỘC có `flex-direction: column` và `align-items: center`: dòng chọn
+  `.uid-list li` phía trên đặt `display: grid` cho các <li>, còn `.uid-empty`
+  (từ app.css) là `display: grid`. Nếu chỉ dựa vào `text-align: center`, các
+  phần tử con xếp thành MỘT HÀNG và bị co lại — chữ "Chưa có UID LIVE" xuống
+  dòng từng từ, cao 93px trong khi rộng 35px (đã đo bằng trình duyệt thật).
+*/
+.uid-list .empty {
+  display: flex;
+  min-height: 158px;
+  padding: 26px 14px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--text-dim);
+  font-size: 12.5px;
+  line-height: 1.55;
+  text-align: center;
+}
+.uid-list .empty > strong,
+.uid-list .empty > span {max-width: 34ch}
 /* Biểu tượng trạng thái rỗng của từng panel uid (là <svg>, không phải hộp bọc). */
 .empty-state-icon {display: block; width: 32px; height: 32px; margin: 0 auto 10px; color: var(--uid-state-color); opacity: 0.88}
 .uid-list .empty:not(.uid-empty)::before {display: block; width: 32px; height: 32px; margin: 0 auto 10px; background: var(--uid-state-color); opacity: 0.76; -webkit-mask: var(--uid-empty-icon) center / 28px 28px no-repeat; mask: var(--uid-empty-icon) center / 28px 28px no-repeat; content: ""}
 .uid-insights {display: grid; min-width: 0; grid-template-columns: 1fr; gap: 8px}
 .uid-insight {position: relative; min-width: 0; padding: 12px 13px 12px 15px; overflow: hidden; border: 1px solid var(--border-soft); border-radius: 12px; background: var(--surface); box-shadow: var(--inner-highlight)}
 .uid-insight::before {position: absolute; top: 10px; bottom: 10px; left: 0; width: 2px; border-radius: var(--radius-pill); background: var(--insight-color, var(--accent)); content: ""}
-.uid-insight.is-live {--insight-color: #34d399}
-.uid-insight.is-unknown {--insight-color: #f59e0b}
+.uid-insight.is-live {--insight-color: #047857}
+.uid-insight.is-unknown {--insight-color: #92400e}
 .uid-insight h3 {margin: 0 0 4px; color: var(--text); font-size: 13px; font-weight: 720}
 .uid-insight p {margin: 0; color: var(--text-faint); font-size: 12.5px; line-height: 1.6}
 @media (max-width: 767px) {

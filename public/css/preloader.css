@@ -1,12 +1,13 @@
 /* Màn tải phủ toàn màn hình ngay khi CSS được áp dụng. */
 .preloader {
-  --preloader-bg: #0b0f19;
-  --preloader-accent: #10b981;
-  --preloader-accent-light: #34d399;
-  --preloader-text: #f8fafc;
-  --preloader-muted: #94a3b8;
-  --preloader-border: rgba(255, 255, 255, 0.1);
-  --preloader-glass: rgba(255, 255, 255, 0.03);
+  /* Theo bảng màu mới (nền sáng, thương hiệu xanh sky) — xem :root trong app.css. */
+  --preloader-bg: #f8fafc;
+  --preloader-accent: #1ca0f2;
+  --preloader-accent-light: #0673b8;
+  --preloader-text: #0f172a;
+  --preloader-muted: #64748b;
+  --preloader-border: #e2e8f0;
+  --preloader-glass: #ffffff;
   --preloader-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --preloader-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   position: fixed;
@@ -55,13 +56,13 @@
   border: 1px solid var(--preloader-border);
   border-radius: 16px;
   background:
-    radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.07) 0%, transparent 58%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.012), transparent 58%),
+    radial-gradient(circle at 50% 0%, rgba(28, 160, 242, 0.1) 0%, transparent 58%),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.012), transparent 58%),
     var(--preloader-glass);
   box-shadow:
-    0 24px 70px rgba(9, 9, 11, 0.58),
-    0 0 44px rgba(16, 185, 129, 0.045),
-    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+    0 24px 70px rgba(15, 23, 42, 0.14),
+    0 0 44px rgba(28, 160, 242, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
   text-align: center;
@@ -74,18 +75,18 @@
   height: 42px;
   flex: 0 0 auto;
   place-items: center;
-  border: 1px solid rgba(52, 211, 153, 0.3);
+  border: 1px solid rgba(28, 160, 242, 0.35);
   border-radius: 12px;
-  background: rgba(16, 185, 129, 0.075);
+  background: rgba(28, 160, 242, 0.12);
   box-shadow:
-    0 0 24px rgba(16, 185, 129, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    0 0 24px rgba(28, 160, 242, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .preloader-mark::before {
   width: 14px;
   height: 14px;
-  border: 2px solid rgba(52, 211, 153, 0.16);
+  border: 2px solid rgba(28, 160, 242, 0.18);
   border-top-color: var(--preloader-accent-light);
   border-radius: 50%;
   content: "";
@@ -103,7 +104,7 @@
   font-weight: 600;
   letter-spacing: -0.055em;
   line-height: 1;
-  text-shadow: 0 8px 30px rgba(9, 9, 11, 0.28);
+  text-shadow: 0 4px 18px rgba(15, 23, 42, 0.08);
 }
 
 .preloader-pct {
@@ -135,7 +136,7 @@
   height: 2px;
   overflow: hidden;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
+  background: #e2e8f0;
 }
 
 #preloader-fill {
@@ -146,7 +147,7 @@
   overflow: hidden;
   border-radius: inherit;
   background: var(--preloader-accent);
-  box-shadow: 0 0 12px rgba(16, 185, 129, 0.24);
+  box-shadow: 0 0 12px rgba(28, 160, 242, 0.3);
 }
 
 #preloader-fill::after {

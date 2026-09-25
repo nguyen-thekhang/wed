@@ -3,11 +3,11 @@
   <title id="logo-title">Logo dấu kiểm emerald</title>
   <defs>
     <linearGradient id="logo-emerald" x1="9" y1="9" x2="39" y2="39" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#10b981"/>
-      <stop offset="1" stop-color="#34d399"/>
+      <stop stop-color="#1ca0f2"/>
+      <stop offset="1" stop-color="#0a6fb4"/>
     </linearGradient>
   </defs>
-  <rect x="4.5" y="4.5" width="39" height="39" rx="12" fill="#0b0f19" stroke="#10b981" stroke-width="1.5"/>
+  <rect x="4.5" y="4.5" width="39" height="39" rx="12" fill="#0f172a" stroke="#1ca0f2" stroke-width="1.5"/>
   <rect x="9" y="9" width="30" height="30" rx="9" fill="url(#logo-emerald)"/>
-  <path d="m15 24.5 6 6 12-12" fill="none" stroke="#f8fafc" stroke-width="3.25" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="m15 24.5 6 6 12-12" fill="none" stroke="#ffffff" stroke-width="3.25" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
