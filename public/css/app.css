@@ -207,7 +207,18 @@ samp,
 pre,
 .mono {
   font-family: var(--mono);
-  font-size: 0.88em;
+  /*
+    1em, KHÔNG phải 0.88em.
+
+    0.88em nhân với cỡ của phần tử cha nên sinh ra các cỡ phân số không có
+    trong thang: 13px × 0.88 = 11.44px, 14px × 0.88 = 12.32px. Đo thực tế trên
+    trang Tổng quan đã thấy đúng 11.4px và 12.3px xuất hiện.
+
+    Giờ mono kế thừa đúng cỡ của ngữ cảnh — luôn rơi vào một bậc trong thang
+    12/13/14/16/20/34. Muốn nhỏ hơn thì đặt cỡ tường minh ở nơi cần, đừng
+    dùng hệ số nhân.
+  */
+  font-size: 1em;
 }
 
 button,
