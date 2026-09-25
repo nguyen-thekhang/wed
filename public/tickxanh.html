@@ -1,0 +1,354 @@
+<!doctype html>
+<!--
+  tickxanh.html — trang theo dõi huy hiệu tích xanh Meta (Trung tâm Meta).
+
+  Trang chỉ dùng HTML, CSS và JavaScript thuần; không dùng tài nguyên từ mạng ngoài.
+  Toàn bộ định danh phần tử mà tickxanh.js đang dùng được giữ nguyên:
+  #nav-toggle, #bell-btn, #bell-badge, #inbox, #inbox-close-btn, #logout-btn,
+  #bx-msg, #bx-ok, #watch-input, #watch-count, #watch-add-btn,
+  #verified-table, #tb-verified, #watching-table, #tb-watching, #page-title.
+-->
+<html lang="vi" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#0b0f19" />
+    <link rel="icon" href="/img/favicon.svg" type="image/svg+xml" />
+    <title>Tích xanh — Shop Dashboard</title>
+
+    <link rel="stylesheet" href="/css/app.css" />
+    <link rel="stylesheet" href="/css/scroll.css" />
+    <link rel="stylesheet" href="/css/preloader.css" />
+    <link rel="stylesheet" href="/css/pages.css" />
+
+    <script src="/js/preloader.js"></script>
+    <script src="/js/scroll.js" defer></script>
+    <script src="/js/nav.js" defer></script>
+    <script src="/js/confirm.js" defer></script>
+    <script src="/js/tickxanh.js" defer></script>
+  </head>
+
+  <body>
+    <div id="preloader" class="preloader" role="status" aria-live="polite">
+      <div class="preloader-inner">
+        <div class="preloader-mark" aria-hidden="true"></div>
+        <div class="preloader-count"><span id="preloader-num">0</span><span class="preloader-pct">%</span></div>
+        <div class="preloader-label">Đang tải</div>
+        <div class="preloader-bar"><span id="preloader-fill"></span></div>
+      </div>
+    </div>
+
+    <a class="skip-link" href="#main-content">Bỏ qua điều hướng, tới nội dung chính</a>
+
+    <header class="topbar">
+      <div class="wrap topbar-inner">
+        <a class="brand" href="/index.html" aria-label="Shop Dashboard — về trang tổng quan">
+          <svg class="icon brand-icon" aria-hidden="true"><use href="/img/sprite.svg#icon-chart"></use></svg>
+          <span>Shop Dashboard</span>
+        </a>
+
+        <button
+          type="button"
+          class="nav-toggle"
+          id="nav-toggle"
+          aria-label="Mở menu điều hướng"
+          aria-expanded="false"
+          aria-controls="nav"
+        >
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+
+          <nav id="nav" class="nav" aria-label="Điều hướng chính">
+            <a href="/index.html">
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-chart"></use></svg>
+              <span>Tổng quan</span>
+            </a>
+            <a href="/logs.html">
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-clock"></use></svg>
+              <span>Nhật ký</span>
+            </a>
+            <a href="/images.html">
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-image"></use></svg>
+              <span>Ảnh</span>
+            </a>
+            <a href="/uid.html">
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-user"></use></svg>
+              <span>Kiểm tra UID</span>
+            </a>
+            <a href="/tickxanh.html" aria-current="page">
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-check"></use></svg>
+              <span>Tích xanh</span>
+            </a>
+          </nav>
+
+        <div class="topbar-actions">
+          <button
+            type="button"
+            id="bell-btn"
+            class="bell-btn"
+            aria-label="Mở thông báo"
+            aria-expanded="false"
+            aria-controls="inbox"
+          >
+            <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-bell"></use></svg>
+            <span id="bell-badge" class="bell-badge" data-count="0" aria-hidden="true" hidden>0</span>
+          </button>
+
+          <button type="button" id="logout-btn" class="btn btn-sm">
+            <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-logout"></use></svg>
+            <span data-logout-label>Đăng xuất</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!--
+      Hộp thư nằm NGOÀI <header> có chủ đích: .topbar dùng backdrop-filter nên
+      nếu đặt bên trong, lớp phủ position:fixed sẽ bị neo vào thanh trên cùng
+      thay vì khung nhìn.
+    -->
+    <div class="inbox-panel">
+      <div class="inbox-panel-head">
+        <h2>Hộp thư tích xanh</h2>
+        <button
+          type="button"
+          id="inbox-close-btn"
+          class="icon-button"
+          aria-label="Đóng hộp thư thông báo"
+          hidden
+        >
+          <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-x"></use></svg>
+        </button>
+      </div>
+
+      <div id="inbox" class="inbox" role="region" aria-label="Thông báo tích xanh" aria-live="polite" hidden>
+        <div class="empty-state is-compact">
+          <span class="empty-state-mark" aria-hidden="true">
+            <svg class="icon"><use href="/img/sprite.svg#icon-inbox"></use></svg>
+          </span>
+          <h3>Chưa có thông báo mới</h3>
+          <p>Khi có kết quả hoặc lỗi theo dõi, thông báo sẽ xuất hiện tại đây.</p>
+          <a class="btn btn-sm" href="#watch-input">Thêm UID để bắt đầu</a>
+        </div>
+      </div>
+    </div>
+
+    <main class="wrap" id="main-content" tabindex="-1">
+      <header class="page-head reveal" data-reveal="fade">
+        <div class="page-head-copy">
+          <p class="page-eyebrow">Trung tâm Meta</p>
+          <h1 class="page-title" id="page-title">Theo dõi tích xanh</h1>
+          <p class="page-sub">
+            Theo dõi UID chờ Meta hiển thị huy hiệu tích xanh trên hồ sơ công khai, theo dõi số lần
+            kiểm tra và nhận thông báo ngay khi có kết quả.
+          </p>
+        </div>
+
+        <div class="page-meta">
+          <span class="meta-chip is-live">Tự động làm mới · 30 giây</span>
+        </div>
+      </header>
+
+      <div id="bx-msg" class="alert alert-error hidden" role="alert" aria-live="assertive"></div>
+      <div id="bx-ok" class="alert alert-ok hidden" role="status" aria-live="polite"></div>
+
+      <!-- Thêm UID vào hàng đợi theo dõi -->
+      <section class="section reveal" data-reveal="fade" aria-labelledby="watch-add-title">
+        <div class="card">
+          <div class="section-head">
+            <div class="section-heading">
+              <span class="tool-icon" aria-hidden="true">
+                <svg class="icon"><use href="/img/sprite.svg#icon-plus"></use></svg>
+              </span>
+              <div class="section-head-copy">
+                <h2 id="watch-add-title">Thêm UID cần theo dõi</h2>
+                <p>Dán một hoặc nhiều UID; hệ thống tự loại bỏ mục trùng và báo số lượng hợp lệ.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="watch-input">Danh sách UID</label>
+            <p class="field-help hint" id="watch-input-help">
+              Mỗi dòng chỉ chứa chữ số. Có thể dán UID từ danh sách đã sao chép.
+            </p>
+            <textarea
+              id="watch-input"
+              rows="6"
+              spellcheck="false"
+              autocomplete="off"
+              autocapitalize="off"
+              inputmode="numeric"
+              aria-describedby="watch-input-help watch-count"
+              placeholder="Ví dụ:&#10;61593943230865&#10;61593943230866"
+            ></textarea>
+          </div>
+
+          <div class="form-actions">
+            <p id="watch-count" class="hint" aria-live="polite">Chưa có UID nào.</p>
+            <button type="button" id="watch-add-btn" class="btn btn-primary">
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-arrow-right"></use></svg>
+              <span>Bắt đầu theo dõi</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- UID đã lên tích xanh -->
+      <section class="section reveal" data-reveal="fade" aria-labelledby="verified-title">
+        <div class="card is-flush">
+          <header class="card-head">
+            <div class="card-heading">
+              <span class="tool-icon is-meta" aria-hidden="true">
+                <svg class="icon"><use href="/img/sprite.svg#icon-check"></use></svg>
+              </span>
+              <div>
+                <div class="card-head-title">
+                  <h2 id="verified-title">Đã lên tích xanh</h2>
+                  <span class="pill is-ok" data-count-for="verified" aria-label="Số tài khoản đã lên tích xanh">0</span>
+                </div>
+                <p>Hồ sơ Meta đã hiển thị huy hiệu xanh.</p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              class="btn btn-sm"
+              data-copy-button="verified"
+              aria-label="Sao chép danh sách tài khoản đã lên tích xanh"
+            >
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-copy"></use></svg>
+              <span>Copy</span>
+            </button>
+          </header>
+
+          <div class="table-scroll" role="region" aria-label="Bảng UID đã lên tích xanh, có thể cuộn ngang" tabindex="0">
+            <table id="verified-table" aria-describedby="verified-format-note">
+              <caption class="visually-hidden">
+                Danh sách UID đã lên tích xanh: dấu tích xanh Meta và thời gian đã theo dõi
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Dấu tích xanh Meta</th>
+                  <th scope="col">Thời gian đã theo dõi</th>
+                </tr>
+              </thead>
+              <tbody id="tb-verified">
+                <tr>
+                  <td colspan="2" class="empty">
+                    <div class="empty-state is-compact">
+                      <span class="empty-state-mark" aria-hidden="true">
+                        <svg class="icon"><use href="/img/sprite.svg#icon-check"></use></svg>
+                      </span>
+                      <h3>Chưa có tài khoản nào lên tích xanh</h3>
+                      <p>Kết quả sẽ xuất hiện sau khi Meta hiển thị huy hiệu trên hồ sơ công khai của UID.</p>
+                      <a class="btn btn-sm" href="#watch-input">Thêm UID để theo dõi</a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="card-foot" id="verified-format-note">
+            <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-check"></use></svg>
+            <span>Định dạng dòng: <code>61593943230865 - Dai jun</code></span>
+          </p>
+        </div>
+      </section>
+
+      <!-- UID đang chờ kết quả -->
+      <section class="section reveal" data-reveal="fade" aria-labelledby="watching-title">
+        <div class="card is-flush">
+          <header class="card-head">
+            <div class="card-heading">
+              <span class="tool-icon" aria-hidden="true">
+                <svg class="icon"><use href="/img/sprite.svg#icon-clock"></use></svg>
+              </span>
+              <div>
+                <div class="card-head-title">
+                  <h2 id="watching-title">Đang theo dõi</h2>
+                  <span class="pill" data-count-for="watching" aria-label="Số UID đang theo dõi">0</span>
+                </div>
+                <p>Bộ theo dõi kiểm tra từng UID theo chu kỳ.</p>
+              </div>
+            </div>
+          </header>
+
+          <div class="table-scroll is-wide" role="region" aria-label="Bảng UID đang theo dõi, có thể cuộn ngang" tabindex="0">
+            <table id="watching-table">
+              <caption class="visually-hidden">
+                Danh sách UID đang được theo dõi: UID, tên, số lần đã kiểm tra, thời gian và thao tác
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">UID</th>
+                  <th scope="col">Tên</th>
+                  <th scope="col">Số lần đã kiểm tra</th>
+                  <th scope="col">Thời gian</th>
+                  <th scope="col">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="tb-watching">
+                <tr>
+                  <td colspan="5" class="empty">
+                    <div class="empty-state is-compact">
+                      <span class="empty-state-mark" aria-hidden="true">
+                        <svg class="icon"><use href="/img/sprite.svg#icon-clock"></use></svg>
+                      </span>
+                      <h3>Danh sách theo dõi đang trống</h3>
+                      <p>Dán UID ở ô phía trên để bắt đầu kiểm tra tự động. Bạn có thể thêm nhiều UID cùng lúc.</p>
+                      <a class="btn btn-sm" href="#watch-input">Mở ô thêm UID</a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Cách theo dõi hoạt động -->
+      <aside class="card reveal" data-reveal="fade" aria-labelledby="flow-title">
+        <h2 id="flow-title" class="visually-hidden">Cách theo dõi hoạt động</h2>
+        <ol class="steps">
+          <li>
+            <span class="step-num" aria-hidden="true">01</span>
+            <div class="step-copy">
+              <strong>Thêm UID</strong>
+              <span>Mỗi dòng là một UID chỉ gồm chữ số.</span>
+            </div>
+          </li>
+          <li>
+            <span class="step-num" aria-hidden="true">02</span>
+            <div class="step-copy">
+              <strong>Kiểm tra định kỳ</strong>
+              <span>Bộ theo dõi tự cập nhật số lần kiểm tra và thời gian theo dõi.</span>
+            </div>
+          </li>
+          <li>
+            <span class="step-num" aria-hidden="true">03</span>
+            <div class="step-copy">
+              <strong>Nhận kết quả</strong>
+              <span>Huy hiệu xanh và thông báo sẽ hiển thị trên trang này.</span>
+            </div>
+          </li>
+        </ol>
+      </aside>
+
+      <noscript>
+        <div class="alert alert-error" role="alert">Trang này cần JavaScript để theo dõi UID. Hãy bật JavaScript rồi tải lại.</div>
+      </noscript>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap">
+        <p>Shop Dashboard — khu vực riêng tư, chỉ chủ shop.</p>
+        <p>Đóng trang này không làm watcher phía máy chủ dừng hoạt động.</p>
+      </div>
+    </footer>
+  </body>
+</html>

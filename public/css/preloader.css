@@ -1,0 +1,228 @@
+/* Màn tải phủ toàn màn hình ngay khi CSS được áp dụng. */
+.preloader {
+  --preloader-bg: #0b0f19;
+  --preloader-accent: #10b981;
+  --preloader-accent-light: #34d399;
+  --preloader-text: #f8fafc;
+  --preloader-muted: #94a3b8;
+  --preloader-border: rgba(255, 255, 255, 0.1);
+  --preloader-glass: rgba(255, 255, 255, 0.03);
+  --preloader-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --preloader-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 16px;
+  overflow: hidden;
+  background: var(--preloader-bg);
+  color: var(--preloader-text);
+  font-family: var(--preloader-font);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  animation: preloader-failsafe 2.6s linear forwards;
+}
+
+.preloader,
+.preloader *,
+.preloader *::before,
+.preloader *::after {
+  box-sizing: border-box;
+}
+
+/* JavaScript chủ động kết thúc màn tải khi tài nguyên đã sẵn sàng. */
+.preloader.is-done {
+  animation: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.preloader-inner {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  width: 100%;
+  max-width: 320px;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid var(--preloader-border);
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.07) 0%, transparent 58%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.012), transparent 58%),
+    var(--preloader-glass);
+  box-shadow:
+    0 24px 70px rgba(9, 9, 11, 0.58),
+    0 0 44px rgba(16, 185, 129, 0.045),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  text-align: center;
+}
+
+.preloader-mark {
+  position: relative;
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid rgba(52, 211, 153, 0.3);
+  border-radius: 12px;
+  background: rgba(16, 185, 129, 0.075);
+  box-shadow:
+    0 0 24px rgba(16, 185, 129, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.preloader-mark::before {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(52, 211, 153, 0.16);
+  border-top-color: var(--preloader-accent-light);
+  border-radius: 50%;
+  content: "";
+  animation: preloader-spin 1.4s linear infinite;
+}
+
+.preloader-count {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  color: var(--preloader-text);
+  font-family: var(--preloader-mono);
+  font-size: 44px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  letter-spacing: -0.055em;
+  line-height: 1;
+  text-shadow: 0 8px 30px rgba(9, 9, 11, 0.28);
+}
+
+.preloader-pct {
+  margin-left: 5px;
+  color: var(--preloader-accent-light);
+  font-family: var(--preloader-font);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+/* Giữ nguyên HTML đã cung cấp nhưng hiển thị nhãn tiếng Việt có dấu. */
+.preloader-label {
+  min-height: 18px;
+  color: var(--preloader-muted);
+  font-size: 0;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.preloader-label::after {
+  content: "Đang tải";
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+
+.preloader-bar {
+  width: 100%;
+  height: 2px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+#preloader-fill {
+  position: relative;
+  display: block;
+  width: 0;
+  height: 100%;
+  overflow: hidden;
+  border-radius: inherit;
+  background: var(--preloader-accent);
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.24);
+}
+
+#preloader-fill::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(248, 250, 252, 0.58) 50%,
+    transparent 100%
+  );
+  content: "";
+  transform: translateX(-120%);
+  animation: preloader-shimmer 1.3s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+/* Vòng tải chỉ chuyển động bằng phép biến đổi. */
+@keyframes preloader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Ánh sáng chạy ngang trên thanh tiến độ. */
+@keyframes preloader-shimmer {
+  from {
+    transform: translateX(-120%);
+  }
+
+  to {
+    transform: translateX(120%);
+  }
+}
+
+/* Nếu JavaScript lỗi, màn tải tự biến mất sau 2,6 giây. */
+@keyframes preloader-failsafe {
+  0%,
+  88% {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  100% {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .preloader {
+    padding: 24px;
+  }
+
+  .preloader-inner {
+    max-width: 336px;
+    padding: 20px;
+  }
+}
+
+/* Ưu tiên giảm chuyển động: ẩn màn tải ngay và tắt mọi hiệu ứng. */
+@media (prefers-reduced-motion: reduce) {
+  .preloader,
+  .preloader.is-done {
+    animation: none;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: none;
+  }
+
+  .preloader *,
+  .preloader *::before,
+  .preloader *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,304 @@
+/* =============================================================================
+   pages.css — bố cục riêng của từng trang, nạp SAU app.css.
+
+   Quy ước: tệp này chỉ chứa phần bố cục đặc thù của MỘT trang. Mọi token,
+   primitive và component dùng chung phải nằm trong app.css.
+
+   CẢNH BÁO: tệp này được nạp trên cả năm trang đã đăng nhập, nên mọi selector
+   ở đây đều có hiệu lực TOÀN CỤC. Vì vậy tuyệt đối không khai báo lại những gì
+   app.css đã có (.skip-link, .nav-shell, .nav-toggle, .nav, .empty-state…) và
+   không dùng selector cấp id của thành phần dùng chung (ví dụ #logout-btn).
+   Trước đây chính hai việc đó khiến các trang ghi đè lẫn nhau: .skip-link được
+   định nghĩa ba lần với ba bộ giá trị, .empty-state của trang chủ bị trang nhật
+   ký ghi đè thành display:none, và #logout-btn của uid.html chèn thêm một biểu
+   tượng lên nút đăng xuất của MỌI trang.
+   ========================================================================== */
+
+/* ---------- Trang: index.html ---------- */
+
+.hero-mark {display: grid; width: 76px; height: 76px; flex: 0 0 76px; place-items: center; border: 1px solid var(--accent-border); border-radius: var(--radius-card); background: radial-gradient(circle at 50% 35%, rgba(52, 211, 153, 0.13), transparent 68%), var(--surface); box-shadow: var(--inner-highlight), 0 18px 42px rgba(9, 9, 11, 0.24); color: var(--accent-light)}
+.hero-mark svg {width: 34px; height: 34px}
+.dashboard-hero-note {display: inline-flex; align-items: center; gap: 7px; margin-top: 14px; color: var(--text-faint); font-size: 12px}
+.dashboard-hero-note svg {width: 15px; height: 15px; color: var(--accent-light)}
+.kpi-grid {grid-template-columns: 1fr}
+.kpi-detail {justify-content: space-between; margin-top: 13px; padding-top: 11px; border-top: 1px solid var(--divider)}
+.kpi-detail .mono {color: var(--text); font-size: 13px; font-weight: 700}
+.icon-inline {width: 16px; height: 16px; flex: 0 0 auto}
+@media (min-width: 768px) {
+  .kpi-grid {grid-template-columns: repeat(3, minmax(0, 1fr))}
+}
+
+/* ---------- Trang: logs.html ---------- */
+
+.page-head-copy {min-width: 0; max-width: 760px}
+.page-context {display: grid; min-width: 220px; gap: var(--space-3); padding: var(--space-5); border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); box-shadow: var(--inner-highlight), var(--shadow-soft)}
+.context-item {display: flex; min-width: 0; align-items: center; gap: var(--space-4); color: var(--text-dim); font-size: 12.5px}
+.context-item .icon {color: var(--accent-light)}
+.context-item span {display: grid; min-width: 0; gap: 1px}
+.context-item strong {color: var(--text); font-size: 13px}
+.context-item small {color: var(--text-faint); font-size: 12px}
+.filter-panel {padding: var(--space-8)}
+.filter-heading {display: flex; align-items: flex-start; gap: var(--space-4); margin-bottom: var(--space-7)}
+.filter-heading-icon {display: grid; width: 36px; height: 36px; flex: 0 0 36px; place-items: center; border: 1px solid var(--accent-border); border-radius: var(--radius-button); background: var(--accent-soft); box-shadow: var(--inner-highlight); color: var(--accent-light)}
+.filter-heading-copy {min-width: 0}
+.filter-heading h2 {margin: 0}
+.filter-heading p {margin: 3px 0 0; color: var(--text-faint); font-size: 12.5px; line-height: 1.55}
+.filter-grid {display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-6)}
+.filter-field {min-width: 0}
+.filter-field label {display: block; margin-bottom: var(--space-2); color: var(--text-dim); font-size: 12.5px; font-weight: 650}
+.filter-actions {display: grid; grid-template-columns: minmax(0, 1fr); align-items: end; gap: var(--space-3)}
+.filter-actions .btn {width: 100%}
+.filter-help {display: flex; align-items: flex-start; gap: var(--space-3); margin: var(--space-7) 0 0; padding-top: var(--space-6); border-top: 1px solid var(--divider)}
+.filter-help .icon {margin-top: 1px; color: var(--accent-light)}
+.filter-help p {margin: 0; color: var(--text-faint); font-size: 12.5px; line-height: 1.65}
+.section-copy {max-width: 72ch; margin: -4px 0 var(--space-6); color: var(--text-faint); font-size: 12.5px; line-height: 1.65}
+.audit-card {max-height: min(680px, calc(100vh - 130px)); padding: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable}
+
+/*
+  Trạng thái rỗng của nhật ký chỉ hiện khi vùng dữ liệu THỰC SỰ rỗng.
+  Dùng :has() nên không cần lớp trạng thái phụ và vẫn đúng khi JavaScript tắt.
+  Không dùng thuộc tính `hidden` ở đây: app.css có [hidden] {display:none !important}
+  nên nó sẽ thắng cả quy tắc hiện bên dưới.
+*/
+#audit-shell + .empty-state {display: none; margin-top: var(--space-4)}
+#audit-shell:has(#audit-list > .empty:not(.is-loading)) + .empty-state {display: grid}
+#sync-shell + .empty-state {display: none; margin-top: var(--space-4)}
+#sync-shell:has(#sync-body td.empty) + .empty-state {display: grid}
+
+.noscript-card {margin: var(--space-7) 0}
+@media (min-width: 375px) {
+  .page-context {min-width: 240px}
+}
+@media (min-width: 768px) {
+  .page-context {min-width: 260px}
+  .filter-grid {grid-template-columns: repeat(2, minmax(0, 1fr))}
+  .filter-actions {grid-column: 1 / -1; grid-template-columns: repeat(3, minmax(0, auto)); justify-content: start}
+  .filter-actions .btn {width: auto; min-width: 112px}
+}
+/* Ở mốc bảng (768–1023px), điều hướng phải nhường chỗ cho nhãn chữ. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .nav .icon {display: none}
+  .nav a {padding-inline: 9px}
+}
+@media (min-width: 1440px) {
+  .filter-grid {grid-template-columns: minmax(210px, 0.9fr) minmax(220px, 1.1fr) minmax(180px, 0.7fr); align-items: end}
+  .filter-actions {grid-column: 1 / -1}
+}
+@media (max-width: 680px) {
+  .filter-actions .btn {width: 100%}
+}
+
+/* ---------- Trang: images.html ---------- */
+
+body {position: relative; isolation: isolate}
+body::before {position: fixed; z-index: -1; inset: 0; background-image: linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px); background-size: 40px 40px; content: ""; pointer-events: none; mask-image: linear-gradient(to bottom, rgba(9, 9, 11, 0.7), transparent 74%)}
+.page-head {align-items: center; padding-top: 30px}
+.page-heading {display: flex; min-width: 0; align-items: center; gap: var(--space-6)}
+.page-mark {display: grid; flex: 0 0 auto; place-items: center; border: 1px solid var(--accent-border); background: var(--accent-soft); box-shadow: var(--inner-highlight); color: var(--accent-light)}
+.page-mark {width: 52px; height: 52px; border-radius: var(--radius-card)}
+.page-mark svg {display: block; width: 24px; height: 24px}
+.page-title {margin-bottom: var(--space-3)}
+.page-sub {max-width: 68ch}
+.page-meta {display: flex; flex: 0 0 auto; align-items: center; gap: var(--space-3)}
+.meta-chip {display: inline-flex; min-height: 32px; align-items: center; gap: var(--space-2); padding: 6px 10px; border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--surface); box-shadow: var(--inner-highlight); color: var(--text-dim); font-size: 12px; font-weight: 650}
+.meta-chip::before {width: 7px; height: 7px; flex: 0 0 auto; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); content: ""}
+.section-heading {display: flex; min-width: 0; align-items: center; gap: var(--space-3)}
+.section-heading .tool-icon {width: 32px; height: 32px; border-radius: var(--radius-button)}
+.section-heading .tool-icon svg {width: 17px; height: 17px}
+.section-head-copy {min-width: 0}
+.section-head-copy h2 {margin: 0}
+.section-head-copy p {margin: 2px 0 0; color: var(--text-faint); font-size: 12.5px; line-height: 1.55}
+.section-head-actions {display: flex; min-width: 0; align-items: center; justify-content: flex-end; gap: var(--space-3); margin-left: auto}
+.count-chip:empty {display: none}
+.count-chip {display: inline-flex; min-width: 76px; min-height: 32px; align-items: center; justify-content: center; padding: 6px 10px; border: 1px solid var(--accent-border); border-radius: var(--radius-pill); background: var(--accent-soft); color: var(--accent-light); font-family: var(--mono); font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums}
+.upload-grid {align-items: stretch}
+.drop {display: flex; min-height: 318px; align-items: center; justify-content: center; flex-direction: column; padding: 26px 18px; text-align: center}
+.drop-icon {display: grid; flex: 0 0 auto; place-items: center; border: 1px solid var(--accent-border); background: var(--accent-soft); box-shadow: var(--inner-highlight); color: var(--accent-light)}
+.drop-icon {width: 54px; height: 54px; margin-bottom: var(--space-5); border-radius: var(--radius-card); box-shadow: var(--inner-highlight), 0 0 30px rgba(16, 185, 129, 0.09); transition: opacity var(--duration) var(--ease), transform var(--duration) var(--ease)}
+.drop-icon svg {display: block; width: 24px; height: 24px}
+.drop:hover .drop-icon {transform: translateY(-2px)}
+.drop.is-over .drop-icon {transform: translateY(-2px)}
+.drop-title {display: flex; align-items: center; justify-content: center; gap: var(--space-3); margin: 0 0 var(--space-2); color: var(--text); font-size: 16px; font-weight: 720; line-height: 1.35}
+.drop .file-picker {margin-top: var(--space-5)}
+.drop .hint {max-width: 52ch; margin: var(--space-4) auto 0; text-align: center}
+.file-name {width: 100%; min-height: 20px; margin: var(--space-3) 0 0; color: var(--text-dim)}
+.drop-help {max-width: 52ch; margin-bottom: 0}
+.code-chip {padding: 1px 5px; border: 1px solid var(--border); border-radius: var(--radius-small); background: rgba(255, 255, 255, 0.045); color: var(--text-dim); font-family: var(--mono); font-size: 11.5px}
+.upload-card {display: flex; min-height: 318px; flex-direction: column}
+.field-label {display: block; margin-bottom: var(--space-2); color: var(--text-dim); font-size: 12.5px; font-weight: 700; line-height: 1.5}
+#note-input {min-height: 48px}
+.field-help {margin: var(--space-2) 0 0}
+.upload-actions {margin-top: auto; padding-top: var(--space-6); border-top: 1px solid var(--divider)}
+.upload-actions .btn {flex: 1 1 150px}
+.upload-progress {margin-top: var(--space-5); padding: 12px; border: 1px solid var(--accent-border); border-radius: var(--radius-button); background: var(--accent-soft)}
+#upload-bar {width: 100% !important; background: linear-gradient(90deg, var(--accent), var(--accent-light)); transform: scaleX(0.34); transform-origin: left center; animation: upload-indeterminate 1.2s var(--ease) infinite; will-change: transform, opacity}
+.upload-status {margin: var(--space-3) 0 0; color: var(--text-dim); font-size: 12.5px; line-height: 1.55}
+@keyframes upload-indeterminate {
+  0% {opacity: 0.72; transform: translate3d(-120%, 0, 0) scaleX(0.34)}
+  55% {opacity: 1}
+  100% {opacity: 0.72; transform: translate3d(360%, 0, 0) scaleX(0.34)}
+}
+.image-grid {gap: var(--space-6)}
+/* Thông báo "đang tải" ban đầu nằm trong lưới; khung xương của images.js thay thế nó. */
+.image-grid > .empty {display: none}
+/* Lỗi tải danh sách: hiện đúng thông báo lỗi thay vì khối "thư viện trống". */
+.image-grid > .empty.is-error {display: block; padding: 30px 18px; color: var(--text-dim); font-size: 13px; line-height: 1.6; text-align: center}
+.image-card {background: var(--surface)}
+.image-card.is-skeleton {pointer-events: none}
+.image-card .thumb {width: calc(100% - 20px); height: 184px; margin: 10px 10px 0; border: 1px solid var(--border-soft); border-radius: 12px; background: var(--surface-raised); object-position: center}
+.image-card .meta {padding: 13px 14px 14px}
+.image-card .actions {margin-top: auto; padding-top: var(--space-2)}
+.image-card .btn-danger {margin-left: auto}
+.privacy-note {display: flex; align-items: flex-start; gap: var(--space-4); padding: 16px}
+.privacy-icon {display: grid; flex: 0 0 auto; place-items: center; border: 1px solid var(--accent-border); background: var(--accent-soft); box-shadow: var(--inner-highlight); color: var(--accent-light)}
+.privacy-icon {width: 36px; height: 36px; border-radius: var(--radius-button)}
+.privacy-icon svg {display: block; width: 19px; height: 19px}
+.privacy-note p {margin: 0}
+.privacy-note strong {color: var(--text)}
+.noscript-wrap {padding-top: var(--space-7)}
+@media (min-width: 1024px) {
+  .page-head {padding-top: 34px}
+  .page-mark {width: 58px; height: 58px}
+  .image-grid {grid-template-columns: repeat(3, minmax(0, 1fr))}
+}
+@media (min-width: 1180px) {
+  .image-grid {grid-template-columns: repeat(4, minmax(0, 1fr))}
+}
+@media (max-width: 767px) {
+  .page-head {align-items: flex-start; flex-direction: column}
+  .page-heading {align-items: flex-start}
+  .page-meta {width: 100%}
+  .section-head-actions {width: 100%; justify-content: space-between; margin-left: 0}
+  .section-head-actions .btn {flex: 1 1 auto}
+}
+@media (max-width: 520px) {
+  .page-heading {gap: var(--space-4)}
+  .page-mark {width: 46px; height: 46px}
+  .page-mark svg {width: 21px; height: 21px}
+  .drop {min-height: 290px; padding: 22px 14px}
+  .upload-card {min-height: 0}
+  .upload-actions {flex-direction: column}
+  .upload-actions .btn {width: 100%}
+}
+@media (prefers-reduced-motion: reduce) {
+  #upload-bar {opacity: 0.9; transform: scaleX(0.42); animation: none}
+}
+
+/* ---------- Trang: uid.html ---------- */
+
+.uid-hero {display: grid; grid-template-columns: 1fr; gap: 14px; padding: 26px 0 6px}
+.uid-hero-copy {min-width: 0}
+.uid-hero-kicker {display: inline-flex; min-height: 28px; align-items: center; margin: 0 0 8px; padding: 4px 9px; border: 1px solid var(--accent-border); border-radius: var(--radius-pill); background: var(--accent-soft); color: var(--accent-light); font-size: 12px; font-weight: 760; letter-spacing: 0.08em; line-height: 1.35; text-transform: uppercase}
+.uid-limit {display: grid; min-width: 0; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 10px 12px; align-self: end; padding: 11px 13px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); box-shadow: var(--inner-highlight)}
+.uid-limit-value {grid-row: 1 / span 2; color: var(--accent-light); font-family: var(--mono); font-size: 30px; font-variant-numeric: tabular-nums; font-weight: 760; letter-spacing: -0.05em; line-height: 1}
+.uid-limit-label {color: var(--text); font-size: 12.5px; font-weight: 720; line-height: 1.4}
+.uid-limit-note {color: var(--text-faint); font-size: 12px; line-height: 1.45}
+.uid-form-card {padding: 18px}
+.uid-form-top {display: flex; min-width: 0; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 12px; margin-bottom: 9px}
+.uid-form-top .field-label {margin: 0; color: var(--text); font-size: 13px; font-weight: 720}
+.uid-limit-chip {display: inline-flex; min-height: 28px; align-items: center; padding: 4px 9px; border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--surface-raised); color: var(--text-dim); font-size: 12px; font-weight: 680; white-space: nowrap}
+.uid-input {min-height: 208px; padding: 14px 15px; background: rgba(255, 255, 255, 0.025); font-family: var(--mono); font-size: 14px; line-height: 1.75; tab-size: 2}
+.uid-input[readonly] {cursor: wait}
+.uid-input::placeholder {color: var(--text-faint)}
+.uid-form-meta {display: flex; min-width: 0; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px 12px; margin-top: 9px}
+.uid-count {margin: 0; color: var(--text-faint); font-family: var(--mono); font-size: 12.5px; font-variant-numeric: tabular-nums; line-height: 1.5}
+.uid-help {margin: 0; color: var(--text-faint); font-size: 12px; line-height: 1.5}
+.uid-actions {display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 15px}
+.uid-actions .btn {min-width: 148px}
+.uid-shortcut-note {margin: 0 0 0 auto; color: var(--text-faint); font-size: 12px; line-height: 1.5}
+.uid-shortcut-note kbd {display: inline-block; min-height: 24px; padding: 2px 6px; border: 1px solid var(--border); border-radius: 5px; background: var(--surface-raised); box-shadow: var(--inner-highlight); color: var(--text-dim); font-family: var(--mono); font-size: 12px; line-height: 18px; white-space: nowrap}
+/* Biểu tượng của nút trên trang uid lấy từ sprite qua mask, không cần thêm thẻ <svg>. */
+.uid-button-icon::before,
+.uid-copy-button::before {display: block; width: 17px; height: 17px; flex: 0 0 17px; background: currentColor; -webkit-mask: var(--uid-button-icon) center / 17px 17px no-repeat; mask: var(--uid-button-icon) center / 17px 17px no-repeat; content: ""}
+#uid-check-btn {--uid-button-icon: url("/img/sprite.svg#icon-search")}
+#uid-clear-btn {--uid-button-icon: url("/img/sprite.svg#icon-trash")}
+.uid-copy-button {--uid-button-icon: url("/img/sprite.svg#icon-copy")}
+#uid-progress {margin-top: 15px; padding: 12px; border: 1px solid var(--border-soft); border-radius: var(--radius-small); background: rgba(255, 255, 255, 0.02)}
+#uid-progress .bar > span {width: 100%; transform-origin: left center; animation: uid-progress-pulse 1.4s cubic-bezier(0.22, 1, 0.36, 1) infinite}
+#uid-status {margin: 8px 0 0; color: var(--text-dim); font-size: 12.5px; line-height: 1.5}
+@keyframes uid-progress-pulse {
+  0% {opacity: 0.58; transform: scaleX(0.86)}
+  100% {opacity: 0.58; transform: scaleX(0.86)}
+  50% {opacity: 1; transform: scaleX(1)}
+}
+.uid-alert-stack {display: grid; gap: 8px; margin-top: 12px}
+.uid-results-head {align-items: center}
+#uid-summary {display: inline-flex; min-height: 30px; align-items: center; padding: 5px 10px; border: 1px solid var(--border-soft); border-radius: var(--radius-small); background: var(--surface); color: var(--text-dim); font-family: var(--mono); font-size: 12px; font-variant-numeric: tabular-nums; line-height: 1.45}
+.uid-results {display: grid; min-width: 0; grid-template-columns: 1fr; gap: 14px}
+.uid-panel {--uid-state-color: var(--text-dim); --uid-state-soft: var(--surface-raised); --uid-empty-icon: url("/img/sprite.svg#icon-search"); display: flex; min-width: 0; flex-direction: column; overflow: hidden; border-top-width: 2px; border-top-color: var(--uid-state-color); background: linear-gradient(180deg, rgba(255, 255, 255, 0.038), rgba(255, 255, 255, 0.02)); box-shadow: var(--inner-highlight), var(--shadow-soft)}
+.uid-panel.is-live {--uid-state-color: #34d399; --uid-state-soft: rgba(52, 211, 153, 0.1); --uid-empty-icon: url("/img/sprite.svg#icon-check")}
+.uid-panel.is-die {--uid-state-color: #fb7185; --uid-state-soft: rgba(251, 113, 133, 0.1); --uid-empty-icon: url("/img/sprite.svg#icon-x")}
+.uid-panel.is-unknown {--uid-state-color: #f59e0b; --uid-state-soft: rgba(245, 158, 11, 0.1); --uid-empty-icon: url("/img/sprite.svg#icon-alert")}
+.uid-panel > header {display: flex; min-width: 0; align-items: center; flex-wrap: wrap; gap: 9px 10px; padding: 13px 14px; border-bottom: 1px solid var(--border-soft); background: var(--uid-state-soft)}
+.uid-panel-title {display: flex; min-width: 0; align-items: center; gap: 9px}
+.uid-state-mark {width: 9px; height: 9px; flex: 0 0 9px; border-radius: 50%; background: var(--uid-state-color); box-shadow: 0 0 0 4px var(--uid-state-soft)}
+.uid-panel-title h3 {margin: 0; color: var(--uid-state-color); font-family: var(--mono); font-size: 14px; font-weight: 760; letter-spacing: 0.04em; line-height: 1.35}
+.uid-panel-title p {margin: 1px 0 0; color: var(--text-faint); font-size: 12px; line-height: 1.4}
+.uid-panel-actions {display: flex; min-width: 0; align-items: center; gap: 8px; margin-left: auto}
+.uid-panel .pill {min-width: 32px; min-height: 28px; border-color: var(--uid-state-color); background: var(--uid-state-soft); color: var(--uid-state-color); font-family: var(--mono); font-size: 12px; font-variant-numeric: tabular-nums}
+.uid-list {display: flex; min-height: 176px; max-height: 380px; margin: 0; padding: 9px; flex: 1 1 auto; flex-direction: column; gap: 6px; overflow-y: auto; overscroll-behavior: contain; list-style: none; scrollbar-gutter: stable}
+.uid-list li:not(.empty) {display: grid; min-width: 0; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px 10px; padding: 8px 9px; border: 1px solid transparent; border-radius: var(--radius-small); background: rgba(255, 255, 255, 0.025); font-family: var(--mono); font-size: 12.5px; line-height: 1.5; user-select: text}
+.uid-list li:not(.empty) > .mono {min-width: 0; color: var(--text); overflow-wrap: anywhere}
+.uid-list li:hover {border-color: var(--border-strong); background: var(--surface-raised)}
+.uid-list .uid-note {max-width: 48%; margin-left: 0; color: var(--text-faint); font-family: var(--font); font-size: 12px; line-height: 1.4; text-align: right}
+.uid-list .empty {min-height: 158px; padding: 26px 14px; color: var(--text-dim); font-size: 12.5px; line-height: 1.55; text-align: center}
+/* Biểu tượng trạng thái rỗng của từng panel uid (là <svg>, không phải hộp bọc). */
+.empty-state-icon {display: block; width: 32px; height: 32px; margin: 0 auto 10px; color: var(--uid-state-color); opacity: 0.88}
+.uid-list .empty:not(.uid-empty)::before {display: block; width: 32px; height: 32px; margin: 0 auto 10px; background: var(--uid-state-color); opacity: 0.76; -webkit-mask: var(--uid-empty-icon) center / 28px 28px no-repeat; mask: var(--uid-empty-icon) center / 28px 28px no-repeat; content: ""}
+.uid-insights {display: grid; min-width: 0; grid-template-columns: 1fr; gap: 8px}
+.uid-insight {position: relative; min-width: 0; padding: 12px 13px 12px 15px; overflow: hidden; border: 1px solid var(--border-soft); border-radius: 12px; background: var(--surface); box-shadow: var(--inner-highlight)}
+.uid-insight::before {position: absolute; top: 10px; bottom: 10px; left: 0; width: 2px; border-radius: var(--radius-pill); background: var(--insight-color, var(--accent)); content: ""}
+.uid-insight.is-live {--insight-color: #34d399}
+.uid-insight.is-unknown {--insight-color: #f59e0b}
+.uid-insight h3 {margin: 0 0 4px; color: var(--text); font-size: 13px; font-weight: 720}
+.uid-insight p {margin: 0; color: var(--text-faint); font-size: 12.5px; line-height: 1.6}
+@media (max-width: 767px) {
+  .uid-hero {padding-top: 22px}
+  .uid-form-card {padding: 14px}
+  .uid-actions {align-items: stretch}
+  .uid-actions .btn {width: 100%}
+  .uid-shortcut-note {width: 100%; margin: 2px 0 0; text-align: center}
+}
+@media (min-width: 768px) {
+  .uid-hero {grid-template-columns: minmax(0, 1fr) 230px; padding-top: 30px}
+  .uid-results {grid-template-columns: repeat(2, minmax(0, 1fr))}
+  .uid-results .uid-panel:last-child {grid-column: 1 / -1}
+  .uid-insights {grid-template-columns: repeat(2, minmax(0, 1fr))}
+}
+@media (min-width: 1024px) {
+  .uid-results {grid-template-columns: repeat(3, minmax(0, 1fr))}
+  .uid-results .uid-panel:last-child {grid-column: auto}
+  .uid-panel {min-height: 330px}
+}
+@media (max-width: 430px) {
+  .uid-limit {width: 100%}
+  .uid-panel-actions {width: 100%; margin-left: 18px}
+  .uid-panel-actions .pill {margin-right: auto}
+}
+@media (prefers-reduced-motion: reduce) {
+  #uid-progress .bar > span {animation: none}
+}
+
+/* ---------- Trang: tickxanh.html ---------- */
+
+/* Ô nhập UID: font đơn sắc để dễ đối chiếu từng dòng số. */
+#watch-input {min-height: 166px; font-family: var(--mono); font-size: 14px; line-height: 1.7; resize: vertical}
+#watch-add-btn .icon {width: 18px; height: 18px; flex: 0 0 auto}
+
+/* Bảng nằm trong thẻ "flush" (.card.is-flush) nên bỏ khoảng cách và khung thừa. */
+.card.is-flush > .table-scroll {margin-top: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none}
+.card.is-flush > .table-scroll table {min-width: 560px}
+.card.is-flush > .table-scroll.is-wide table {min-width: 760px}
+
+/* Hàng khung xương khi bảng đang tải. */
+tr.is-loading-row td {padding: var(--space-5) var(--space-6)}
+tr.is-loading-row .skeleton-stack {padding: 0}
+
+/* Trạng thái rỗng nằm trong ô bảng: khối rỗng tự canh giữa, không cộng thêm đệm. */
+td.empty {padding: var(--space-3)}
+td.empty .empty-state {margin: 0 auto}
+
+@media (max-width: 520px) {
+  .card-head {align-items: flex-start; flex-direction: column}
+  .card-head .btn {width: 100%}
+}

@@ -1,0 +1,276 @@
+<!doctype html>
+<!--
+  images.html — trang thư viện ảnh riêng tư của Shop Dashboard.
+  Trang chỉ làm việc với ảnh do chủ shop tải lên và luôn xem ảnh qua Worker.
+-->
+<html lang="vi" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#0b0f19" />
+    <link rel="icon" href="/img/favicon.svg" type="image/svg+xml" />
+    <title>Thư viện ảnh — Shop Dashboard</title>
+    <link rel="stylesheet" href="/css/app.css" />
+    <link rel="stylesheet" href="/css/scroll.css" />
+    <link rel="stylesheet" href="/css/preloader.css" />
+    <script src="/js/scroll.js" defer></script>
+    <script src="/js/nav.js" defer></script>
+    <script src="/js/confirm.js" defer></script>
+    <script src="/js/images.js" defer></script>
+
+    <link rel="stylesheet" href="/css/pages.css" />
+  </head>
+
+  <body>
+    <div id="preloader" class="preloader" role="status" aria-live="polite">
+      <div class="preloader-inner">
+        <div class="preloader-mark" aria-hidden="true"></div>
+        <div class="preloader-count"><span id="preloader-num">0</span><span class="preloader-pct">%</span></div>
+        <div class="preloader-label">Đang tải</div>
+        <div class="preloader-bar"><span id="preloader-fill"></span></div>
+      </div>
+    </div>
+    <script src="/js/preloader.js"></script>
+
+    <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
+
+    <header class="topbar">
+      <div class="wrap topbar-inner">
+        <a class="brand" href="/index.html" aria-label="Shop Dashboard — về trang tổng quan">
+          <svg class="icon brand-icon" aria-hidden="true"><use href="/img/sprite.svg#icon-chart"></use></svg>
+          <span>Shop Dashboard</span>
+        </a>
+
+        <button
+          type="button"
+          class="nav-toggle"
+          id="nav-toggle"
+          aria-label="Mở menu điều hướng"
+          aria-expanded="false"
+          aria-controls="nav"
+        >
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+
+          <nav id="nav" class="nav" aria-label="Điều hướng chính">
+            <a href="/index.html">
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-chart"></use></svg>
+              <span>Tổng quan</span>
+            </a>
+            <a href="/logs.html">
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-clock"></use></svg>
+              <span>Nhật ký</span>
+            </a>
+            <a href="/images.html" aria-current="page">
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-image"></use></svg>
+              <span>Ảnh</span>
+            </a>
+            <a href="/uid.html">
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-user"></use></svg>
+              <span>Kiểm tra UID</span>
+            </a>
+            <a href="/tickxanh.html">
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-check"></use></svg>
+              <span>Tích xanh</span>
+            </a>
+          </nav>
+
+        <button type="button" class="btn btn-sm" id="logout-btn">
+          <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-logout"></use></svg>
+          <span>Đăng xuất</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="main-content" class="wrap" tabindex="-1">
+      <section class="page-head" aria-labelledby="page-title">
+        <div class="page-heading">
+          <div class="page-mark" aria-hidden="true">
+            <svg focusable="false" aria-hidden="true">
+              <use href="/img/sprite.svg#icon-image"></use>
+            </svg>
+          </div>
+          <div>
+            <p class="page-eyebrow">Tài nguyên riêng tư</p>
+            <h1 id="page-title" class="page-title">Thư viện ảnh</h1>
+            <p class="page-sub">
+              Tải lên, kiểm tra và sắp xếp các tệp ảnh mà bạn dùng trong shop. Mọi ảnh đều được
+              Worker kiểm tra phiên trước khi hiển thị.
+            </p>
+          </div>
+        </div>
+        <div class="page-meta" aria-label="Đặc điểm kho ảnh">
+          <span class="meta-chip">JPEG, PNG, WebP</span>
+          <span class="meta-chip">Tối đa 5 MB</span>
+        </div>
+      </section>
+
+      <section class="section reveal" data-reveal="fade" aria-labelledby="upload-title">
+        <div class="section-head">
+          <div class="section-heading">
+            <span class="tool-icon" aria-hidden="true">
+              <svg focusable="false" aria-hidden="true">
+                <use href="/img/sprite.svg#icon-plus"></use>
+              </svg>
+            </span>
+            <div class="section-head-copy">
+              <h2 id="upload-title">Thêm ảnh mới</h2>
+              <p>Chọn một tệp bằng bàn phím hoặc kéo ảnh vào vùng bên dưới.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="upload-grid">
+          <div
+            class="drop"
+            id="drop-zone"
+            role="region"
+            tabindex="0"
+            aria-labelledby="drop-title"
+            aria-describedby="drop-help file-name"
+          >
+            <input
+              class="visually-hidden"
+              type="file"
+              id="file-input"
+              accept="image/jpeg,image/png,image/webp"
+              tabindex="-1"
+              aria-label="Chọn tệp ảnh để tải lên"
+            />
+
+            <span class="drop-icon" aria-hidden="true">
+              <svg focusable="false" aria-hidden="true">
+                <use href="/img/sprite.svg#icon-image"></use>
+              </svg>
+            </span>
+            <p class="drop-title" id="drop-title">Kéo ảnh vào đây</p>
+            <p class="hint">hoặc chọn một tệp từ thiết bị của bạn.</p>
+
+            <label class="btn btn-primary file-picker" for="file-input">Chọn ảnh</label>
+            <p class="hint file-name" id="file-name" aria-live="polite">Chưa chọn tệp nào.</p>
+            <p class="hint drop-help" id="drop-help">
+              Chỉ nhận <strong>JPEG</strong>, <strong>PNG</strong> hoặc <strong>WebP</strong>, tối đa
+              <strong>5 MB</strong>. Máy chủ kiểm tra ký hiệu nhị phân đầu tệp (magic bytes) để chống
+              tệp giả đuôi <span class="code-chip">.jpg</span>.
+            </p>
+          </div>
+
+          <div class="card upload-card">
+            <div class="field">
+              <label class="field-label" for="note-input">Ghi chú về ảnh (tuỳ chọn)</label>
+              <input
+                type="text"
+                id="note-input"
+                maxlength="200"
+                placeholder="Ví dụ: Ảnh bìa sản phẩm chính"
+                autocomplete="off"
+                aria-describedby="note-help"
+              />
+              <p class="hint field-help" id="note-help">Tối đa 200 ký tự, dùng để nhận diện ảnh khi xem lại.</p>
+            </div>
+
+            <div class="upload-actions">
+              <div class="row">
+                <button type="button" class="btn btn-primary" id="upload-btn" disabled>
+                  Tải ảnh lên
+                </button>
+              </div>
+            </div>
+
+            <div
+              id="upload-progress"
+              class="upload-progress hidden"
+              role="progressbar"
+              aria-label="Đang tải ảnh lên"
+              aria-busy="true"
+            >
+              <div class="bar" aria-hidden="true">
+                <span id="upload-bar"></span>
+              </div>
+              <p class="upload-status" id="upload-status" role="status" aria-live="polite">
+                Đang tải ảnh lên. Vui lòng không đóng tab.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div id="images-msg" class="alert alert-error hidden" role="alert"></div>
+      <div id="images-ok" class="alert alert-ok hidden" role="status" aria-live="polite"></div>
+
+      <section class="section reveal" data-reveal="fade" aria-labelledby="library-title">
+        <div class="section-head">
+          <div class="section-heading">
+            <span class="tool-icon" aria-hidden="true">
+              <svg focusable="false" aria-hidden="true">
+                <use href="/img/sprite.svg#icon-image"></use>
+              </svg>
+            </span>
+            <div class="section-head-copy">
+              <h2 id="library-title">Ảnh đã tải lên</h2>
+              <p>Ảnh thu nhỏ được tải chậm để danh sách mở nhanh hơn.</p>
+            </div>
+          </div>
+
+          <div class="section-head-actions">
+            <span class="count-chip" id="images-count" aria-live="polite"></span>
+            <button type="button" class="btn btn-sm" id="images-refresh">
+              Tải lại thư viện
+            </button>
+          </div>
+        </div>
+
+        <!--
+          Lưới ảnh: images.js thay toàn bộ nội dung bên trong.
+          `aria-busy` được images.js bật/tắt; khối trạng thái rỗng bên dưới do
+          images.js điều khiển bằng thuộc tính `hidden` (không dùng :has()) để
+          không hiện "Thư viện đang trống" trong lúc còn đang tải.
+        -->
+        <div class="image-grid" id="image-grid" aria-live="polite">
+          <div class="empty">Đang tải danh sách ảnh.</div>
+        </div>
+
+        <div class="empty-state" id="library-empty" hidden>
+          <span class="empty-state-mark" aria-hidden="true">
+            <svg class="icon" focusable="false" aria-hidden="true">
+              <use href="/img/sprite.svg#icon-image"></use>
+            </svg>
+          </span>
+          <h3>Thư viện đang trống</h3>
+          <p>Bắt đầu bằng ảnh đầu tiên. Bạn có thể chọn tệp từ vùng tải lên phía trên.</p>
+          <a class="btn btn-sm" href="#drop-zone">Thêm ảnh đầu tiên</a>
+        </div>
+      </section>
+
+      <section class="section reveal" data-reveal="fade" aria-label="Lưu ý bảo mật">
+        <div class="tip privacy-note">
+          <span class="privacy-icon" aria-hidden="true">
+            <svg focusable="false" aria-hidden="true">
+              <use href="/img/sprite.svg#icon-check"></use>
+            </svg>
+          </span>
+          <p>
+            <strong>Kho ảnh luôn riêng tư.</strong> Worker kiểm tra phiên trước khi đọc ảnh, không mở
+            tệp trực tiếp từ kho và không tạo đường dẫn công khai. Chỉ tài khoản đang đăng nhập mới có
+            thể xem ảnh trong phiên làm việc hiện tại.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap">Shop Dashboard — khu vực riêng tư dành cho chủ shop.</div>
+    </footer>
+
+    <noscript>
+      <div class="wrap noscript-wrap">
+        <p class="alert alert-error">
+          Trang này cần JavaScript để tải danh sách và tải ảnh lên. Hãy bật JavaScript rồi tải lại trang.
+        </p>
+      </div>
+    </noscript>
+  </body>
+</html>

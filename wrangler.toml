@@ -1,0 +1,67 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "shop-dashboard"
+main = "src/index.ts"
+compatibility_date = "2024-09-23"
+workers_dev = true
+
+# Static dashboard: toàn bộ public/ được phục vụ như asset tĩnh.
+#
+# `run_worker_first` là BẮT BUỘC, không phải tuỳ chọn — đây là điều kiện an ninh.
+#
+# Mặc định, Cloudflare phục vụ asset tĩnh TRƯỚC và chỉ gọi Worker khi không tìm
+# thấy file. Hậu quả đã kiểm chứng thực tế bằng `wrangler dev`:
+#     GET /  khi CHƯA đăng nhập  ->  200 OK, kèm toàn bộ HTML dashboard
+#     (header trả về có "CF-Cache-Status: HIT", không hề có header bảo mật nào
+#      của Worker => request chưa bao giờ đi qua code của mình)
+#
+# Assets còn tự chuẩn hoá URL: /index.html -> 307 -> /, /logs.html -> 307 -> /logs.
+# Nghĩa là chặn đúng chuỗi "/index.html" trong router là vô nghĩa: kẻ tấn công
+# chỉ cần gọi "/" là lấy được trang.
+#
+# Với run_worker_first = true, MỌI request đi qua Worker trước, router tự quyết
+# định cho phép hay không rồi mới gọi env.ASSETS.fetch(). Đây cũng là cách duy
+# nhất để header bảo mật (CSP, nosniff, no-store) được gắn lên cả trang HTML.
+[assets]
+directory = "./public"
+binding = "ASSETS"
+run_worker_first = true
+
+# --- D1: chỉ chứa SỐ LIỆU TỔNG HỢP, không bao giờ chứa acc|pass ---
+[[d1_databases]]
+binding = "DB"
+database_name = "shop-dashboard"
+database_id = "30c6b0a8-5df1-4275-b4e5-ddbc77bac74c"
+
+# --- R2 private: KHÔNG bật public access cho bucket này ---
+#
+# Bucket PHẢI là private: không bật public access, không gắn custom domain,
+# không dùng presigned URL. Mọi lần đọc ảnh đều đi qua Worker và đều phải
+# requireAuth trước — đó là điều kiện nghiệm thu "ảnh không xem được khi chưa
+# đăng nhập".
+#
+# LỊCH SỬ: khối này từng bị comment lại vì tài khoản chưa bật R2, và một lần
+# `wrangler deploy` thất bại giữa đường đã ghi đè Worker đang chạy bằng bản rỗng
+# (dashboard trả 404 toàn bộ). R2 nay đã bật nên khối được mở lại.
+#
+# QUAN TRỌNG: nếu deploy thất bại, LUÔN kiểm tra lại ngay bằng
+#     node test/prod-verify.mjs
+# vì một lần deploy hỏng có thể đã kịp thay Worker bằng bản rỗng.
+[[r2_buckets]]
+binding = "IMAGES"
+bucket_name = "shop-images"
+
+[vars]
+# Tên cookie phiên đăng nhập (không phải bí mật)
+SESSION_COOKIE = "shop_session"
+# Thời gian sống của phiên, giây (12 giờ)
+SESSION_TTL_SECONDS = "43200"
+
+# Ghi chú: các secret sau PHẢI tạo bằng `wrangler secret put`, không nằm trong file này:
+#   SYNC_TOKEN        - token tĩnh cho POST /api/sync
+#   ADMIN_PASSWORD    - mật khẩu đăng nhập dashboard
+#   SESSION_SECRET    - khoá ký HMAC cho cookie phiên
+#   BLUECHECK_TOKEN   - Dùng để watcher theo dõi tích xanh xác thực với Worker.
+#                       Tách riêng khỏi SYNC_TOKEN và ADMIN_PASSWORD: lộ token này
+#                       thì kẻ xấu chỉ giả vờ báo lên tích xanh, không dùng được
+#                       đăng nhập hay số liệu.
+#                       Lệnh tạo: npx wrangler secret put BLUECHECK_TOKEN

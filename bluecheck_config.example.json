@@ -1,0 +1,20 @@
+{
+  "_comment": "Copy file nay thanh bluecheck_config.json roi dien secret. File THAT khong bao gio commit.",
+  "_huong_dan": [
+    "1. Tao token: npx wrangler secret put BLUECHECK_TOKEN",
+    "2. Copy file nay thanh bluecheck_config.json",
+    "3. Dien 'token', va dien proxy neu chay tren VPS",
+    "4. Chay: python bluecheck_watcher.py --once de thu, bo --once de chay lien tuc"
+  ],
+  "worker_url": "https://shop-dashboard.nguyenkhang170855.workers.dev",
+  "token": "",
+
+  "_proxy_comment": "Bo trong proxy_server neu chay bang IP may. Dien khi chay tren VPS.",
+  "_proxy_note": "Proxy phai la IP TINH (ISP/residential). Proxy xoay lam ket qua chong tin cay hon IP may ban.",
+  "proxy_server": "",
+  "proxy_username": "",
+  "proxy_password": "",
+
+  "_timezone_comment": "Khop voi quoc gia cua proxy. Vi du Romania thi Europe/Bucharest.",
+  "timezone_id": "Asia/Ho_Chi_Minh"
+}

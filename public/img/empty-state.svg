@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" role="img" aria-labelledby="empty-state-title">
+  <title id="empty-state-title">Khung dữ liệu trống</title>
+  <rect x="20" y="14" width="120" height="92" rx="10" fill="none" stroke="#738399" stroke-width="1.5"/>
+  <path d="M20 38h120" fill="none" stroke="#738399" stroke-width="1.5"/>
+  <rect x="32" y="23" width="28" height="3" rx="1.5" fill="#10b981"/>
+  <circle cx="124" cy="25" r="2" fill="none" stroke="#738399" stroke-width="1.5"/>
+  <rect x="34" y="48" width="12" height="12" rx="2" fill="none" stroke="#738399" stroke-width="1.5"/>
+  <path d="M58 52h66M58 58h42" fill="none" stroke="#738399" stroke-width="1.5" stroke-linecap="round"/>
+  <rect x="34" y="72" width="12" height="12" rx="2" fill="none" stroke="#738399" stroke-width="1.5"/>
+  <path d="M58 76h66M58 82h30" fill="none" stroke="#738399" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M72 98h16" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round"/>
+</svg>

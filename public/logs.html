@@ -1,0 +1,302 @@
+<!doctype html>
+<!--
+  logs.html — trang nhật ký vận hành của bảng điều khiển Cloudflare Worker.
+
+  Trang này chỉ hiển thị dữ liệu kiểm toan: thời điểm, hành động, mô tả ngắn,
+  địa chỉ IP nguồn và thời gian đồng bộ. Không có ô nhập hoặc cột hiển thị dữ liệu
+  nghiệp vụ. Giữ nguyên toàn bộ định danh mà logs.js đang sử dụng.
+-->
+<html lang="vi" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#0b0f19" />
+    <link rel="icon" href="/img/favicon.svg" type="image/svg+xml" />
+    <title>Nhật ký — Bảng điều khiển</title>
+
+    <link rel="stylesheet" href="/css/app.css" />
+    <link rel="stylesheet" href="/css/scroll.css" />
+    <link rel="stylesheet" href="/css/preloader.css" />
+
+    <link rel="stylesheet" href="/css/pages.css" />
+  </head>
+
+  <body>
+    <div id="preloader" class="preloader" role="status" aria-live="polite">
+      <div class="preloader-inner">
+        <div class="preloader-mark" aria-hidden="true"></div>
+        <div class="preloader-count"><span id="preloader-num">0</span><span class="preloader-pct">%</span></div>
+        <div class="preloader-label">Đang tải</div>
+        <div class="preloader-bar"><span id="preloader-fill"></span></div>
+      </div>
+    </div>
+    <script src="/js/preloader.js"></script>
+
+    <a class="skip-link" href="#main-content">Bỏ qua điều hướng, tới nội dung chính</a>
+
+    <header class="topbar">
+      <div class="wrap topbar-inner">
+        <a class="brand" href="/index.html" aria-label="Shop Dashboard — trang tổng quan">
+          <svg class="icon brand-icon" aria-hidden="true"><use href="/img/sprite.svg#icon-chart"></use></svg>
+          <span>Shop Dashboard</span>
+        </a>
+
+        <button
+          type="button"
+          class="nav-toggle"
+          id="nav-toggle"
+          aria-label="Mở menu điều hướng"
+          aria-expanded="false"
+          aria-controls="nav"
+        >
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+
+          <nav id="nav" class="nav" aria-label="Điều hướng chính">
+            <a href="/index.html">
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-chart"></use></svg>
+              <span>Tổng quan</span>
+            </a>
+            <a href="/logs.html" aria-current="page">
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-clock"></use></svg>
+              <span>Nhật ký</span>
+            </a>
+            <a href="/images.html">
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-image"></use></svg>
+              <span>Ảnh</span>
+            </a>
+            <a href="/uid.html">
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-user"></use></svg>
+              <span>Kiểm tra UID</span>
+            </a>
+            <a href="/tickxanh.html">
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-check"></use></svg>
+              <span>Tích xanh</span>
+            </a>
+          </nav>
+
+        <button type="button" class="btn btn-sm" id="logout-btn">
+          <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-logout"></use></svg>
+          <span>Đăng xuất</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="wrap" id="main-content" tabindex="-1">
+      <header class="page-head reveal" data-reveal="fade">
+        <div class="page-head-copy">
+          <p class="page-eyebrow">Theo dõi hệ thống</p>
+          <h1 class="page-title">Nhật ký vận hành</h1>
+          <p class="page-sub">
+            Kiểm tra hoạt động của bảng điều khiển và lịch sử đồng bộ trong một
+            màn hình rõ ràng, an toàn và dễ tra cứu.
+          </p>
+        </div>
+
+        <div class="page-context" aria-label="Bối cảnh thời gian và nguồn dữ liệu">
+          <div class="context-item">
+            <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-clock"></use></svg>
+            <span>
+              <strong>Giờ Việt Nam</strong>
+              <small>Hiển thị theo UTC+7</small>
+            </span>
+          </div>
+          <div class="context-item">
+            <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-refresh"></use></svg>
+            <span>
+              <strong>Cloudflare Worker</strong>
+              <small>Nguồn dữ liệu kiểm toán</small>
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <section class="section reveal" data-reveal="fade" aria-labelledby="filter-heading">
+        <div class="card filter-panel">
+          <div class="filter-heading">
+            <span class="filter-heading-icon" aria-hidden="true">
+              <svg class="icon"><use href="/img/sprite.svg#icon-search"></use></svg>
+            </span>
+            <div class="filter-heading-copy">
+              <h2 id="filter-heading">Bộ lọc nhật ký</h2>
+              <p>Chọn ngày, loại hành động và số dòng cần xem.</p>
+            </div>
+          </div>
+
+          <form class="filter-grid" id="log-filter" action="/logs.html" method="get" aria-describedby="filter-help">
+            <div class="filter-field">
+              <label for="log-date">Ngày theo giờ Việt Nam</label>
+              <input type="date" id="log-date" name="date" aria-controls="audit-list sync-body" />
+            </div>
+
+            <div class="filter-field">
+              <label for="log-action">Loại hành động</label>
+              <select id="log-action" name="action" aria-controls="audit-list">
+                <option value="" selected>Tất cả hành động</option>
+                <option value="sync">Đồng bộ</option>
+                <option value="login">Đăng nhập</option>
+                <option value="login_failed">Đăng nhập sai</option>
+                <option value="login_blocked">Bị khoá</option>
+                <option value="logout">Đăng xuất</option>
+                <option value="upload">Tải ảnh lên</option>
+                <option value="delete">Xoá ảnh</option>
+                <option value="unlock">Mở khoá</option>
+              </select>
+            </div>
+
+            <div class="filter-field">
+              <label for="log-limit">Số dòng tối đa</label>
+              <select id="log-limit" name="limit" aria-controls="audit-list">
+                <option value="50">50 dòng</option>
+                <option value="100">100 dòng</option>
+                <option value="200" selected>200 dòng</option>
+                <option value="500">500 dòng</option>
+              </select>
+            </div>
+
+            <div class="filter-actions" aria-label="Thao tác lọc">
+              <button type="button" class="btn btn-primary" id="log-apply">
+                <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-search"></use></svg>
+                <span>Lọc</span>
+              </button>
+              <button type="button" class="btn" id="log-today">
+                <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-clock"></use></svg>
+                <span>Hôm nay</span>
+              </button>
+              <a class="btn" href="/logs.html">
+                <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-refresh"></use></svg>
+                <span>Đặt lại</span>
+              </a>
+            </div>
+          </form>
+
+          <div class="filter-help" id="filter-help">
+            <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-alert"></use></svg>
+            <p>
+              Bỏ trống ngày để xem các dòng mới nhất. Loại hành động được áp dụng
+              ngay khi thay đổi; mốc nhật ký hiển thị theo UTC+7 và thời điểm máy chủ
+              nhận dữ liệu được ghi rõ theo UTC.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div id="logs-msg" class="alert alert-error hidden" role="alert"></div>
+
+      <section class="section reveal" data-reveal="fade" aria-labelledby="audit-heading">
+        <div class="section-head">
+          <h2 id="audit-heading">Nhật ký hệ thống</h2>
+          <span class="pill">Metadata kiểm toán</span>
+        </div>
+        <p class="section-copy">
+          Danh sách ghi thời điểm, hành động, mô tả ngắn và IP nguồn của các thao tác
+          trên bảng điều khiển. Dữ liệu được làm mới khi bạn áp dụng bộ lọc.
+        </p>
+
+        <div id="audit-shell">
+          <div
+            id="audit-list"
+            class="card audit-card"
+            role="region"
+            aria-label="Danh sách nhật ký hệ thống"
+            aria-busy="false"
+            tabindex="0"
+          >
+            <div class="empty is-loading">Đang tải nhật ký…</div>
+          </div>
+
+          <div class="empty-state">
+            <span class="empty-state-mark" aria-hidden="true">
+              <svg class="icon"><use href="/img/sprite.svg#icon-search"></use></svg>
+            </span>
+            <h3>Chưa có dòng nhật ký phù hợp</h3>
+            <p>Hãy bỏ ngày, chọn “Tất cả hành động” hoặc tải lại trang để kiểm tra lại.</p>
+            <a class="btn btn-sm" href="/logs.html">
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-refresh"></use></svg>
+              <span>Tải lại nhật ký</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" data-reveal="fade" aria-labelledby="sync-heading">
+        <div class="section-head">
+          <h2 id="sync-heading">Lịch sử đồng bộ</h2>
+          <span class="pill">50 lần gần nhất</span>
+        </div>
+        <p class="section-copy">
+          So sánh thời điểm bot báo dữ liệu với thời điểm Worker nhận dữ liệu để phát
+          hiện lần đồng bộ mới hoặc quá 60 phút.
+        </p>
+
+        <div id="sync-shell">
+          <div
+            class="table-scroll"
+            role="region"
+            aria-label="Bảng lịch sử đồng bộ, có thể cuộn ngang"
+            tabindex="0"
+          >
+            <table>
+              <caption class="visually-hidden">
+                Lịch sử đồng bộ gần đây: thời điểm theo giờ Việt Nam, thời điểm nhận theo UTC và tình trạng
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Lần đồng bộ (Việt Nam)</th>
+                  <th scope="col">Nhận lúc (UTC)</th>
+                  <th scope="col">Tình trạng</th>
+                </tr>
+              </thead>
+              <tbody id="sync-body">
+                <tr>
+                  <td colspan="3" class="empty">Đang tải lịch sử đồng bộ…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="empty-state">
+            <span class="empty-state-mark" aria-hidden="true">
+              <svg class="icon"><use href="/img/sprite.svg#icon-refresh"></use></svg>
+            </span>
+            <h3>Chưa có lần đồng bộ nào</h3>
+            <p>Đợi bot chạy lần tiếp theo hoặc tải lại trang để cập nhật dữ liệu.</p>
+            <a class="btn btn-sm" href="/logs.html">
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-refresh"></use></svg>
+              <span>Tải lại trang</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="table-note">
+          <span>“Mới” khi lần gần nhất dưới 60 phút; “Cũ” khi từ 60 phút trở lên.</span>
+          <span>Trên màn hình nhỏ, vuốt ngang bảng để xem đủ các cột.</span>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap">
+        <p>
+          Bảng điều khiển chỉ hiển thị dữ liệu kiểm toan và số liệu tổng hợp phục vụ
+          vận hành, tra cứu và kiểm tra an toàn.
+        </p>
+      </div>
+    </footer>
+
+    <noscript>
+      <div class="wrap">
+        <p class="alert alert-error noscript-card">
+          Trang này cần JavaScript để tải nhật ký. Hãy bật JavaScript rồi tải lại trang.
+        </p>
+      </div>
+    </noscript>
+
+    <script src="/js/scroll.js" defer></script>
+    <script src="/js/nav.js" defer></script>
+    <script src="/js/logs.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,209 @@
+/* =====================================================================
+   scroll.css — lớp hiệu ứng cuộn (reveal + stagger)
+   Đi kèm: public/js/scroll.js  (script cổ điển, defer)
+
+   QUY TẮC VÀNG VỀ HIỆU NĂNG (đọc trước khi sửa file này):
+   CHỈ được animate `opacity` và `transform`.
+   TUYỆT ĐỐI KHÔNG animate top/left/right/bottom/width/height/margin/padding/
+   box-shadow/border-radius — đây là nguyên nhân số 1 gây giật (jank) vì mỗi
+   frame trình duyệt phải layout lại + repaint lại toàn bộ, không chạy trên GPU.
+   opacity + transform thì chỉ cần composite trên GPU → 60fps.
+
+   Mọi hiệu ứng ở đây đều có thể TẮT HOÀN TOÀN bằng @media prefers-reduced-motion.
+   ===================================================================== */
+
+/* ---------------------------------------------------------------------
+   1) CUỘN MƯỢT TOÀN TRANG (7.1)
+   --------------------------------------------------------------------- */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ---------------------------------------------------------------------
+   2) HỆ THỐNG REVEAL — trạng thái ẨN ban đầu (7.2)
+   Phần tử đã có class .reveal trong HTML sẽ bắt đầu ở opacity 0 + dịch xuống 24px.
+   --------------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  /* Dịch xuống 24px rồi trượt lên — CHỈ dùng transform, không dùng margin-top.
+     Dùng margin-top sẽ đẩy layout của cả trang → jank nặng. */
+  transform: translateY(24px);
+}
+
+/* Trạng thái ĐÃ HIỆN — do IntersectionObserver trong scroll.js gắn vào */
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Biến thể chỉ mờ dần, KHÔNG dịch chuyển (dùng cho khối lớn / khối đang ở đầu trang) */
+.reveal[data-reveal="fade"] {
+  transform: none;
+}
+
+.reveal[data-reveal="fade"].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Biến thể phóng rất nhẹ 0.985 → 1 (chỉ transform, không đổi opacity) */
+.reveal[data-reveal="scale"] {
+  opacity: 1;
+  transform: scale(0.985);
+}
+
+.reveal[data-reveal="scale"].is-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Khối được đánh dấu là không cần hiệu ứng (ảnh, canvas, khối đã animate riêng…) */
+[data-reveal-noop] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------------------------------------------------------------------
+   3) THỜI LƯỢNG + EASING (7.4)
+   Toàn bộ hiệu ứng reveal dùng chung một transition. --delay do JS gán
+   (xem .stagger bên dưới). Mặc định --delay: 0ms để phần tử lẻ không bị trễ.
+   --------------------------------------------------------------------- */
+.reveal {
+  --delay: 0ms;
+  transition:
+    opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1) var(--delay),
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) var(--delay);
+}
+
+/* Card: nhanh hơn section một nhịp (0.4s) cho cảm giác nhịp nhàng */
+.reveal.card,
+.card.reveal {
+  transition:
+    opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1) var(--delay),
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1) var(--delay);
+}
+
+/* Biến thể scale không đổi opacity → chỉ transition transform */
+.reveal[data-reveal="scale"] {
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1) var(--delay);
+}
+
+/* ---------------------------------------------------------------------
+   4) STAGGER — con trong nhóm hiện lệch nhau từng nhịp (7.3)
+   JS gán: child.style.setProperty("--delay", (i * 70) + "ms"), tối đa 490ms.
+   Xem window.ScrollFX.applyStagger() trong js/scroll.js
+   --------------------------------------------------------------------- */
+.stagger > * {
+  --delay: 0ms;
+}
+
+/* ---------------------------------------------------------------------
+   5) will-change CHỈ BẬT NGAY TRƯỚC KHI ANIMATE, TẮT NGAY KHI XONG (7.5)
+   Giữ will-change mãi mãi sẽ bắt trình duyệt giữ thêm một layer GPU cho mỗi
+   phần tử → tốn RAM, có thể còn chậm hơn. Vì vậy .is-animating do JS bật,
+   rồi scroll.js tự gỡ khi transitionend / hết timeout an toàn.
+   --------------------------------------------------------------------- */
+.reveal.is-animating {
+  will-change: opacity, transform;
+}
+
+/* ---------------------------------------------------------------------
+   6) KHI JS TẮT / LỖI — nội dung phải luôn đọc được (progressive enhancement)
+   HTML nên đặt <html class="no-js">, scroll.js gỡ class này ngay khi chạy.
+   Nếu JS không chạy: .no-js .reveal hiện luôn, không có gì bị che.
+   --------------------------------------------------------------------- */
+.no-js .reveal,
+.no-js .reveal[data-reveal="fade"],
+.no-js .reveal[data-reveal="scale"] {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+/* Lưới an toàn cứng: scroll.js gắn class này lên <html> sau 3 giây
+   để mọi thứ còn ẩn đều hiện ra (mọi selector ở đây đều 2 class → đủ độ ưu tiên). */
+.reveal-safety .reveal,
+.reveal-safety .reveal[data-reveal="fade"],
+.reveal-safety .reveal[data-reveal="scale"] {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+/* Trong lúc JS đo/khởi tạo, chặn nháy transition (scroll.js gỡ ngay sau đó) */
+[data-reveal-boot] .reveal {
+  transition: none;
+}
+
+/* ---------------------------------------------------------------------
+   7) PHẦN TỬ ĐÃ Ở TRONG VIEWPORT ĐẦU TIÊN
+   IntersectionObserver bắn callback NGAY khi bắt đầu observe đối với phần tử
+   đang nhìn thấy → chúng tự hiện tức thì, không cần chờ người dùng cuộn.
+   Ở đây chỉ thêm phương án dự phòng bằng CSS cho trường hợp JS chết hẳn.
+   --------------------------------------------------------------------- */
+@media (scripting: none) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   8) GIẢM CHUYỂN ĐỘNG (7.1) — KHÔNG thương lượng
+   Khi người dùng bật "reduce motion" ở hệ điều hành: tắt cuộn mượt, tắt
+   transition, tắt transform, nội dung hiện ngay lập tức.
+   scroll.js cũng kiểm tra matchMedia lúc chạy + lắng nghe sự kiện change
+   → bật/tắt không cần tải lại trang.
+   --------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal,
+  .reveal.is-visible,
+  .reveal.is-animating,
+  .reveal[data-reveal="fade"],
+  .reveal[data-reveal="fade"].is-visible,
+  .reveal[data-reveal="scale"],
+  .reveal[data-reveal="scale"].is-visible,
+  [data-reveal-noop] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    animation: none;
+    will-change: auto;
+  }
+}
+
+/* Cờ do scroll.js gắn khi phát hiện reduce-motion lúc chạy (đề phòng trình
+   duyệt cũ không hỗ trợ media query trên hoặc người dùng đổi cài đặt giữa chừng
+   mà không có sự kiện change). */
+.reveal-reduced .reveal,
+.reveal-reduced .reveal.is-visible,
+.reveal-reduced .reveal.is-animating,
+.reveal-reduced .reveal[data-reveal="fade"],
+.reveal-reduced .reveal[data-reveal="scale"] {
+  opacity: 1;
+  transform: none;
+  transition: none;
+  will-change: auto;
+}
+
+/* ---------------------------------------------------------------------
+   9) IN ẤN — không bao giờ để nội dung bị mờ khi in
+   --------------------------------------------------------------------- */
+@media print {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal,
+  .reveal[data-reveal="fade"],
+  .reveal[data-reveal="scale"] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    will-change: auto !important;
+  }
+}

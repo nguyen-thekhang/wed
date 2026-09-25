@@ -23,3 +23,22 @@ Thumbs.db
 # File tạm
 *.log
 .tmp*
+
+# Kết quả chạy thử giao diện (ảnh chụp, báo cáo audit) — không phải mã nguồn.
+.ui-shots/
+.ui-shots-*/
+.ui-before/
+.ui-audit*.json
+.a11y-run*.txt
+
+# Wrangler local dev secrets
+.dev.vars
+.wrangler/
+
+# Secrets dung mot lan luc deploy
+.deploy-secrets
+
+# Cấu hình watcher tích xanh — CHỨA BLUECHECK_TOKEN và mật khẩu proxy.
+# File này KHÔNG BAO GIỜ được commit. Mẫu để copy nằm ở bluecheck_config.example.json.
+bluecheck_config.json
+__pycache__/

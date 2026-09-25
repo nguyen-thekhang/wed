@@ -1,0 +1,40 @@
+# =====================================================================
+# requirements.txt — shop-dashboard / sync_stats.py
+# =====================================================================
+#
+# KHÔNG CÓ THƯ VIỆN BÊN THỨ BA NÀO.
+#
+# sync_stats.py chỉ dùng thư viện chuẩn của Python 3.9+:
+#   sqlite3, json, os, sys, argparse, urllib.request, ssl,
+#   datetime, logging, hashlib, uuid, contextlib
+#
+# Vì sao cố tình để trống:
+#   * VPS chỉ cần `python3` là chạy được, không phải pip install gì cả —
+#     cron 15 phút một lần sẽ không bao giờ chết vì thiếu package.
+#   * Không có phụ thuộc mạng ngoài khi cài đặt, nên VPS không cần ra
+#     Internet để build; giảm bề mặt tấn công (supply chain).
+#   * Script chỉ ĐỌC DB bán hàng và POST JSON, không cần driver DB ngoài:
+#     sqlite3 đã có sẵn trong stdlib.
+#
+# Lệnh cài đặt trên VPS vẫn chạy được và không cài thêm gì:
+#   python3 -m venv venv
+#   ./venv/bin/pip install -r requirements.txt
+#
+# Script chạy được cả khi KHÔNG tạo venv:
+#   python3 sync_stats.py --dry-run
+#
+# =====================================================================
+# Ghi chú: file này cố ý chỉ có comment. pip đọc file không có dòng
+# requirement nào là hợp lệ và sẽ không cài gì cả.
+# =====================================================================
+
+
+# ---------------------------------------------------------------------
+# CÔNG CỤ CHO LẬP TRÌNH VIÊN (tuỳ chọn, KHÔNG cần cho production).
+# Bỏ dấu # nếu bạn muốn dùng khi phát triển; đừng cài trên VPS.
+# ---------------------------------------------------------------------
+
+# ruff          # lint + format nhanh, thay cho flake8/black; chỉ dùng khi dev
+# mypy          # kiểm tra kiểu tĩnh; giúp bắt lỗi None/int trước khi lên VPS
+# pytest        # chạy test tự động nếu sau này tách logic ra thành module
+# black         # format code cố định; ruff đã bao gồm phần lớn chức năng này

@@ -1,0 +1,29 @@
+{
+  "name": "shop-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "db:create": "wrangler d1 create shop-dashboard",
+    "db:apply": "wrangler d1 execute shop-dashboard --remote --file=./schema.sql",
+    "db:apply:local": "wrangler d1 execute shop-dashboard --local --file=./schema.sql",
+    "r2:create": "wrangler r2 bucket create shop-images",
+    "check": "npm run typecheck && node test/acceptance.mjs && node test/asset-whitelist.mjs",
+    "ui:preview": "node test/ui-preview.mjs --port 8899",
+    "ui:audit": "node test/ui-audit.mjs --base http://127.0.0.1:8899",
+    "ui:chart": "node test/ui-chart.mjs --base http://127.0.0.1:8899",
+    "ui:nav": "node test/ui-nav.mjs --base http://127.0.0.1:8899",
+    "ui:states": "node test/ui-states.mjs --base http://127.0.0.1:8899",
+    "ui:a11y": "node test/ui-a11y.mjs --base http://127.0.0.1:8899",
+    "ui:shots": "node test/ui-shot-cdp.mjs --out .ui-shots",
+    "assets:check": "node test/asset-whitelist.mjs"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240909.0",
+    "typescript": "^5.6.2",
+    "wrangler": "^3.78.0"
+  }
+}
