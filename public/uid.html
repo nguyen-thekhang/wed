@@ -1,279 +1,281 @@
-<!doctype html>
-<!--
-  uid.html — trang kiểm tra UID của bảng điều khiển Shop Dashboard.
-
-  Trang chỉ xử lý danh sách UID do người dùng nhập vào. Mọi kết quả từ máy chủ
-  được JavaScript hiện có tạo bằng phần tử an toàn, không chèn mã HTML.
--->
-<html lang="vi" class="no-js">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f8fafc" />
-    <link rel="icon" href="/img/favicon.svg" type="image/svg+xml" />
-    <meta name="robots" content="noindex, nofollow" />
-    <title>Kiểm tra UID — Shop Dashboard</title>
-
-    <link rel="stylesheet" href="/css/app.css?v=9a7d5ab0" />
-    <link rel="stylesheet" href="/css/scroll.css?v=9a7d5ab0" />
-    <link rel="stylesheet" href="/css/preloader.css?v=9a7d5ab0" />
-    <script src="/js/scroll.js?v=9a7d5ab0" defer></script>
-    <script src="/js/nav.js?v=9a7d5ab0" defer></script>
-    <script src="/js/uid.js?v=9a7d5ab0" defer></script>
-
+<!doctype html>
+<!--
+  uid.html — trang kiểm tra UID của bảng điều khiển Shop Dashboard.
+
+  Trang chỉ xử lý danh sách UID do người dùng nhập vào. Mọi kết quả từ máy chủ
+  được JavaScript hiện có tạo bằng phần tử an toàn, không chèn mã HTML.
+-->
+<html lang="vi" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f8fafc" />
+    <link rel="icon" href="/img/favicon.svg" type="image/svg+xml" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Kiểm tra UID — Shop Dashboard</title>
+
+    <link rel="stylesheet" href="/css/app.css?v=9a7d5ab0" />
+    <link rel="stylesheet" href="/css/scroll.css?v=9a7d5ab0" />
+    <link rel="stylesheet" href="/css/preloader.css?v=9a7d5ab0" />
+    <script src="/js/motion.js" defer></script>
+    <script src="/js/scroll.js?v=9a7d5ab0" defer></script>
+    <script src="/js/nav.js?v=9a7d5ab0" defer></script>
+    <script src="/js/uid.js?v=9a7d5ab0" defer></script>
+
     <link rel="stylesheet" href="/css/pages.css?v=9a7d5ab0" />
-  </head>
-
-  <body>
-    <div id="preloader" class="preloader" role="status" aria-live="polite">
-      <div class="preloader-inner">
-        <div class="preloader-mark" aria-hidden="true"></div>
-        <div class="preloader-count"><span id="preloader-num">0</span><span class="preloader-pct">%</span></div>
-        <div class="preloader-label">Đang tải</div>
-        <div class="preloader-bar"><span id="preloader-fill"></span></div>
-      </div>
-    </div>
-    <script src="/js/preloader.js?v=9a7d5ab0"></script>
-
-    <a class="skip-link" href="#main-content">Bỏ qua điều hướng, tới nội dung chính</a>
-
-    <header class="topbar">
-      <div class="wrap topbar-inner">
-        <a class="brand" href="/index.html" aria-label="Shop Dashboard — về trang tổng quan">
-          <svg class="icon brand-icon" aria-hidden="true"><use href="/img/sprite.svg#icon-chart"></use></svg>
-          <span>Shop Dashboard</span>
-        </a>
-
-        <button
-          type="button"
-          class="nav-toggle"
-          id="nav-toggle"
-          aria-label="Mở menu điều hướng"
-          aria-expanded="false"
-          aria-controls="nav"
-        >
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </button>
-
-          <nav id="nav" class="nav" aria-label="Điều hướng chính">
-            <a href="/index.html">
-              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-chart"></use></svg>
-              <span>Tổng quan</span>
-            </a>
-            <a href="/logs.html">
-              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-clock"></use></svg>
-              <span>Nhật ký</span>
-            </a>
-            <a href="/images.html">
-              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-image"></use></svg>
-              <span>Ảnh</span>
-            </a>
-            <a href="/uid.html" aria-current="page">
-              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-user"></use></svg>
-              <span>Kiểm tra UID</span>
-            </a>
-            <a href="/tickxanh.html">
-              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-check"></use></svg>
-              <span>Tích xanh</span>
-            </a>
-          </nav>
-
-        <button type="button" class="btn btn-sm" id="logout-btn">
-          <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-logout"></use></svg>
-          <span>Đăng xuất</span>
-        </button>
-      </div>
-    </header>
-
-    <main class="wrap" id="main-content" tabindex="-1">
-      <header class="uid-hero reveal" data-reveal="fade">
-        <div class="uid-hero-copy">
-          <p class="uid-hero-kicker">Tiện ích kiểm tra</p>
-          <h1 class="page-title">Kiểm tra UID Facebook</h1>
-          <p class="page-sub">
-            Dán UID theo từng dòng, kiểm tra một lần và xem ngay ba nhóm kết quả được phân loại rõ ràng.
-          </p>
-        </div>
-
-        <aside class="uid-limit" aria-label="Giới hạn 200 UID mỗi lần kiểm tra">
-          <strong class="uid-limit-value">200</strong>
-          <span class="uid-limit-label">UID mỗi lần kiểm tra</span>
-          <span class="uid-limit-note">Có thể kiểm tra lại nhiều đợt</span>
-        </aside>
-      </header>
-
-      <section class="section reveal" data-reveal="fade" aria-labelledby="uid-form-title">
-        <div class="section-head">
-          <h2 id="uid-form-title">Nhập danh sách UID</h2>
-          <span class="hint">Mỗi dòng một UID hoặc một liên kết có tham số tài khoản</span>
-        </div>
-
-        <div class="card uid-form-card">
-          <div class="uid-form-top">
-            <label class="field-label" for="uid-input">Danh sách UID</label>
-            <span class="uid-limit-chip">Tối đa 200 UID mỗi lần</span>
-          </div>
-
-          <textarea
-            id="uid-input"
-            class="uid-input"
-            spellcheck="false"
-            autocomplete="off"
-            autocapitalize="off"
-            placeholder="61579461239864&#10;61579588325204&#10;61579461360216"
-            aria-describedby="uid-count uid-help"
-          ></textarea>
-
-          <div class="uid-form-meta">
-            <p class="uid-count" id="uid-count" role="status" aria-live="polite">Chưa có UID nào.</p>
-            <p class="uid-help" id="uid-help">Trùng lặp chỉ được tính một lần.</p>
-          </div>
-
-          <div class="uid-actions">
-            <button type="button" class="btn btn-primary uid-button-icon" id="uid-check-btn">Kiểm tra</button>
-            <button type="button" class="btn uid-button-icon" id="uid-clear-btn" disabled>Xoá danh sách</button>
-            <p class="uid-shortcut-note">
-              Phím tắt <kbd>Ctrl</kbd> + <kbd>Enter</kbd>
-            </p>
-          </div>
-
-          <div id="uid-progress" class="hidden" role="status" aria-live="polite">
-            <div class="bar" aria-hidden="true"><span id="uid-bar"></span></div>
-            <p id="uid-status">Đang kiểm tra…</p>
-          </div>
-        </div>
-
-        <div class="uid-alert-stack" aria-live="polite">
-          <div id="uid-msg" class="alert alert-error hidden" role="alert"></div>
-          <div id="uid-ok" class="alert alert-ok hidden" role="status"></div>
-        </div>
-      </section>
-
-      <section class="section reveal" data-reveal="fade" aria-labelledby="uid-results-title">
-        <div class="section-head uid-results-head">
-          <h2 id="uid-results-title">Kết quả</h2>
-          <span id="uid-summary">Chưa kiểm tra.</span>
-        </div>
-
-        <div class="uid-results">
-          <section class="uid-panel is-live" aria-labelledby="uid-live-title">
-            <header>
-              <div class="uid-panel-title">
-                <span class="uid-state-mark" aria-hidden="true"></span>
-                <div>
-                  <h3 id="uid-live-title">LIVE</h3>
-                  <p>UID còn tồn tại</p>
-                </div>
-              </div>
-              <div class="uid-panel-actions">
-                <span class="pill" id="uid-live-count" aria-label="Số UID LIVE">0</span>
-                <button type="button" class="btn btn-sm uid-copy-button" data-copy="live" aria-label="Sao chép danh sách UID LIVE" disabled>
-                  Sao chép
-                </button>
-              </div>
-            </header>
-            <ul class="uid-list" id="uid-live-list" aria-label="Danh sách UID LIVE">
-              <li class="empty uid-empty">
-                <span class="empty-state-mark" aria-hidden="true">
-                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="/img/sprite.svg#icon-check"></use></svg>
-                </span>
-                <strong>Chưa có UID LIVE</strong>
-                <span>UID còn tồn tại sẽ hiện ở đây sau khi bạn chạy kiểm tra.</span>
-                <a class="btn btn-sm" href="#uid-input">Đến ô nhập UID</a>
-              </li>
-            </ul>
-          </section>
-
-          <section class="uid-panel is-die" aria-labelledby="uid-die-title">
-            <header>
-              <div class="uid-panel-title">
-                <span class="uid-state-mark" aria-hidden="true"></span>
-                <div>
-                  <h3 id="uid-die-title">DIE</h3>
-                  <p>UID không còn tồn tại</p>
-                </div>
-              </div>
-              <div class="uid-panel-actions">
-                <span class="pill" id="uid-die-count" aria-label="Số UID DIE">0</span>
-                <button type="button" class="btn btn-sm uid-copy-button" data-copy="die" aria-label="Sao chép danh sách UID DIE" disabled>
-                  Sao chép
-                </button>
-              </div>
-            </header>
-            <ul class="uid-list" id="uid-die-list" aria-label="Danh sách UID DIE">
-              <li class="empty uid-empty">
-                <span class="empty-state-mark" aria-hidden="true">
-                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="/img/sprite.svg#icon-x"></use></svg>
-                </span>
-                <strong>Chưa có UID DIE</strong>
-                <span>UID không còn tồn tại sẽ hiện ở đây sau khi bạn chạy kiểm tra.</span>
-                <a class="btn btn-sm" href="#uid-input">Đến ô nhập UID</a>
-              </li>
-            </ul>
-          </section>
-
-          <section class="uid-panel is-unknown" aria-labelledby="uid-unknown-title">
-            <header>
-              <div class="uid-panel-title">
-                <span class="uid-state-mark" aria-hidden="true"></span>
-                <div>
-                  <h3 id="uid-unknown-title">CHƯA XÁC ĐỊNH</h3>
-                  <p>Cần kiểm tra lại</p>
-                </div>
-              </div>
-              <div class="uid-panel-actions">
-                <span class="pill" id="uid-unknown-count" aria-label="Số UID chưa xác định">0</span>
-                <button type="button" class="btn btn-sm uid-copy-button" data-copy="unknown" aria-label="Sao chép danh sách UID chưa xác định" disabled>
-                  Sao chép
-                </button>
-              </div>
-            </header>
-            <ul class="uid-list" id="uid-unknown-list" aria-label="Danh sách UID chưa xác định">
-              <li class="empty uid-empty">
-                <span class="empty-state-mark" aria-hidden="true">
-                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="/img/sprite.svg#icon-alert"></use></svg>
-                </span>
-                <strong>Chưa có kết quả chưa xác định</strong>
-                <span>Kết quả bị giới hạn hoặc lỗi sẽ được giữ lại ở đây để kiểm tra lại.</span>
-                <a class="btn btn-sm" href="#uid-input">Đến ô nhập UID</a>
-              </li>
-            </ul>
-          </section>
-        </div>
-      </section>
-
-      <section class="section reveal" data-reveal="fade" aria-label="Hướng dẫn đọc kết quả">
-        <!--
-          Hai khối dưới đây là GHI CHÚ GIẢI THÍCH, không phải mục nội dung, nên
-          dùng <p class="uid-insight-title"> chứ không dùng <h3>. Trước đây là <h3>
-          khiến trình đọc màn hình đọc chúng như tiêu đề mục ngang hàng với các
-          bảng kết quả, và chúng không có <h2> cha nào trong cây đề mục.
-        -->
-        <div class="uid-insights">
-          <article class="uid-insight is-live">
-            <p class="uid-insight-title">LIVE không đồng nghĩa đăng nhập được</p>
-            <p>Nhóm này chỉ cho biết UID còn tồn tại; trạng thái khoá, checkpoint hoặc vô hiệu hoá cần kiểm tra riêng.</p>
-          </article>
-          <article class="uid-insight is-unknown">
-            <p class="uid-insight-title">Chưa xác định không phải DIE</p>
-            <p>Khi mạng lỗi, hết thời gian chờ hoặc bị giới hạn, UID được giữ lại để tránh kết luận sai.</p>
-          </article>
-        </div>
-      </section>
-    </main>
-
-    <footer class="footer">
-      <div class="wrap">Shop Dashboard — khu vực riêng tư, chỉ chủ shop.</div>
-    </footer>
-
-    <noscript>
-      <div class="wrap">
-        <p class="alert alert-error" style="margin: 18px 0">
-          Trang này cần JavaScript để gọi dịch vụ kiểm tra UID. Hãy bật JavaScript rồi tải lại trang.
-        </p>
-      </div>
-    </noscript>
-  </body>
-</html>
+    <link rel="stylesheet" href="/css/motion.css" />
+  </head>
+
+  <body>
+    <div id="preloader" class="preloader" role="status" aria-live="polite">
+      <div class="preloader-inner">
+        <div class="preloader-mark" aria-hidden="true"></div>
+        <div class="preloader-count"><span id="preloader-num">0</span><span class="preloader-pct">%</span></div>
+        <div class="preloader-label">Đang tải</div>
+        <div class="preloader-bar"><span id="preloader-fill"></span></div>
+      </div>
+    </div>
+    <script src="/js/preloader.js?v=9a7d5ab0"></script>
+
+    <a class="skip-link" href="#main-content">Bỏ qua điều hướng, tới nội dung chính</a>
+
+    <header class="topbar">
+      <div class="wrap topbar-inner">
+        <a class="brand" href="/index.html" aria-label="Shop Dashboard — về trang tổng quan">
+          <svg class="icon brand-icon" aria-hidden="true"><use href="/img/sprite.svg#icon-chart"></use></svg>
+          <span>Shop Dashboard</span>
+        </a>
+
+        <button
+          type="button"
+          class="nav-toggle"
+          id="nav-toggle"
+          aria-label="Mở menu điều hướng"
+          aria-expanded="false"
+          aria-controls="nav"
+        >
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+
+          <nav id="nav" class="nav" aria-label="Điều hướng chính">
+            <a href="/index.html">
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-chart"></use></svg>
+              <span>Tổng quan</span>
+            </a>
+            <a href="/logs.html">
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-clock"></use></svg>
+              <span>Nhật ký</span>
+            </a>
+            <a href="/images.html">
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-image"></use></svg>
+              <span>Ảnh</span>
+            </a>
+            <a href="/uid.html" aria-current="page">
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-user"></use></svg>
+              <span>Kiểm tra UID</span>
+            </a>
+            <a href="/tickxanh.html">
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-check"></use></svg>
+              <span>Tích xanh</span>
+            </a>
+          </nav>
+
+        <button type="button" class="btn btn-sm" id="logout-btn">
+          <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-logout"></use></svg>
+          <span>Đăng xuất</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="wrap" id="main-content" tabindex="-1">
+      <header class="uid-hero reveal" data-reveal="fade">
+        <div class="uid-hero-copy">
+          <p class="uid-hero-kicker">Tiện ích kiểm tra</p>
+          <h1 class="page-title">Kiểm tra UID Facebook</h1>
+          <p class="page-sub">
+            Dán UID theo từng dòng, kiểm tra một lần và xem ngay ba nhóm kết quả được phân loại rõ ràng.
+          </p>
+        </div>
+
+        <aside class="uid-limit" aria-label="Giới hạn 200 UID mỗi lần kiểm tra">
+          <strong class="uid-limit-value">200</strong>
+          <span class="uid-limit-label">UID mỗi lần kiểm tra</span>
+          <span class="uid-limit-note">Có thể kiểm tra lại nhiều đợt</span>
+        </aside>
+      </header>
+
+      <section class="section reveal" data-reveal="fade" aria-labelledby="uid-form-title">
+        <div class="section-head">
+          <h2 id="uid-form-title">Nhập danh sách UID</h2>
+          <span class="hint">Mỗi dòng một UID hoặc một liên kết có tham số tài khoản</span>
+        </div>
+
+        <div class="card uid-form-card">
+          <div class="uid-form-top">
+            <label class="field-label" for="uid-input">Danh sách UID</label>
+            <span class="uid-limit-chip">Tối đa 200 UID mỗi lần</span>
+          </div>
+
+          <textarea
+            id="uid-input"
+            class="uid-input"
+            spellcheck="false"
+            autocomplete="off"
+            autocapitalize="off"
+            placeholder="61579461239864&#10;61579588325204&#10;61579461360216"
+            aria-describedby="uid-count uid-help"
+          ></textarea>
+
+          <div class="uid-form-meta">
+            <p class="uid-count" id="uid-count" role="status" aria-live="polite">Chưa có UID nào.</p>
+            <p class="uid-help" id="uid-help">Trùng lặp chỉ được tính một lần.</p>
+          </div>
+
+          <div class="uid-actions">
+            <button type="button" class="btn btn-primary uid-button-icon" id="uid-check-btn">Kiểm tra</button>
+            <button type="button" class="btn uid-button-icon" id="uid-clear-btn" disabled>Xoá danh sách</button>
+            <p class="uid-shortcut-note">
+              Phím tắt <kbd>Ctrl</kbd> + <kbd>Enter</kbd>
+            </p>
+          </div>
+
+          <div id="uid-progress" class="hidden" role="status" aria-live="polite">
+            <div class="bar" aria-hidden="true"><span id="uid-bar"></span></div>
+            <p id="uid-status">Đang kiểm tra…</p>
+          </div>
+        </div>
+
+        <div class="uid-alert-stack" aria-live="polite">
+          <div id="uid-msg" class="alert alert-error hidden" role="alert"></div>
+          <div id="uid-ok" class="alert alert-ok hidden" role="status"></div>
+        </div>
+      </section>
+
+      <section class="section reveal" data-reveal="fade" aria-labelledby="uid-results-title">
+        <div class="section-head uid-results-head">
+          <h2 id="uid-results-title">Kết quả</h2>
+          <span id="uid-summary">Chưa kiểm tra.</span>
+        </div>
+
+        <div class="uid-results">
+          <section class="uid-panel is-live" aria-labelledby="uid-live-title">
+            <header>
+              <div class="uid-panel-title">
+                <span class="uid-state-mark" aria-hidden="true"></span>
+                <div>
+                  <h3 id="uid-live-title">LIVE</h3>
+                  <p>UID còn tồn tại</p>
+                </div>
+              </div>
+              <div class="uid-panel-actions">
+                <span class="pill" id="uid-live-count" aria-label="Số UID LIVE">0</span>
+                <button type="button" class="btn btn-sm uid-copy-button" data-copy="live" aria-label="Sao chép danh sách UID LIVE" disabled>
+                  Sao chép
+                </button>
+              </div>
+            </header>
+            <ul class="uid-list" id="uid-live-list" aria-label="Danh sách UID LIVE">
+              <li class="empty uid-empty">
+                <span class="empty-state-mark" aria-hidden="true">
+                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="/img/sprite.svg#icon-check"></use></svg>
+                </span>
+                <strong>Chưa có UID LIVE</strong>
+                <span>UID còn tồn tại sẽ hiện ở đây sau khi bạn chạy kiểm tra.</span>
+                <a class="btn btn-sm" href="#uid-input">Đến ô nhập UID</a>
+              </li>
+            </ul>
+          </section>
+
+          <section class="uid-panel is-die" aria-labelledby="uid-die-title">
+            <header>
+              <div class="uid-panel-title">
+                <span class="uid-state-mark" aria-hidden="true"></span>
+                <div>
+                  <h3 id="uid-die-title">DIE</h3>
+                  <p>UID không còn tồn tại</p>
+                </div>
+              </div>
+              <div class="uid-panel-actions">
+                <span class="pill" id="uid-die-count" aria-label="Số UID DIE">0</span>
+                <button type="button" class="btn btn-sm uid-copy-button" data-copy="die" aria-label="Sao chép danh sách UID DIE" disabled>
+                  Sao chép
+                </button>
+              </div>
+            </header>
+            <ul class="uid-list" id="uid-die-list" aria-label="Danh sách UID DIE">
+              <li class="empty uid-empty">
+                <span class="empty-state-mark" aria-hidden="true">
+                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="/img/sprite.svg#icon-x"></use></svg>
+                </span>
+                <strong>Chưa có UID DIE</strong>
+                <span>UID không còn tồn tại sẽ hiện ở đây sau khi bạn chạy kiểm tra.</span>
+                <a class="btn btn-sm" href="#uid-input">Đến ô nhập UID</a>
+              </li>
+            </ul>
+          </section>
+
+          <section class="uid-panel is-unknown" aria-labelledby="uid-unknown-title">
+            <header>
+              <div class="uid-panel-title">
+                <span class="uid-state-mark" aria-hidden="true"></span>
+                <div>
+                  <h3 id="uid-unknown-title">CHƯA XÁC ĐỊNH</h3>
+                  <p>Cần kiểm tra lại</p>
+                </div>
+              </div>
+              <div class="uid-panel-actions">
+                <span class="pill" id="uid-unknown-count" aria-label="Số UID chưa xác định">0</span>
+                <button type="button" class="btn btn-sm uid-copy-button" data-copy="unknown" aria-label="Sao chép danh sách UID chưa xác định" disabled>
+                  Sao chép
+                </button>
+              </div>
+            </header>
+            <ul class="uid-list" id="uid-unknown-list" aria-label="Danh sách UID chưa xác định">
+              <li class="empty uid-empty">
+                <span class="empty-state-mark" aria-hidden="true">
+                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="/img/sprite.svg#icon-alert"></use></svg>
+                </span>
+                <strong>Chưa có kết quả chưa xác định</strong>
+                <span>Kết quả bị giới hạn hoặc lỗi sẽ được giữ lại ở đây để kiểm tra lại.</span>
+                <a class="btn btn-sm" href="#uid-input">Đến ô nhập UID</a>
+              </li>
+            </ul>
+          </section>
+        </div>
+      </section>
+
+      <section class="section reveal" data-reveal="fade" aria-label="Hướng dẫn đọc kết quả">
+        <!--
+          Hai khối dưới đây là GHI CHÚ GIẢI THÍCH, không phải mục nội dung, nên
+          dùng <p class="uid-insight-title"> chứ không dùng <h3>. Trước đây là <h3>
+          khiến trình đọc màn hình đọc chúng như tiêu đề mục ngang hàng với các
+          bảng kết quả, và chúng không có <h2> cha nào trong cây đề mục.
+        -->
+        <div class="uid-insights">
+          <article class="uid-insight is-live">
+            <p class="uid-insight-title">LIVE không đồng nghĩa đăng nhập được</p>
+            <p>Nhóm này chỉ cho biết UID còn tồn tại; trạng thái khoá, checkpoint hoặc vô hiệu hoá cần kiểm tra riêng.</p>
+          </article>
+          <article class="uid-insight is-unknown">
+            <p class="uid-insight-title">Chưa xác định không phải DIE</p>
+            <p>Khi mạng lỗi, hết thời gian chờ hoặc bị giới hạn, UID được giữ lại để tránh kết luận sai.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap">Shop Dashboard — khu vực riêng tư, chỉ chủ shop.</div>
+    </footer>
+
+    <noscript>
+      <div class="wrap">
+        <p class="alert alert-error" style="margin: 18px 0">
+          Trang này cần JavaScript để gọi dịch vụ kiểm tra UID. Hãy bật JavaScript rồi tải lại trang.
+        </p>
+      </div>
+    </noscript>
+  </body>
+</html>

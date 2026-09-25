@@ -1,96 +1,98 @@
-<!doctype html>
-<html lang="vi" class="no-js">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="robots" content="noindex, nofollow" />
-    <meta name="theme-color" content="#f8fafc" />
-    <link rel="icon" href="/img/favicon.svg" type="image/svg+xml" />
-    <title>Đăng nhập · Shop Dashboard</title>
-    <link rel="stylesheet" href="/css/app.css?v=9a7d5ab0" />
-    <link rel="stylesheet" href="/css/scroll.css?v=9a7d5ab0" />
+<!doctype html>
+<html lang="vi" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#f8fafc" />
+    <link rel="icon" href="/img/favicon.svg" type="image/svg+xml" />
+    <title>Đăng nhập · Shop Dashboard</title>
+    <link rel="stylesheet" href="/css/app.css?v=9a7d5ab0" />
+    <link rel="stylesheet" href="/css/scroll.css?v=9a7d5ab0" />
     <link rel="stylesheet" href="/css/preloader.css?v=9a7d5ab0" />
-  </head>
-  <body>
-    <div id="preloader" class="preloader" role="status" aria-live="polite">
-      <div class="preloader-inner">
-        <div class="preloader-mark" aria-hidden="true"></div>
-        <div class="preloader-count"><span id="preloader-num">0</span><span class="preloader-pct">%</span></div>
-        <div class="preloader-label">Đang tải</div>
-        <div class="preloader-bar"><span id="preloader-fill"></span></div>
-      </div>
-    </div>
-
-    <script src="/js/preloader.js?v=9a7d5ab0"></script>
-
-    <main class="login-shell" aria-labelledby="login-title">
-      <div class="login-frame">
-        <section class="login-card reveal" data-reveal="fade" aria-labelledby="login-title">
-          <header class="login-card-head">
-            <div class="login-logo">
-              <img src='/img/logo.svg' alt='Shop Dashboard' width='40' height='40' />
-            </div>
-            <div>
-              <p class="login-brand">Shop Dashboard</p>
-              <p class="login-brand-sub">Khu vực quản trị riêng tư</p>
-            </div>
-          </header>
-
-          <p class="login-kicker">Truy cập an toàn</p>
-          <h1 id="login-title" class="login-title">Đăng nhập</h1>
-          <p class="login-subtitle">Nhập mật khẩu quản trị để tiếp tục vào bảng điều khiển.</p>
-
-          <form id="login-form" class="login-form" method="post" action="/api/login" autocomplete="on" novalidate>
-            <div class="field">
-              <label for="password">Mật khẩu quản trị</label>
-              <div class="password-control">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autocomplete="current-password"
-                  placeholder="Nhập mật khẩu quản trị"
-                  required
-                  autofocus
-                />
-                <button
-                  id="password-toggle"
-                  class="password-toggle"
-                  type="button"
-                  aria-label="Hiện mật khẩu"
-                  aria-pressed="false"
-                  aria-controls="password"
-                  data-password-toggle="true"
-                >
-                  <!-- Biểu tượng lấy từ sprite dùng chung, cùng độ dày nét với 5 trang còn lại. -->
-                  <svg class="icon is-shown" aria-hidden="true" focusable="false">
-                    <use href="/img/sprite.svg#icon-eye"></use>
-                  </svg>
-                  <svg class="icon is-hidden" aria-hidden="true" focusable="false">
-                    <use href="/img/sprite.svg#icon-eye-off"></use>
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <button id="submit-btn" class="btn btn-primary login-submit" type="submit">Đăng nhập</button>
-          </form>
-
-          <div id="login-msg" class="alert alert-error hidden" role="alert" aria-live="assertive" aria-atomic="true"></div>
-
-          <p class="login-note">
-            <svg class="icon" aria-hidden="true" focusable="false">
-              <use href="/img/sprite.svg#icon-lock"></use>
-            </svg>
-            <span>Phiên đăng nhập dùng cookie HttpOnly, Secure và SameSite=Strict để bảo vệ khu vực quản trị.</span>
-          </p>
-        </section>
-
-        <p class="login-status"><span class="login-status-dot" aria-hidden="true"></span><span>Hệ thống đang sẵn sàng cho người quản trị.</span></p>
-      </div>
-    </main>
-
-    <script src="/js/scroll.js?v=9a7d5ab0" defer></script>
-    <script src="/js/login.js?v=9a7d5ab0" defer></script>
-  </body>
-</html>
+    <link rel="stylesheet" href="/css/motion.css" />
+  </head>
+  <body>
+    <div id="preloader" class="preloader" role="status" aria-live="polite">
+      <div class="preloader-inner">
+        <div class="preloader-mark" aria-hidden="true"></div>
+        <div class="preloader-count"><span id="preloader-num">0</span><span class="preloader-pct">%</span></div>
+        <div class="preloader-label">Đang tải</div>
+        <div class="preloader-bar"><span id="preloader-fill"></span></div>
+      </div>
+    </div>
+
+    <script src="/js/preloader.js?v=9a7d5ab0"></script>
+
+    <main class="login-shell" aria-labelledby="login-title">
+      <div class="login-frame">
+        <section class="login-card reveal" data-reveal="fade" aria-labelledby="login-title">
+          <header class="login-card-head">
+            <div class="login-logo">
+              <img src='/img/logo.svg' alt='Shop Dashboard' width='40' height='40' />
+            </div>
+            <div>
+              <p class="login-brand">Shop Dashboard</p>
+              <p class="login-brand-sub">Khu vực quản trị riêng tư</p>
+            </div>
+          </header>
+
+          <p class="login-kicker">Truy cập an toàn</p>
+          <h1 id="login-title" class="login-title">Đăng nhập</h1>
+          <p class="login-subtitle">Nhập mật khẩu quản trị để tiếp tục vào bảng điều khiển.</p>
+
+          <form id="login-form" class="login-form" method="post" action="/api/login" autocomplete="on" novalidate>
+            <div class="field">
+              <label for="password">Mật khẩu quản trị</label>
+              <div class="password-control">
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autocomplete="current-password"
+                  placeholder="Nhập mật khẩu quản trị"
+                  required
+                  autofocus
+                />
+                <button
+                  id="password-toggle"
+                  class="password-toggle"
+                  type="button"
+                  aria-label="Hiện mật khẩu"
+                  aria-pressed="false"
+                  aria-controls="password"
+                  data-password-toggle="true"
+                >
+                  <!-- Biểu tượng lấy từ sprite dùng chung, cùng độ dày nét với 5 trang còn lại. -->
+                  <svg class="icon is-shown" aria-hidden="true" focusable="false">
+                    <use href="/img/sprite.svg#icon-eye"></use>
+                  </svg>
+                  <svg class="icon is-hidden" aria-hidden="true" focusable="false">
+                    <use href="/img/sprite.svg#icon-eye-off"></use>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <button id="submit-btn" class="btn btn-primary login-submit" type="submit">Đăng nhập</button>
+          </form>
+
+          <div id="login-msg" class="alert alert-error hidden" role="alert" aria-live="assertive" aria-atomic="true"></div>
+
+          <p class="login-note">
+            <svg class="icon" aria-hidden="true" focusable="false">
+              <use href="/img/sprite.svg#icon-lock"></use>
+            </svg>
+            <span>Phiên đăng nhập dùng cookie HttpOnly, Secure và SameSite=Strict để bảo vệ khu vực quản trị.</span>
+          </p>
+        </section>
+
+        <p class="login-status"><span class="login-status-dot" aria-hidden="true"></span><span>Hệ thống đang sẵn sàng cho người quản trị.</span></p>
+      </div>
+    </main>
+
+    <script src="/js/motion.js" defer></script>
+    <script src="/js/scroll.js?v=9a7d5ab0" defer></script>
+    <script src="/js/login.js?v=9a7d5ab0" defer></script>
+  </body>
+</html>

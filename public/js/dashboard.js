@@ -252,6 +252,15 @@
     );
     setText("kpi-users-deposits", formatInt(t.deposits_confirmed || 0));
     setText("kpi-users-sub", "Tổng người dùng trong hệ thống");
+
+    // Giao số mục tiêu cho motion.js để nó đếm mượt từ 0 lên giá trị cuối.
+    // Chỉ ghi data-count (con số thuần); nội dung hiển thị vẫn do setText
+    // ở trên đảm nhiệm, nên nếu JS bị tắt thì số hiện đúng như cũ.
+    ["kpi-orders", "kpi-users"].forEach(function (id) {
+      var el = $(id);
+      if (el) el.setAttribute("data-count", String(Number(t[id === "kpi-orders" ? "orders_delivered" : "users_total"]) || 0));
+    });
+    if (window.MotionFX) window.MotionFX.runCounters(document);
   }
 
   /* ---------------------------------------------------------------------- */

@@ -1,355 +1,373 @@
-<!doctype html>
-<!--
-  index.html — trang Tổng quan của bảng điều khiển Cloudflare Worker.
-  Trang chỉ dùng HTML, CSS và JavaScript thuần; không tải tài nguyên từ mạng ngoài.
--->
-<html lang="vi" class="no-js">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="robots" content="noindex, nofollow" />
-    <meta name="theme-color" content="#f8fafc" />
-    <link rel="icon" href="/img/favicon.svg" type="image/svg+xml" />
-    <title>Tổng quan — Bảng điều khiển</title>
-    <link rel="stylesheet" href="/css/app.css?v=d57d5347" />
-    <link rel="stylesheet" href="/css/scroll.css?v=d57d5347" />
-    <link rel="stylesheet" href="/css/preloader.css?v=d57d5347" />
-    <link rel="stylesheet" href="/css/pages.css?v=d57d5347" />
-  </head>
-  <body>
-    <div id="preloader" class="preloader" role="status" aria-live="polite">
-      <div class="preloader-inner">
-        <div class="preloader-mark" aria-hidden="true"></div>
-        <div class="preloader-count"><span id="preloader-num">0</span><span class="preloader-pct">%</span></div>
-        <div class="preloader-label">Đang tải</div>
-        <div class="preloader-bar"><span id="preloader-fill"></span></div>
-      </div>
-    </div>
-    <script src="/js/preloader.js?v=d57d5347"></script>
+<!doctype html>
+<!--
+  index.html — trang Tổng quan của bảng điều khiển Cloudflare Worker.
+  Trang chỉ dùng HTML, CSS và JavaScript thuần; không tải tài nguyên từ mạng ngoài.
+-->
+<html lang="vi" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#f8fafc" />
+    <link rel="icon" href="/img/favicon.svg" type="image/svg+xml" />
+    <title>Tổng quan — Bảng điều khiển</title>
+    <link rel="stylesheet" href="/css/app.css?v=a8dfd6b3" />
+    <link rel="stylesheet" href="/css/scroll.css?v=a8dfd6b3" />
+    <link rel="stylesheet" href="/css/preloader.css?v=a8dfd6b3" />
+    <link rel="stylesheet" href="/css/pages.css?v=a8dfd6b3" />
+    <link rel="stylesheet" href="/css/motion.css?v=a8dfd6b3" />
+  </head>
+  <body>
+    <div id="preloader" class="preloader" role="status" aria-live="polite">
+      <div class="preloader-inner">
+        <div class="preloader-mark" aria-hidden="true"></div>
+        <div class="preloader-count"><span id="preloader-num">0</span><span class="preloader-pct">%</span></div>
+        <div class="preloader-label">Đang tải</div>
+        <div class="preloader-bar"><span id="preloader-fill"></span></div>
+      </div>
+    </div>
+    <script src="/js/preloader.js?v=a8dfd6b3"></script>
+
+    <a class="skip-link" href="#main-content">Bỏ qua điều hướng, tới nội dung chính</a>
+
+    <!--
+      Thanh điều hướng dùng CHUNG cho mọi trang: <button class="nav-toggle"> +
+      <nav class="nav">, trạng thái mở do /js/nav.js quản lý qua class .is-open.
+      Không dùng <details>: nội dung của nó khi đóng không được trình duyệt vẽ ra.
+    -->
+    <header class="topbar">
+      <div class="wrap topbar-inner">
+        <a class="brand" href="/index.html" aria-label="Shop Dashboard — Tổng quan">
+          <svg class="icon brand-icon" aria-hidden="true"><use href="/img/sprite.svg#icon-chart"></use></svg>
+          <span>Shop Dashboard</span>
+        </a>
+
+        <button
+          type="button"
+          class="nav-toggle"
+          id="nav-toggle"
+          aria-label="Mở menu điều hướng"
+          aria-expanded="false"
+          aria-controls="nav"
+        >
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+
+          <nav id="nav" class="nav" aria-label="Điều hướng chính">
+            <a href="/index.html" aria-current="page">
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-chart"></use></svg>
+              <span>Tổng quan</span>
+            </a>
+            <a href="/logs.html">
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-clock"></use></svg>
+              <span>Nhật ký</span>
+            </a>
+            <a href="/images.html">
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-image"></use></svg>
+              <span>Ảnh</span>
+            </a>
+            <a href="/uid.html">
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-user"></use></svg>
+              <span>Kiểm tra UID</span>
+            </a>
+            <a href="/tickxanh.html">
+              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-check"></use></svg>
+              <span>Tích xanh</span>
+            </a>
+          </nav>
+
+        <button type="button" id="logout-btn" class="btn btn-sm">
+          <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-logout"></use></svg>
+          <span>Đăng xuất</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="wrap" id="main-content" tabindex="-1">
+      <!--
+        Phần mở đầu: công cụ làm việc, không dùng ảnh minh hoạ lớn.
 
-    <a class="skip-link" href="#main-content">Bỏ qua điều hướng, tới nội dung chính</a>
-
-    <!--
-      Thanh điều hướng dùng CHUNG cho mọi trang: <button class="nav-toggle"> +
-      <nav class="nav">, trạng thái mở do /js/nav.js quản lý qua class .is-open.
-      Không dùng <details>: nội dung của nó khi đóng không được trình duyệt vẽ ra.
-    -->
-    <header class="topbar">
-      <div class="wrap topbar-inner">
-        <a class="brand" href="/index.html" aria-label="Shop Dashboard — Tổng quan">
-          <svg class="icon brand-icon" aria-hidden="true"><use href="/img/sprite.svg#icon-chart"></use></svg>
-          <span>Shop Dashboard</span>
-        </a>
-
-        <button
-          type="button"
-          class="nav-toggle"
-          id="nav-toggle"
-          aria-label="Mở menu điều hướng"
-          aria-expanded="false"
-          aria-controls="nav"
-        >
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </button>
-
-          <nav id="nav" class="nav" aria-label="Điều hướng chính">
-            <a href="/index.html" aria-current="page">
-              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-chart"></use></svg>
-              <span>Tổng quan</span>
-            </a>
-            <a href="/logs.html">
-              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-clock"></use></svg>
-              <span>Nhật ký</span>
-            </a>
-            <a href="/images.html">
-              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-image"></use></svg>
-              <span>Ảnh</span>
-            </a>
-            <a href="/uid.html">
-              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-user"></use></svg>
-              <span>Kiểm tra UID</span>
-            </a>
-            <a href="/tickxanh.html">
-              <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-check"></use></svg>
-              <span>Tích xanh</span>
-            </a>
-          </nav>
-
-        <button type="button" id="logout-btn" class="btn btn-sm">
-          <svg class="icon" aria-hidden="true"><use href="/img/sprite.svg#icon-logout"></use></svg>
-          <span>Đăng xuất</span>
-        </button>
-      </div>
-    </header>
-
-    <main class="wrap" id="main-content" tabindex="-1">
-      <!-- Phần mở đầu: công cụ làm việc, không dùng ảnh minh hoạ lớn. -->
+        Vòng tròn 76px chứa icon 24px đã bị bỏ — 68% diện tích trống, trông như
+        ô chờ điền, và khiến phần mở đầu cao 210px chỉ để chứa vài dòng chữ.
+        Thay bằng dải cột nhỏ gợi ý xu hướng, có nhãn cho trình đọc màn hình.
+      -->
       <header class="page-head dashboard-hero reveal" data-reveal="fade">
-        <div>
+        <div class="page-head-copy">
           <p class="page-eyebrow">Tổng quan vận hành</p>
           <h1 class="page-title">Toàn cảnh kinh doanh trong một nhịp nhìn</h1>
           <p class="page-sub">
             Theo dõi doanh thu, đơn hàng và người dùng từ một màn hình rõ ràng.
             Mọi thời gian được hiển thị theo giờ Việt Nam.
           </p>
-          <div class="dashboard-hero-note">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <use href="/img/sprite.svg#icon-sparkles"></use>
-            </svg>
-            <span>Báo cáo tổng hợp, làm mới tự động và có cảnh báo khi dữ liệu cũ.</span>
-          </div>
         </div>
-        <div class="hero-mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24">
-            <use href="/img/sprite.svg#icon-chart"></use>
-          </svg>
+        <div
+          class="hero-pulse"
+          role="img"
+          aria-label="Dải cột gợi ý xu hướng doanh thu 30 ngày gần nhất"
+        >
+          <div class="hero-pulse-bars" aria-hidden="true">
+            <span style="height: 22%"></span>
+            <span style="height: 34%"></span>
+            <span style="height: 28%"></span>
+            <span style="height: 46%"></span>
+            <span style="height: 41%"></span>
+            <span style="height: 58%"></span>
+            <span style="height: 52%"></span>
+            <span style="height: 71%"></span>
+            <span style="height: 64%"></span>
+            <span style="height: 86%"></span>
+            <span style="height: 74%"></span>
+            <span class="is-peak" style="height: 100%"></span>
+          </div>
+          <span class="hero-pulse-label">30 ngày gần nhất</span>
         </div>
       </header>
-
-      <!-- Dải thông tin ngắn giúp người dùng biết múi giờ và phạm vi báo cáo. -->
-      <div class="stat-strip reveal" data-reveal="fade" aria-label="Thông tin nhanh về báo cáo">
-        <div class="stat-cell">
-          <span class="stat-label">Chu kỳ đồng bộ</span>
-          <span class="stat-value">15 phút</span>
-        </div>
-        <div class="stat-cell">
-          <span class="stat-label">Múi giờ báo cáo</span>
-          <span class="stat-value">UTC+7</span>
-        </div>
-        <div class="stat-cell">
-          <span class="stat-label">Phạm vi dữ liệu</span>
-          <span class="stat-value">Tổng hợp</span>
-        </div>
-        <div class="stat-cell">
-          <span class="stat-label">Nguồn dữ liệu</span>
-          <span class="stat-value">Máy chủ</span>
-        </div>
-      </div>
-
-      <!-- Thanh trạng thái đồng bộ được làm nổi bật khi dữ liệu cũ. -->
-      <section class="section reveal" data-reveal="fade" aria-labelledby="heading-sync">
-        <div class="section-head">
-          <h2 id="heading-sync">Trạng thái dữ liệu</h2>
-          <span class="hint">Cập nhật tự động; kiểm tra trạng thái trước khi dùng số liệu.</span>
-        </div>
-        <div id="sync-bar" class="syncbar is-unknown" role="status" aria-live="polite" aria-atomic="true">
-          <span class="badge" id="sync-badge">Đang kiểm tra</span>
-          <span id="sync-text">Đang tải trạng thái đồng bộ…</span>
-          <span class="mono" id="sync-ago"></span>
-          <span class="pill" id="sync-count">0 lần đồng bộ gần đây</span>
-          <div class="row">
-            <button type="button" id="sync-refresh" class="btn btn-sm">
-              <svg class="icon-inline" viewBox="0 0 24 24" aria-hidden="true">
-                <use href="/img/sprite.svg#icon-refresh"></use>
-              </svg>
-              <span>Làm mới</span>
-            </button>
-          </div>
-        </div>
-        <div id="dash-error" class="alert alert-error hidden" role="alert"></div>
-      </section>
-
-      <!-- Ba thẻ KPI chính: doanh thu, số đơn và người dùng. -->
-      <section class="section reveal" data-reveal="fade" aria-labelledby="heading-kpi">
-        <div class="section-head">
-          <h2 id="heading-kpi">Chỉ số chính</h2>
-          <span class="hint">Số liệu tổng hợp từ máy chủ, hiển thị theo giờ Việt Nam.</span>
-        </div>
-
-        <!--
-          Ba thẻ KPI cùng một cấu trúc: nhãn → số lớn → dòng chi tiết → chú thích.
-          Trước đây thẻ "Số đơn" có dòng chi tiết còn hai thẻ kia không, nên thẻ
-          "Người dùng" trông gần như trống so với hai thẻ bên cạnh.
-        -->
-        <div class="card-grid kpi-grid stagger">
-          <article class="card kpi reveal is-accent">
-            <div class="kpi-label">Tổng doanh thu</div>
-            <div class="kpi-value" id="kpi-revenue">—</div>
-            <div class="row kpi-detail">
-              <span class="hint">Giá trị đơn TB</span>
-              <span class="mono" id="kpi-revenue-avg">—</span>
-            </div>
-            <div class="kpi-sub" id="kpi-revenue-sub">Đang chờ số liệu đơn đã giao</div>
-          </article>
-
-          <article class="card kpi reveal">
-            <div class="kpi-label">Số đơn</div>
-            <div class="kpi-value" id="kpi-orders">—</div>
-            <div class="row kpi-detail">
-              <span class="hint">Tổng số đơn</span>
-              <span class="mono" id="kpi-orders-all">—</span>
-            </div>
-            <div class="kpi-sub" id="kpi-orders-all-sub">Đang chờ số liệu đơn chưa giao</div>
-          </article>
-
-          <article class="card kpi reveal">
-            <div class="kpi-label">Người dùng</div>
-            <div class="kpi-value" id="kpi-users">—</div>
-            <div class="row kpi-detail">
-              <span class="hint">Lệnh nạp đã xác nhận</span>
-              <span class="mono" id="kpi-users-deposits">—</span>
-            </div>
-            <div class="kpi-sub" id="kpi-users-sub">Tổng người dùng trong hệ thống</div>
-          </article>
-        </div>
-      </section>
-
-      <!-- Biểu đồ doanh thu được vẽ trực tiếp bằng canvas. -->
-      <section class="section reveal" data-reveal="fade" id="sec-chart" aria-labelledby="heading-chart">
-        <div class="section-head">
-          <h2 id="heading-chart">Doanh thu 30 ngày gần nhất</h2>
-          <span class="hint" id="chart-hint">Đơn vị: đồng · Ngày theo giờ Việt Nam (UTC+7)</span>
-        </div>
-
-        <div class="card chart-card reveal">
-          <div class="chart-box">
-            <canvas
-              id="chart-revenue"
-              role="img"
-              aria-label="Biểu đồ doanh thu 30 ngày gần nhất"
-            >
-              Biểu đồ doanh thu theo ngày.
-            </canvas>
-          </div>
-          <div class="chart-legend" aria-label="Chú giải biểu đồ">
-            <span class="key">
-              <span class="swatch" aria-hidden="true"></span>
-              Doanh thu (₫)
-            </span>
-            <span class="mono hint">UTC+7</span>
-          </div>
-          <div id="chart-empty" class="empty empty-state hidden">
-            <span class="empty-state-mark" aria-hidden="true">
-              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="/img/sprite.svg#icon-sparkles"></use></svg>
-            </span>
-            <h3>Chưa có dữ liệu</h3>
-            <p>Biểu đồ sẽ hiện ngay khi có doanh thu trong 30 ngày gần nhất.</p>
-            <a class="btn btn-sm" href="/index.html">Kiểm tra lại</a>
-          </div>
-        </div>
-      </section>
-
-      <!-- Bảng sản phẩm chỉ hiển thị số lượng, doanh thu và tồn kho dạng đếm. -->
-      <section class="section reveal" data-reveal="fade" id="sec-products" aria-labelledby="heading-products">
-        <div class="section-head">
-          <h2 id="heading-products">Sản phẩm bán chạy</h2>
-          <span class="hint">Xếp theo doanh thu và số lượng đã bán.</span>
-        </div>
-
-        <div class="table-wrap">
-          <table>
-            <caption class="visually-hidden">
-              Sản phẩm bán chạy: số lượng đã bán, doanh thu và tồn kho còn lại
-            </caption>
-            <thead>
-              <tr>
-                <th scope="col">Sản phẩm</th>
-                <th scope="col">Đã bán</th>
-                <th scope="col">Doanh thu</th>
-                <th scope="col">Tồn kho</th>
-              </tr>
-            </thead>
-            <tbody id="products-body">
-              <tr>
-                <td colspan="4" class="empty">Đang tải sản phẩm…</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="hint table-note">Các con số được làm tròn và cập nhật khi báo cáo đồng bộ hoàn tất.</p>
-      </section>
-
-      <!-- Hai bảng phân chia, giữ nguyên vùng cập nhật của dashboard.js. -->
-      <div class="card-grid card-grid-2 stagger">
-        <section class="card reveal" id="card-methods" aria-labelledby="heading-methods">
-          <h3 id="heading-methods">Phương thức thanh toán</h3>
-          <p class="hint">Phân bổ đơn hàng và doanh thu theo phương thức.</p>
-
-          <div class="table-wrap">
-            <table>
-              <caption class="visually-hidden">
-                Phân bổ đơn hàng và doanh thu theo phương thức thanh toán
-              </caption>
-              <thead>
-                <tr>
-                  <th scope="col">Phương thức</th>
-                  <th scope="col">Đơn</th>
-                  <th scope="col">Doanh thu</th>
-                </tr>
-              </thead>
-              <tbody id="methods-body">
-                <tr>
-                  <td colspan="3" class="empty">Đang tải dữ liệu…</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <section class="card reveal" id="card-status" aria-labelledby="heading-status">
-          <h3 id="heading-status">Trạng thái đơn</h3>
-          <p class="hint">Theo dõi đơn đã giao, đã huỷ, hết hạn và đặt trước.</p>
-
-          <div class="table-wrap">
-            <table>
-              <caption class="visually-hidden">Số lượng đơn hàng theo từng trạng thái xử lý</caption>
-              <thead>
-                <tr>
-                  <th scope="col">Trạng thái</th>
-                  <th scope="col">Số đơn</th>
-                </tr>
-              </thead>
-              <tbody id="status-body">
-                <tr>
-                  <td colspan="2" class="empty">Đang tải dữ liệu…</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-      </div>
-
-      <!-- Lịch sử đồng bộ giúp kiểm tra độ tươi của báo cáo. -->
-      <section class="section reveal" data-reveal="fade" id="sec-sync-history" aria-labelledby="heading-history">
-        <div class="section-head">
-          <h2 id="heading-history">Lịch sử đồng bộ gần đây</h2>
-          <span class="hint">Thời điểm máy chủ báo lên và thời điểm Worker nhận được.</span>
-        </div>
-
-        <div class="table-wrap">
-          <table>
-            <caption class="visually-hidden">
-              Lịch sử các lần đồng bộ gần đây: thời điểm báo lên theo giờ Việt Nam và
-              thời điểm nhận theo giờ UTC
-            </caption>
-            <thead>
-              <tr>
-                <th scope="col">Lần đồng bộ (Việt Nam)</th>
-                <th scope="col">Nhận lúc (UTC)</th>
-              </tr>
-            </thead>
-            <tbody id="sync-history-body">
-              <tr>
-                <td colspan="2" class="empty">Đang tải lịch sử đồng bộ…</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </main>
-
-    <footer class="footer">
-      <div class="wrap">
-        <p>Bảng điều khiển chỉ hiển thị số liệu tổng hợp phục vụ vận hành.</p>
-        <p><span class="mono" id="build-info"></span></p>
-      </div>
-    </footer>
-
-    <script src="/js/scroll.js?v=d57d5347" defer></script>
-    <script src="/js/nav.js?v=d57d5347" defer></script>
-    <script src="/js/chart.js?v=d57d5347" defer></script>
-    <script src="/js/dashboard.js?v=d57d5347" defer></script>
-  </body>
-</html>
+
+      <!-- Dải thông tin ngắn giúp người dùng biết múi giờ và phạm vi báo cáo. -->
+      <div class="stat-strip reveal" data-reveal="fade" aria-label="Thông tin nhanh về báo cáo">
+        <div class="stat-cell">
+          <span class="stat-label">Chu kỳ đồng bộ</span>
+          <span class="stat-value">15 phút</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-label">Múi giờ báo cáo</span>
+          <span class="stat-value">UTC+7</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-label">Phạm vi dữ liệu</span>
+          <span class="stat-value">Tổng hợp</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-label">Nguồn dữ liệu</span>
+          <span class="stat-value">Máy chủ</span>
+        </div>
+      </div>
+
+      <!-- Thanh trạng thái đồng bộ được làm nổi bật khi dữ liệu cũ. -->
+      <section class="section reveal" data-reveal="fade" aria-labelledby="heading-sync">
+        <div class="section-head">
+          <h2 id="heading-sync">Trạng thái dữ liệu</h2>
+          <span class="hint">Cập nhật tự động; kiểm tra trạng thái trước khi dùng số liệu.</span>
+        </div>
+        <div id="sync-bar" class="syncbar is-unknown" role="status" aria-live="polite" aria-atomic="true">
+          <span class="badge" id="sync-badge">Đang kiểm tra</span>
+          <span id="sync-text">Đang tải trạng thái đồng bộ…</span>
+          <span class="mono" id="sync-ago"></span>
+          <span class="pill" id="sync-count">0 lần đồng bộ gần đây</span>
+          <div class="row">
+            <button type="button" id="sync-refresh" class="btn btn-sm">
+              <svg class="icon-inline" viewBox="0 0 24 24" aria-hidden="true">
+                <use href="/img/sprite.svg#icon-refresh"></use>
+              </svg>
+              <span>Làm mới</span>
+            </button>
+          </div>
+        </div>
+        <div id="dash-error" class="alert alert-error hidden" role="alert"></div>
+      </section>
+
+      <!-- Ba thẻ KPI chính: doanh thu, số đơn và người dùng. -->
+      <section class="section reveal" data-reveal="fade" aria-labelledby="heading-kpi">
+        <div class="section-head">
+          <h2 id="heading-kpi">Chỉ số chính</h2>
+          <span class="hint">Số liệu tổng hợp từ máy chủ, hiển thị theo giờ Việt Nam.</span>
+        </div>
+
+        <!--
+          Ba thẻ KPI cùng một cấu trúc: nhãn → số lớn → dòng chi tiết → chú thích.
+          Trước đây thẻ "Số đơn" có dòng chi tiết còn hai thẻ kia không, nên thẻ
+          "Người dùng" trông gần như trống so với hai thẻ bên cạnh.
+        -->
+        <div class="card-grid kpi-grid stagger">
+          <article class="card kpi reveal is-accent" data-tone="accent">
+            <div class="kpi-label">Tổng doanh thu</div>
+            <div class="kpi-value count-up" id="kpi-revenue" data-count="0">—</div>
+            <div class="row kpi-detail">
+              <span class="hint">Giá trị đơn TB</span>
+              <span class="mono" id="kpi-revenue-avg">—</span>
+            </div>
+            <div class="kpi-sub" id="kpi-revenue-sub">Đang chờ số liệu đơn đã giao</div>
+          </article>
+
+          <article class="card kpi reveal is-warm" data-tone="warm">
+            <div class="kpi-label">Số đơn</div>
+            <div class="kpi-value count-up" id="kpi-orders" data-count="0">—</div>
+            <div class="row kpi-detail">
+              <span class="hint">Tổng số đơn</span>
+              <span class="mono" id="kpi-orders-all">—</span>
+            </div>
+            <div class="kpi-sub" id="kpi-orders-all-sub">Đang chờ số liệu đơn chưa giao</div>
+          </article>
+
+          <article class="card kpi reveal" data-tone="neutral">
+            <div class="kpi-label">Người dùng</div>
+            <div class="kpi-value count-up" id="kpi-users" data-count="0">—</div>
+            <div class="row kpi-detail">
+              <span class="hint">Lệnh nạp đã xác nhận</span>
+              <span class="mono" id="kpi-users-deposits">—</span>
+            </div>
+            <div class="kpi-sub" id="kpi-users-sub">Tổng người dùng trong hệ thống</div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Biểu đồ doanh thu được vẽ trực tiếp bằng canvas. -->
+      <section class="section reveal" data-reveal="fade" id="sec-chart" aria-labelledby="heading-chart">
+        <div class="section-head">
+          <h2 id="heading-chart">Doanh thu 30 ngày gần nhất</h2>
+          <span class="hint" id="chart-hint">Đơn vị: đồng · Ngày theo giờ Việt Nam (UTC+7)</span>
+        </div>
+
+        <div class="card chart-card reveal">
+          <div class="chart-box">
+            <canvas
+              id="chart-revenue"
+              role="img"
+              aria-label="Biểu đồ doanh thu 30 ngày gần nhất"
+            >
+              Biểu đồ doanh thu theo ngày.
+            </canvas>
+          </div>
+          <div class="chart-legend" aria-label="Chú giải biểu đồ">
+            <span class="key">
+              <span class="swatch" aria-hidden="true"></span>
+              Doanh thu (₫)
+            </span>
+            <span class="mono hint">UTC+7</span>
+          </div>
+          <div id="chart-empty" class="empty empty-state hidden">
+            <span class="empty-state-mark" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="/img/sprite.svg#icon-sparkles"></use></svg>
+            </span>
+            <h3>Chưa có dữ liệu</h3>
+            <p>Biểu đồ sẽ hiện ngay khi có doanh thu trong 30 ngày gần nhất.</p>
+            <a class="btn btn-sm" href="/index.html">Kiểm tra lại</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bảng sản phẩm chỉ hiển thị số lượng, doanh thu và tồn kho dạng đếm. -->
+      <section class="section reveal" data-reveal="fade" id="sec-products" aria-labelledby="heading-products">
+        <div class="section-head">
+          <h2 id="heading-products">Sản phẩm bán chạy</h2>
+          <span class="hint">Xếp theo doanh thu và số lượng đã bán.</span>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <caption class="visually-hidden">
+              Sản phẩm bán chạy: số lượng đã bán, doanh thu và tồn kho còn lại
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Sản phẩm</th>
+                <th scope="col">Đã bán</th>
+                <th scope="col">Doanh thu</th>
+                <th scope="col">Tồn kho</th>
+              </tr>
+            </thead>
+            <tbody id="products-body">
+              <tr>
+                <td colspan="4" class="empty">Đang tải sản phẩm…</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="hint table-note">Các con số được làm tròn và cập nhật khi báo cáo đồng bộ hoàn tất.</p>
+      </section>
+
+      <!-- Hai bảng phân chia, giữ nguyên vùng cập nhật của dashboard.js. -->
+      <div class="card-grid card-grid-2 stagger">
+        <section class="card reveal" id="card-methods" aria-labelledby="heading-methods">
+          <h3 id="heading-methods">Phương thức thanh toán</h3>
+          <p class="hint">Phân bổ đơn hàng và doanh thu theo phương thức.</p>
+
+          <div class="table-wrap">
+            <table>
+              <caption class="visually-hidden">
+                Phân bổ đơn hàng và doanh thu theo phương thức thanh toán
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Phương thức</th>
+                  <th scope="col">Đơn</th>
+                  <th scope="col">Doanh thu</th>
+                </tr>
+              </thead>
+              <tbody id="methods-body">
+                <tr>
+                  <td colspan="3" class="empty">Đang tải dữ liệu…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card reveal" id="card-status" aria-labelledby="heading-status">
+          <h3 id="heading-status">Trạng thái đơn</h3>
+          <p class="hint">Theo dõi đơn đã giao, đã huỷ, hết hạn và đặt trước.</p>
+
+          <div class="table-wrap">
+            <table>
+              <caption class="visually-hidden">Số lượng đơn hàng theo từng trạng thái xử lý</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Trạng thái</th>
+                  <th scope="col">Số đơn</th>
+                </tr>
+              </thead>
+              <tbody id="status-body">
+                <tr>
+                  <td colspan="2" class="empty">Đang tải dữ liệu…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- Lịch sử đồng bộ giúp kiểm tra độ tươi của báo cáo. -->
+      <section class="section reveal" data-reveal="fade" id="sec-sync-history" aria-labelledby="heading-history">
+        <div class="section-head">
+          <h2 id="heading-history">Lịch sử đồng bộ gần đây</h2>
+          <span class="hint">Thời điểm máy chủ báo lên và thời điểm Worker nhận được.</span>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <caption class="visually-hidden">
+              Lịch sử các lần đồng bộ gần đây: thời điểm báo lên theo giờ Việt Nam và
+              thời điểm nhận theo giờ UTC
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Lần đồng bộ (Việt Nam)</th>
+                <th scope="col">Nhận lúc (UTC)</th>
+              </tr>
+            </thead>
+            <tbody id="sync-history-body">
+              <tr>
+                <td colspan="2" class="empty">Đang tải lịch sử đồng bộ…</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap">
+        <p>Bảng điều khiển chỉ hiển thị số liệu tổng hợp phục vụ vận hành.</p>
+        <p><span class="mono" id="build-info"></span></p>
+      </div>
+    </footer>
+
+    <script src="/js/scroll.js?v=a8dfd6b3" defer></script>
+    <script src="/js/nav.js?v=a8dfd6b3" defer></script>
+    <script src="/js/motion.js?v=a8dfd6b3" defer></script>
+    <script src="/js/chart.js?v=a8dfd6b3" defer></script>
+    <script src="/js/dashboard.js?v=a8dfd6b3" defer></script>
+  </body>
+</html>

@@ -1,0 +1,98 @@
+/* =====================================================================
+   motion.css — hiệu ứng của public/js/motion.js (đếm số, ripple, tooltip)
+   Nạp SAU app.css. Không thêm file CSS mới vào HTML — nhét vào cuối app.css
+   để không phải sửa 6 trang chỉ vì một lớp hiệu ứng.
+
+   Nguyên tắc giữ nguyên từ scroll.css: chỉ animate transform/opacity/scale,
+   không animate width/height/margin/padding (gây jank). Riêng ripple dùng
+   width/height vì nó được đặt sẵn kích thước rồi chỉ scale — vẫn nằm trên GPU.
+   ===================================================================== */
+
+/* ---------------------------------------------------------------------
+   1) RIPPLE khi nhấn nút
+   span.ripple do JS chèn vào .btn, tự xoá sau 700ms.
+--------------------------------------------------------------------- */
+.btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.ripple {
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.16;
+  pointer-events: none;
+  transform: scale(0);
+  animation: ripple-out 620ms var(--ease-out) forwards;
+}
+
+@keyframes ripple-out {
+  to {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+/* Nút dùng màu riêng thì ripple lấy màu riêng cho dễ nhìn hơn */
+.btn-primary .ripple {
+  background: #ffffff;
+  opacity: 0.22;
+}
+
+.btn-danger .ripple {
+  background: #ffffff;
+  opacity: 0.22;
+}
+
+/* ---------------------------------------------------------------------
+   2) GỢI Ý (tooltip) cho phần tử có data-hint
+--------------------------------------------------------------------- */
+.motion-tip {
+  position: fixed;
+  z-index: 200;
+  max-width: 260px;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-small);
+  background: var(--text);
+  box-shadow: var(--shadow-float);
+  color: #ffffff;
+  font-size: 12px;
+  line-height: 1.4;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -4px) scale(0.96);
+  transition:
+    opacity var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.motion-tip.is-on {
+  opacity: 1;
+  transform: translate(-50%, -100%) scale(1);
+}
+
+/* ---------------------------------------------------------------------
+   3) SỐ ĐANG ĐẾM
+   .count-up do motion.js gắn data-counted="1" khi xong để không chạy lại.
+--------------------------------------------------------------------- */
+.kpi-value.count-up[data-counted] {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------------------
+   4) TẮT KHI GIẢM CHUYỂN ĐỘNG
+   motion.js cũng tự bỏ ripple và đặt thẳng số cuối, nhưng phần CSS tắt
+   ở đây để chắc chắn kể cả khi JS chạy trước khi người dùng bật reduce.
+--------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .ripple {
+    display: none;
+  }
+  .motion-tip {
+    display: none;
+  }
+}

@@ -172,6 +172,17 @@ const PUBLIC_ASSET_PATHS = new Set<string>([
   "/img/favicon.svg",
   "/favicon.ico",
   "/robots.txt",
+  // Lớp chuyển động dùng chung cho mọi trang, kể cả trang đăng nhập.
+  //
+  // Cả hai đều là asset thuần trang trí: /js/motion.js chỉ đọc thuộc tính
+  // data-count đã có sẵn trong DOM và /css/motion.css chỉ định nghĩa hiệu ứng.
+  // Không chứa bí mật, không đọc/ghi dữ liệu.
+  //
+  // LƯU Ý: nếu thiếu hai dòng này thì trang đăng nhập sẽ bị 302 đá về chính nó
+  // khi trình duyệt xin tệp — hiệu ứng hỏng im lặng. test/asset-whitelist.mjs
+  // tự bắt lỗi này khi thêm tài nguyên mới.
+  "/css/motion.css",
+  "/js/motion.js",
 ]);
 
 /** Chỉ cho phép chuyển hướng nội bộ, tránh open redirect. */

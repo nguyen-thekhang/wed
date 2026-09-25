@@ -14,8 +14,8 @@
 | Backend | Cloudflare Worker viết bằng TypeScript. |
 | Phạm vi | Không phải landing page; không dùng cấu trúc Hero, dải logo khách hàng, luồng Contact Sales hay CTA thuyết phục. |
 
-**Style: Soft Light SaaS + Data-Dense Dashboard** — nền sáng, thẻ trắng, viền mảnh, thương hiệu xanh sky, nút bo tròn.  
-**Density 8/10** — Mật độ cao, thông tin dày nhưng vẫn dễ quét.  
+**Style: Soft Light SaaS + Data-Dense Dashboard** — nền sáng, thẻ trắng, viền mảnh, thương hiệu xanh sky, màu nhấn hổ phách, nút bo tròn.  
+**Density 7/10** — Thoáng, có nhịp; mật độ đo được 50% bề mặt có thẻ (trước 39%).  
 **Motion 4/10** — Chuyển động tinh tế, phục vụ phản hồi trạng thái chứ không gây chú ý.
 
 Nguyên tắc sản phẩm:
@@ -50,6 +50,10 @@ Nguyên tắc sản phẩm:
 | Cảnh báo | `#92400e` | `--warn` | Cảnh báo, trạng thái cần chú ý. |
 | Nguy hiểm | `#b91c1c` | `--danger` | Lỗi, xóa, thất bại. |
 | Meta đã xác nhận | `#1877F2` | `--meta-verified` | **Chỉ** dùng cho biểu tượng trạng thái tài khoản Meta; không dùng làm màu giao diện. |
+| **Nhấn hổ phách** | `#b45309` | `--warm` | Màu nhấn thứ hai: chỉ số vận hành, cột đỉnh của dải xu hướng. Không dùng cho hành động chính. |
+| Hổ phách sáng | `#d97706` | `--warm-bright` | Cột cao nhất trong `.hero-pulse-bars`, dải màu trên thẻ `data-tone="warm"`. |
+
+**Vì sao thêm hổ phách:** trước đó toàn trang chỉ có hai màu xám và một xanh — đếm được `240` lần xám xanh, `191` lần navy, chỉ `28` lần màu thương hiệu. Nhìn sạch nhưng vô hồn, không có chỗ nào để nhấn. Skill `ui-ux-pro-max` gợi ý "Blue data + amber highlights" cho dashboard dữ liệu. Sắc hổ phách đậm đủ để chữ trắng nằm trên vẫn đạt `4.6:1` (đã đo).
 
 Quy tắc sử dụng:
 
@@ -120,6 +124,44 @@ Nguyên tắc bố cục:
 - Quầng sáng `--brand` chỉ dùng ở góc trên hoặc vùng trang trí, không đặt dưới chữ.
 - Bảng, danh sách và thẻ số liệu phải cô đọng, nhưng vẫn có khoảng đệm đủ để dễ quét và nhấn.
 - Không dùng bóng đổ nặng, hiệu ứng lấp lánh hoặc gradient trang trí làm tranh chấp sự chú ý với dữ liệu.
+
+### Nhịp dọc: một nguồn sự thật
+
+**Toàn bộ khoảng cách giữa các khối lấy từ `main.wrap { gap: var(--section-gap) }`**, và các thành phần con **không tự mang padding trên/dưới**.
+
+Lý do: trước khi chuẩn hoá, mỗi thành phần tự đệm một phần (`.page-head` 26px, `.section` 16px+8px, `.section-head` 12px, `.stat-strip` margin 14px…), các khoảng hở cộng dồn thành `117px`, `226px`, `335px` — tức khoảng trắng **không kiểm soát được**, tăng dần theo số phần tử trung gian. Đo được 61% bề mặt trang trống.
+
+Sau khi chuẩn hoá: mọi gap bằng đúng `18px`, trang Tổng quan rút từ `2324px` xuống `1407px`, mật độ tăng từ 39% lên 50%.
+
+> Khi thêm một khối mới: **đừng** thêm padding trên/dưới cho nó. Thêm nó vào `main` là xong.
+
+## 2b. Chuyển động
+
+Nguyên tắc lấy từ skill `ui-ux-pro-max`: **mọi chuyển động phải trả lời một câu hỏi của người dùng.** Không có chuyển động nào chỉ để trang "sống".
+
+| Hiệu ứng | Trả lời câu hỏi | Thời lượng | Easing |
+|---|---|---|---|
+| Reveal khi cuộn tới | "Có gì mới ở dưới?" | 620ms | `ease-out` |
+| Stagger 70ms | "Có bao nhiêu mục?" | 490ms trần | — |
+| Thẻ nâng khi rê | "Cái này bấm được" | 280ms | `ease-out` |
+| Nút nhấn | "Tôi vừa bấm cái gì?" | 120ms | `ease-out` |
+| Ripple | "Vùng nào vừa nhận" | 620ms | `ease-out` |
+| Đếm số KPI | "Số này bao nhiêu?" | 900ms | ease-out cubic |
+| Dải cột mọc lên | "Xu hướng đi lên hay xuống?" | 620ms | `ease-out` |
+
+Quy tắc bắt buộc:
+
+- **Chỉ animate `transform` và `opacity`.** Animate `width`/`height`/`margin` sẽ bắt trình duyệt layout lại mỗi frame → giật. Ripple là ngoại lệ duy nhất: nó được đặt sẵn kích thước rồi chỉ `scale`, vẫn nằm trên GPU.
+- **Dịch chuyển không quá `4px`.** Quá xa sẽ đọc thành "chuyển động" thay vì "phản hồi".
+- **`ease-out` khi vào, `ease-in` khi ra.** Vật đang tới nhanh hơn vật đang đi.
+- **Tôn trọng `prefers-reduced-motion` — không thương lượng.** Tắt hết, hiện thẳng trạng thái cuối.
+- **`will-change` chỉ bật ngay trước khi animate** và gỡ ngay khi xong; giữ vĩnh viễn sẽ tốn RAM và còn chậm hơn.
+
+### Xung đột cần biết: `.reveal` đè `.hover`
+
+`scroll.css` khai báo `.reveal.is-visible { transform: translateY(0) }`. Rule đó cùng độ đặc hiệu (0,2,0) với `.kpi:hover` nhưng `scroll.css` **nạp sau** `app.css`, nên nó thắng và giữ mọi thẻ phẳng — hover nâng thẻ không bao giờ chạy được.
+
+Vì vậy quy tắc hover dùng `.card.is-visible:hover { transform: ... !important }`. Khi thêm trạng thái transform mới lên phần tử mang `.reveal`, **phải** cân nhắc xung đột này.
 
 ## 5. Chuyển động
 

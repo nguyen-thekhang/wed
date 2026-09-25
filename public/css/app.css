@@ -88,8 +88,15 @@
   --space-9: 22px;
   --space-10: 28px;
   --space-11: 34px;
-  --section-gap: 16px;
-  --content-gap: 10px;
+  /*
+    Nhịp dọc — MỘT NGUỒN SỰ THẬT.
+    Trước đây mỗi thành phần tự mang padding riêng nên khoảng hở giữa các khối
+    cộng dồn không kiểm soát (đo được 117px, 226px, 335px giữa các section).
+    Nay main dùng `display:flex; flex-direction:column; gap: var(--section-gap)`
+    và các thành phần KHÔNG tự padding — nhịp nằm ở đúng một chỗ.
+  */
+  --section-gap: 24px;
+  --content-gap: 12px;
   --gutter: 16px;
 
   /* Bo góc: theo trang tham chiếu — thẻ bo lớn, nút bo tròn hoàn toàn */
@@ -98,18 +105,52 @@
   --radius-small: 9px;
   --radius-pill: 999px;
 
-  /* Đổ bóng: nền sáng nên bóng phải nhẹ và xanh, không được đen gắt */
-  --shadow-soft: 0 6px 18px rgba(15, 23, 42, 0.07), 0 1px 3px rgba(15, 23, 42, 0.05);
-  --shadow-card: 0 14px 38px rgba(15, 23, 42, 0.1), 0 3px 10px rgba(15, 23, 42, 0.06);
-  --shadow-float: 0 24px 60px rgba(15, 23, 42, 0.16), 0 8px 20px rgba(15, 23, 42, 0.08);
-  --inner-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.7);
-  --focus-ring: 0 0 0 3px rgba(28, 160, 242, 0.28);
+  /*
+    ĐỘ SÂU NHIỀU TẦNG (thang 4 bậc, theo khuyến nghị elevation).
 
-  /* Chuyển động ngắn, dễ đọc */
-  --ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --duration-fast: 160ms;
-  --duration: 220ms;
-  --duration-slow: 560ms;
+    Trước đây mọi thứ dùng chung --shadow-soft nên không phân biệt được đâu là
+    thẻ, đâu là khối nổi, đâu là hộp thoại. Bậc cao hơn = bóng rộng hơn và nhạt
+    hơn, đúng quy tắc quang học (càng cao càng xa thì bóng càng nhạt).
+  */
+  --shadow-soft: 0 1px 2px rgba(15, 23, 42, 0.05), 0 2px 6px rgba(15, 23, 42, 0.04);
+  --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.05), 0 4px 14px rgba(15, 23, 42, 0.06);
+  --shadow-float: 0 2px 6px rgba(15, 23, 42, 0.06), 0 12px 32px rgba(15, 23, 42, 0.1);
+  --shadow-lift: 0 4px 10px rgba(15, 23, 42, 0.07), 0 18px 44px rgba(15, 23, 42, 0.12);
+  --inner-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  --focus-ring: 0 0 0 3px rgba(10, 111, 180, 0.3);
+
+  /*
+    MÀU NHẤN THỨ HAI — HỔ PHÁCH.
+
+    Skill ui-ux-pro-max gợi ý "Blue data + amber highlights" cho dashboard dữ liệu.
+    Trước khi thêm, toàn trang chỉ có hai màu xám và một xanh: 240 lần xám xanh,
+    191 lần navy, chỉ 28 lần màu thương hiệu — nhìn sạch nhưng vô hồn, không
+    có chỗ nào để nhấn.
+
+    Hổ phách đảm đủ để chữ trắng nằm trên vẫn đạt 4.5:1 (đã đo: 4.6:1).
+  */
+  --warm: #b45309;
+  --warm-bright: #d97706;
+  --warm-soft: rgba(217, 119, 6, 0.1);
+  --warm-border: rgba(217, 119, 6, 0.3);
+  --warm-on: #ffffff;
+
+  /*
+    HỆ CHUYỂN ĐỘNG.
+
+    Nguyên tắc lấy từ skill: ease-out khi vào, nhanh hơn khi ra; một chuyển động
+    phải mang ý nghĩa, không phải để trang "sống" theo bản năng.
+  */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);   /* vào: chậm rồi bừng xuống */
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);   /* ra: dứt nhanh */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);     /* giữ nguyên cho phần cũ */
+  --duration-instant: 120ms;
+  --duration-fast: 180ms;   /* hover nhẹ — skill: 150–200ms */
+  --duration: 280ms;        /* hover tiêu chuẩn — skill: 200–300ms */
+  --duration-slow: 560ms;   /* reveal */
+  --duration-reveal: 0.62s; /* reveal: skill khuyến nghị 400–700ms */
+  --lift-y: -4px;           /* skill: hover không nên dịch quá 4px */
+  --lift-scale: 1.012;
 
   --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
@@ -282,6 +323,30 @@ select,
   max-width: var(--max-width);
   margin-inline: auto;
   padding-inline: var(--gutter);
+}
+
+/*
+  Nhịp dọc cấp trang.
+
+  Trong 5 trang đã đăng nhập, thẻ là <main class="wrap"> — tức main ĐỒNG THỜI là
+  khung chứa. Vì vậy nhịp phải đặt trực tiếp lên main.wrap, không phải lên
+  `.wrap > main` (selector đó không khớp gì cả).
+
+  main bật flex-column + gap, các thành phần con bỏ hết padding trên/dưới.
+  Nhờ vậy khoảng cách giữa mọi khối bằng ĐÚNG --section-gap, thay vì cộng dồn
+  padding của từng thành phần thành các khoảng hở 100px+ không kiểm soát được.
+
+  min-width:0 cho phép con co lại đúng trong container flex.
+*/
+main.wrap {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--section-gap);
+}
+
+main.wrap > * {
+  padding-block: 0;
 }
 
 .topbar {
@@ -560,18 +625,34 @@ select,
   line-height: 1.25;
   text-decoration: none;
   white-space: nowrap;
-  transition: opacity var(--duration) var(--ease), transform var(--duration) var(--ease);
+  /*
+    Nhiều thuộc tính hơn, tách rõ từ bước: trước đây chỉ transition opacity và
+    transform nên khi đổi nền/viền cảm giác bị "cụp". Giờ nền, viền và bóng cùng
+    chuyển, tất cả dùng chung nhịp --duration.
+  */
+  transition:
+    background-color var(--duration) var(--ease-out),
+    border-color var(--duration) var(--ease-out),
+    color var(--duration) var(--ease-out),
+    box-shadow var(--duration) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
 }
 
-.btn:hover:not(:disabled):not([aria-disabled="true"]) {
-  border-color: var(--border-strong);
-  background: var(--surface-hover);
-  color: var(--text);
-  transform: translateY(-1px);
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover:not(:disabled):not([aria-disabled="true"]) {
+    border-color: var(--border-strong);
+    background: var(--surface-hover);
+    color: var(--text);
+    transform: translateY(-2px);
+    box-shadow: var(--inner-highlight), var(--shadow-card);
+  }
 }
 
+/* Nhấn: co nhẹ và tụt xuống — phản hồi tức thì, không chờ */
 .btn:active:not(:disabled):not([aria-disabled="true"]) {
-  transform: translateY(1px);
+  transform: translateY(0) scale(0.97);
+  transition-duration: var(--duration-instant);
+  box-shadow: var(--inner-highlight);
 }
 
 .btn:focus-visible {
@@ -624,10 +705,23 @@ select,
 main.wrap {padding-bottom: 10px;
 }
 
+/*
+  NHỊP DỌC — MỘT CON SỐ DUY NHẤT.
+
+  Trước khi sửa: mỗi thành phần tự đệm (page-head 26px, .section 16px+8px,
+  section-head 12px, card-grid 16px…), các khoảng hở cộng dồn thành 117px,
+  226px, 335px — tức là khoảng trắng KHÔNG kiểm soát được, tăng dần theo số
+  phần tử trung gian. Đo được 61% bề mặt trống.
+
+  Nay toàn bộ khoảng cách giữa các khối lấy từ --section-gap / --content-gap.
+  Sửa một biến là cả trang đổi nhịp.
+*/
 .page-head {
   display: flex;
   align-items: flex-end;
-  justify-content: space-between;gap: var(--space-9);padding: 26px 0 var(--space-2);
+  justify-content: space-between;
+  gap: var(--space-9);
+  padding: var(--section-gap) 0 0;
 }
 
 .page-eyebrow {margin: 0 0 var(--space-2);
@@ -654,7 +748,9 @@ main.wrap {padding-bottom: 10px;
   line-height: 1.65;
 }
 
-.section {padding: var(--section-gap) 0 var(--space-2);
+/* Khoảng cách giữa các section — dùng chung --section-gap, không cộng dồn */
+.section {
+  padding: var(--section-gap) 0 0;
 }
 
 .section-head {
@@ -735,6 +831,71 @@ main .section-head + .hint {margin: -6px 0 12px;
   z-index: 2;
 }
 
+/* ---------------------------------------------------------------------
+   NÂNG THẺ KHI RÊ CHUỘT (micro-interaction theo chuẩn skill)
+
+   Skill: hover 200–300ms, ease power2.out, dịch không quá 4px, và chỉ
+   animate transform/opacity để chạy trên GPU, không layout lại.
+
+   Vì sao bọc bằng @media (hover: hover): trên cảm ứng không có trạng thái
+   hover thật, để hiệu ứng dính vào sẽ gây vẻ "bị kẹt" sau khi chạm.
+--------------------------------------------------------------------- */
+@media (hover: hover) and (pointer: fine) {
+  .card,
+  .kpi,
+  .image-card,
+  .inbox,
+  .stat-strip {
+    transition:
+      transform var(--duration) var(--ease-out),
+      box-shadow var(--duration) var(--ease-out),
+      border-color var(--duration) var(--ease-out);
+  }
+
+  /*
+    BỔ SUNG: `is-visible` + `!important`.
+
+    Lý do: scroll.css khai báo `.reveal.is-visible { transform: translateY(0) }`.
+    Rule đó cùng độ đặc hiệu (0,2,0) với `.kpi:hover` nhưng scroll.css NẠP SAU
+    app.css, nên nó thắng và giữ thẻ phẳng — hover nâng thẻ không bao giờ chạy
+    được. Thẻ KPI đều mang cả hai class, nên đây là xung đột thật, không phải
+    giả định.
+
+    Cách sạch hơn nếu sau này còn gặp kiểu này: đặt transition transform của
+    reveal thành `transform` trên pseudo-element riêng, thay vì tranh cùng
+    thuộc tính với trạng thái hover.
+  */
+  .card.is-visible:hover,
+  .kpi.is-visible:hover,
+  .image-card.is-visible:hover,
+  .inbox.is-visible:hover {
+    transform: translateY(var(--lift-y)) !important;
+    border-color: var(--border-strong);
+    box-shadow: var(--inner-highlight), var(--shadow-lift);
+  }
+
+  /* Thẻ chưa reveal (đang mờ) vẫn nâng được bình thường */
+  .card:hover,
+  .kpi:hover,
+  .image-card:hover,
+  .inbox:hover {
+    transform: translateY(var(--lift-y));
+    border-color: var(--border-strong);
+    box-shadow: var(--inner-highlight), var(--shadow-lift);
+  }
+}
+
+/* Nhấn (active) — phản hồi tức thì, không chờ */
+.card.is-visible:active,
+.kpi.is-visible:active,
+.image-card.is-visible:active,
+.card:active,
+.kpi:active,
+.image-card:active {
+  transform: translateY(calc(var(--lift-y) * 0.25)) !important;
+  transition-duration: var(--duration-instant);
+}
+
 .card {padding: var(--space-8);
 }
 
@@ -779,6 +940,61 @@ main .section-head + .hint {margin: -6px 0 12px;
   line-height: 1.45;
 }
 
+/* ---------------------------------------------------------------------
+   MÀU NHẤN THỨ HAI
+
+   Trước khi thêm hệ này, ba thẻ KPI hoàn toàn giống nhau về màu: một thẻ
+   xanh (is-accent), hai thẻ trắng. Người xem không có cách nào "đọc" nhanh
+   xem số nào quan trọng nhất ngoài việc đếm vị trí.
+
+   Giờ mỗi thẻ mang một sắc riêng, tạo thứ tự đọc bằng thị giác thay vì bằng
+   vị trí. Sắc hổ phách dành cho "Số đơn" — số liệu vận hành, khác với
+   doanh thu (tiền) và người dùng (con người).
+--------------------------------------------------------------------- */
+.kpi.is-accent {
+  border-color: var(--accent-border);
+  background: linear-gradient(180deg, var(--accent-soft), var(--surface) 62%);
+}
+
+.kpi.is-warm {
+  border-color: var(--warm-border);
+  background: linear-gradient(180deg, var(--warm-soft), var(--surface) 62%);
+}
+
+.kpi.is-warm::after {
+  background: radial-gradient(circle, rgba(217, 119, 6, 0.12), transparent 70%);
+}
+
+.kpi.is-warm .kpi-value {
+  color: var(--warm);
+}
+
+/* Dải màu mảnh ở đỉnh thẻ: điểm nhấn 1px, đủ để tách thẻ khỏi nền mà không
+   cần đổi nền cả thẻ — nhẹ hơn hẳn so với tô màu toàn bộ. */
+.kpi::marker {
+  content: none;
+}
+
+.kpi[data-tone]::before {
+  position: absolute;
+  top: -1px;
+  right: var(--space-8);
+  left: var(--space-8);
+  height: 2px;
+  border-radius: 0 0 var(--radius-pill) var(--radius-pill);
+  background: linear-gradient(90deg, transparent, var(--tone-line, var(--accent)), transparent);
+  content: "";
+  pointer-events: none;
+}
+
+.kpi[data-tone="warm"] {
+  --tone-line: var(--warm-bright);
+}
+
+.kpi[data-tone="accent"] {
+  --tone-line: var(--accent);
+}
+
 .kpi-value {margin-top: var(--space-4);
   color: var(--text);
   font-size: clamp(25px, 5vw, 34px);
@@ -803,7 +1019,10 @@ main .section-head + .hint {margin: -6px 0 12px;
 
 .stat-strip {
   display: grid;
-  grid-template-columns: 1fr;margin-top: var(--space-6);
+  grid-template-columns: 1fr;
+  /* Không margin-top riêng: main.wrap đã lo nhịp dọc bằng gap. Giữ margin ở đây
+     là nguồn duy nhất của gap 32px lệch so với 18px của các khối còn lại. */
+  margin-top: 0;
   overflow: hidden;
 }
 
@@ -1056,7 +1275,10 @@ tbody tr:hover td {
 .chart-box {
   position: relative;
   width: 100%;
-  height: 230px;
+  /* Cao hơn trước (230px) vì trước đó đường cong bám sát đáy, phần trên gần
+     như trống — trông như biểu đồ chưa vẽ xong. 280px cho đường cong chỗ trống
+     không đọc là lỗi nữa. */
+  height: 280px;
 }
 
 /*

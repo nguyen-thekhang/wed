@@ -16,10 +16,87 @@
 
 /* ---------- Trang: index.html ---------- */
 
-.hero-mark {display: grid; width: 76px; height: 76px; flex: 0 0 76px; place-items: center; border: 1px solid var(--accent-border); border-radius: var(--radius-card); background: radial-gradient(circle at 50% 35%, rgba(28, 160, 242, 0.14), transparent 68%), var(--surface); box-shadow: var(--inner-highlight), 0 14px 34px rgba(15, 23, 42, 0.1); color: var(--accent-light)}
-.hero-mark svg {width: 34px; height: 34px}
-.dashboard-hero-note {display: inline-flex; align-items: center;gap: 8px;margin-top: 14px; color: var(--text-faint); font-size: 12px}
-.dashboard-hero-note svg {width: 15px; height: 15px; color: var(--accent-light)}
+/*
+  DẢI CỘT GỢI Ý XU HƯỚNG — thay cho vòng tròn .hero-mark cũ.
+
+  Vòng tròn 76px chứa icon 24px trước đây để trống 68% diện tích và trông như
+  một ô chờ điền. Dải cột này lấp đúng chỗ đó, nhỏ hơn, và mang thông tin.
+
+  Đây là HÌNH ẢNH GIẢ LẬP, không phải số liệu thật: nó chỉ nói "xu hướng đi lên
+  trong 30 ngày", không gắn với điểm số nào. Vì vậy role="img" kèm aria-label
+  nói rõ đây là gợi ý, còn số liệu thật nằm ở KPI và biểu đồ bên dưới.
+*/
+.hero-pulse {
+  display: flex;
+  width: 168px;
+  flex: 0 0 168px;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  box-shadow: var(--inner-highlight), var(--shadow-soft);
+}
+
+.hero-pulse-bars {
+  display: flex;
+  height: 44px;
+  align-items: flex-end;
+  gap: 3px;
+}
+
+.hero-pulse-bars > span {
+  flex: 1 1 0;
+  min-width: 0;
+  border-radius: 2px 2px 1px 1px;
+  background: linear-gradient(180deg, var(--accent), rgba(28, 160, 242, 0.45));
+  transform-origin: bottom;
+  animation: pulse-grow 620ms var(--ease-out) backwards;
+}
+
+/* Cột đỉnh dùng màu nhấn thứ hai → mắt nhìn ra điểm cao nhất ngay */
+.hero-pulse-bars > span.is-peak {
+  background: linear-gradient(180deg, var(--warm-bright), rgba(217, 119, 6, 0.5));
+}
+
+.hero-pulse-bars > span:nth-child(1) { animation-delay: 40ms }
+.hero-pulse-bars > span:nth-child(2) { animation-delay: 80ms }
+.hero-pulse-bars > span:nth-child(3) { animation-delay: 120ms }
+.hero-pulse-bars > span:nth-child(4) { animation-delay: 160ms }
+.hero-pulse-bars > span:nth-child(5) { animation-delay: 200ms }
+.hero-pulse-bars > span:nth-child(6) { animation-delay: 240ms }
+.hero-pulse-bars > span:nth-child(7) { animation-delay: 280ms }
+.hero-pulse-bars > span:nth-child(8) { animation-delay: 320ms }
+.hero-pulse-bars > span:nth-child(9) { animation-delay: 360ms }
+.hero-pulse-bars > span:nth-child(10) { animation-delay: 400ms }
+.hero-pulse-bars > span:nth-child(11) { animation-delay: 440ms }
+.hero-pulse-bars > span:nth-child(12) { animation-delay: 480ms }
+
+@keyframes pulse-grow {
+  from {
+    transform: scaleY(0.1);
+    opacity: 0;
+  }
+  to {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+.hero-pulse-label {
+  color: var(--text-faint);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* Trên màn hình hẹp, dải cột chiếm chỗ không cần thiết — bỏ hẳn */
+@media (max-width: 767px) {
+  .hero-pulse {
+    display: none;
+  }
+}
+
 .kpi-grid {grid-template-columns: 1fr}
 .kpi-detail {justify-content: space-between;margin-top: 12px;padding-top: 12px; border-top: 1px solid var(--divider)}
 .kpi-detail .mono {color: var(--text); font-size: 13px; font-weight: 700}
@@ -182,6 +259,8 @@ body::before {position: fixed; z-index: -1; inset: 0; background-image: linear-g
 }
 @media (prefers-reduced-motion: reduce) {
   #upload-bar {opacity: 0.9; transform: scaleX(0.42); animation: none}
+  /* Dải cột xu hướng: hiện đúng trạng thái cuối, không mọc dần. */
+  .hero-pulse-bars > span {animation: none}
 }
 
 /* ---------- Trang: uid.html ---------- */
